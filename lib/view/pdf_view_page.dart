@@ -1,53 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 
-class PDFViewerPage extends StatefulWidget {
-  @override
-  _PDFViewerPageState createState() => _PDFViewerPageState();
-}
+class PDFViewerFromUrl extends StatelessWidget {
+  const PDFViewerFromUrl({Key? key, required this.url}) : super(key: key);
 
-class _PDFViewerPageState extends State<PDFViewerPage> {
-  // PDF link
-  final String pdfUrl = 'https://example.com/sample.pdf';
-
-  // Current page index
-  int currentPage = 0;
-
-  // Total number of pages in the PDF
-  int totalPageCount = 0;
+  final String url;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldColor,
       appBar: AppBar(
-        title: Text('PDF Viewer'),
+        title: const Text('Gyan Vanchan'),
+        backgroundColor: Colors.transparent,
       ),
-      body: Column(
-        children: [
-          // PDF viewer
-          Expanded(
-            child: PDFView(
-              filePath: pdfUrl,
-              onPageChanged: (int? page, int? page2) {
-                setState(() {
-                  currentPage = page!;
-                });
-              },
-              onViewCreated: (PDFViewController controller) async {
-                totalPageCount = (await controller.getPageCount())!;
-                setState(() {});
-              },
-            ),
-          ),
-          // Progress indicator
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Reading Progress: ${((currentPage + 1) / totalPageCount * 100).toStringAsFixed(2)}%',
-              style: TextStyle(fontSize: 16.0),
-            ),
-          ),
-        ],
+      body: const PDF().fromUrl(
+        url,
+        placeholder: (double progress) => Center(child: Text('$progress %')),
+        errorWidget: (dynamic error) => Center(child: Text(error.toString())),
       ),
     );
   }

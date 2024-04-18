@@ -71,7 +71,7 @@ class _VanchanScreenState extends State<VanchanScreen> {
                       });
                     },
                     itemBuilder: (BuildContext context) {
-                      return ['English', 'Spanish', 'French'].map((String language) {
+                      return ['English', 'Hindi', 'Gujarati'].map((String language) {
                         return PopupMenuItem<String>(
                           value: language,
                           child: Text(language),
@@ -89,7 +89,7 @@ class _VanchanScreenState extends State<VanchanScreen> {
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   child: ListTile(
-                    onTap: () => Get.to(() => PDFViewerPage()),
+                    onTap: () => Get.to(() => const PDFViewerFromUrl(url: 'https://www.princexml.com/samples/invoice/invoicesample.pdf')),
                     contentPadding: const EdgeInsets.all(10),
                     leading: const SizedBox(
                       height: 50,

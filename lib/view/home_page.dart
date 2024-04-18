@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ghanshyam_mahotsav/view/drawer_screen.dart';
 import 'package:ghanshyam_mahotsav/view/mala_jap_screen.dart';
 import 'package:ghanshyam_mahotsav/view/vanchan_screen.dart';
 
 import '../utils/app_colors.dart';
+import 'extra.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -23,8 +25,8 @@ class HomePage extends StatelessWidget {
             icon: const Icon(Icons.menu),
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),
           )),
-      drawer: Drawer(),
-      body: SizedBox(
+      drawer: DrawerScreen(),
+      body: const SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Column(
@@ -63,7 +65,7 @@ class MenuCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.to(() => isMalaJap ? MalaJapScreen() : const VanchanScreen()),
+      onTap: () => Get.to(() => isMalaJap ? const MalaJapScreen() : const VanchanScreen()),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
