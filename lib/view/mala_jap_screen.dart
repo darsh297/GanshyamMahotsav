@@ -29,35 +29,40 @@ class _MalaJapScreenState extends State<MalaJapScreen> {
         title: const Text('Mala Jap'),
         backgroundColor: Colors.transparent,
       ),
-      body: Center(
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: CustomPaint(
-                painter: DotPainter(dots: dots),
-              ),
-            ),
-            GestureDetector(
-              onTap: updateProgress,
-              child: Container(
-                margin: const EdgeInsets.all(20),
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  shape: BoxShape.circle,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('$progress'),
+          Stack(
+            children: [
+              Positioned.fill(
+                child: CustomPaint(
+                  painter: DotPainter(dots: dots),
                 ),
-                child: const Center(
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 40,
+              ),
+              GestureDetector(
+                onTap: updateProgress,
+                child: Container(
+                  margin: const EdgeInsets.all(20),
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 40,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     );
   }

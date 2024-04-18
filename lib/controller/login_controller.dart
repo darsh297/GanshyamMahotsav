@@ -9,10 +9,8 @@ import '../utils/app_colors.dart';
 class LoginController extends GetxController {
   ApiBaseHelper apiBaseHelper = ApiBaseHelper();
   final Rx<TextEditingController> nameTextField = TextEditingController().obs;
-  final Rx<TextEditingController> passwordTextField = TextEditingController().obs;
   final Rx<TextEditingController> mobileTextField = TextEditingController().obs;
   RxBool isLoading = false.obs;
-  RxBool isOTP = false.obs;
 
   Rx<Country> selectedCountry = Country(
     phoneCode: '91',
@@ -59,7 +57,7 @@ class LoginController extends GetxController {
     isLoading.value = true;
     var apiResponse = await apiBaseHelper.postDataAPI(
       leadAPI: ApiStrings.kLogin,
-      jsonObjectBody: {"mobileNumber": mobileTextField.value.text, "password": passwordTextField.value.text},
+      jsonObjectBody: {"mobileNumber": mobileTextField.value.text},
     );
     isLoading.value = false;
     print('1111 $apiResponse');
@@ -77,7 +75,7 @@ class LoginController extends GetxController {
     isLoading.value = true;
     var apiResponse = await apiBaseHelper.postDataAPI(
       leadAPI: ApiStrings.kLogin,
-      jsonObjectBody: {"name": nameTextField.value.text, "mobileNumber": mobileTextField.value.text, "password": passwordTextField.value.text},
+      jsonObjectBody: {"name": nameTextField.value.text, "mobileNumber": mobileTextField.value.text},
     );
     isLoading.value = false;
     print('2222 $apiResponse');

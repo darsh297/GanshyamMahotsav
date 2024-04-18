@@ -89,18 +89,7 @@ class DrawerScreen extends StatelessWidget {
                           },
                         ),
                         RadioListTile<String>(
-                          title: Text('Hindi'),
-                          value: 'Hindi',
-                          groupValue: _selectedLanguage,
-                          activeColor: AppColors.scaffoldColor,
-                          onChanged: (value) {
-                            // setState(() {
-                            _selectedLanguage = value!;
-                            // });
-                          },
-                        ),
-                        RadioListTile<String>(
-                          title: Text('Gujarati'),
+                          title: Text('Gujrati'),
                           value: 'Gujarati',
                           groupValue: _selectedLanguage,
                           activeColor: AppColors.scaffoldColor,

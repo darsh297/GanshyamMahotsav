@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:ghanshyam_mahotsav/view/otp_screen.dart';
 
 import '../controller/login_controller.dart';
 import '../utils/app_colors.dart';
@@ -8,15 +8,13 @@ import '../utils/string_utils.dart';
 import '../utils/validations.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/widgets.dart';
-import 'home_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
   final LoginController loginController = Get.put(LoginController());
-  final TextEditingController mobileNumber = TextEditingController();
-  final TextEditingController otpEditingController = TextEditingController();
-  final _form = GlobalKey<FormState>();
+  final GlobalKey<FormState> _loginForm = GlobalKey<FormState>();
+  final GlobalKey<FormState> _registerForm = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +28,8 @@ class LoginPage extends StatelessWidget {
               CustomPaint(
                 painter: ShapesPainter(),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Image.asset(StringUtils.logo, height: 190, width: double.infinity),
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  child: Image.asset(StringUtils.logo, height: 220, width: double.infinity),
                 ),
               ),
               const SizedBox(height: 30),
@@ -54,7 +52,6 @@ class LoginPage extends StatelessWidget {
                         unselectedLabelColor: AppColors.hintTextColor,
                         onTap: (int tabNumber) {
                           loginController.nameTextField.value.text = '';
-                          loginController.passwordTextField.value.text = '';
                           loginController.mobileTextField.value.text = '';
                         },
                         tabs: const [
@@ -68,17 +65,19 @@ class LoginPage extends StatelessWidget {
                       height: 350,
                       child: TabBarView(
                         children: [
+                          /// First Tab -> Login
                           Padding(
                             padding: const EdgeInsets.all(16),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                /// Login - Mobile textbox
                                 Form(
-                                  key: _form,
+                                  key: _loginForm,
                                   child: CustomTextFields(
                                     textFieldName: 'Mobile No.',
                                     hintText: 'Enter Mobile No.',
-                                    textFieldController: mobileNumber,
+                                    textFieldController: loginController.mobileTextField.value,
                                     textInputType: TextInputType.number,
                                     validator: (input) {
                                       var result = ValidationsFunction.phoneValidation(input ?? '');
@@ -94,7 +93,8 @@ class LoginPage extends StatelessWidget {
                                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: [
                                                   Text(loginController.selectedCountry.value.flagEmoji),
-                                                  Text('+${loginController.selectedCountry.value.phoneCode} '), // style: appTextStyle.montserrat16W600
+                                                  Text(
+                                                      '+${loginController.selectedCountry.value.phoneCode} '), // style: appTextStyle.montserrat16W600
                                                   Text('| '),
                                                 ],
                                               );
@@ -103,116 +103,58 @@ class LoginPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8, bottom: 16),
-                                  child: TextButton(
-                                      onPressed: () {
-                                        loginController.isOTP.value = true;
-                                      },
-                                      child: const Text('Get OTP')),
-                                ),
-                                Obx(
-                                  () => PinCodeTextField(
-                                    appContext: context,
-                                    controller: otpEditingController,
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    enabled: loginController.isOTP.value ? true : false,
-                                    length: 6,
-                                    cursorColor: Colors.transparent,
-                                    keyboardType: TextInputType.number,
-                                    autoFocus: false,
-                                    pinTheme: PinTheme(
-                                      shape: PinCodeFieldShape.box,
-                                      selectedColor: AppColors.primaryColor,
-                                      inactiveColor: AppColors.textFieldBorderColor,
-                                      activeColor: AppColors.primaryColor,
-                                      borderRadius: BorderRadius.circular(4),
-                                      fieldHeight: 45,
-                                      fieldWidth: 45,
-                                      activeBorderWidth: 1.2,
-                                      inactiveBorderWidth: 0.8,
-                                      disabledBorderWidth: 1.2,
-                                      errorBorderWidth: 1.2,
-                                      selectedBorderWidth: 1.2,
-                                      borderWidth: 1.2,
-                                    ),
-                                  ),
-                                ),
-
+                                SizedBox(height: 26),
                                 SizedBox(
                                   width: double.infinity,
                                   child: Obx(
                                     () => loginController.isLoading.value
                                         ? loader
-                                        : Obx(
-                                            () => ElevatedButton(
-                                              onPressed: loginController.isOTP.value
-                                                  ? () {
-                                                      final isValid = _form.currentState!.validate();
-                                                      if (isValid) {
-                                                        Get.offAll(() => HomePage());
-                                                      }
-                                                    }
-                                                  : null,
-                                              child: const Text('Verify OTP'),
-                                            ),
+                                        : ElevatedButton(
+                                            onPressed: () {
+                                              final isValid = _loginForm.currentState!.validate();
+                                              if (isValid) {
+                                                Get.to(() => OTPScreen(
+                                                    phoneNumber: loginController.mobileTextField.value.text,
+                                                    countryCode: loginController.selectedCountry.value.phoneCode));
+                                              }
+                                            },
+                                            child: const Text('Get OTP'),
                                           ),
                                   ),
                                 ),
-
-                                // PinFieldAutoFill(
-                                //   codeLength: 6,
-                                //   // autoFocus: true,
-                                //   // decoration: UnderlineDecoration(
-                                //   //   lineHeight: 2,
-                                //   //   lineStrokeCap: StrokeCap.round,
-                                //   // bgColorBuilder: PinListenColorBuilder(AppColors.scaffoldColor, Colors.grey.shade200),
-                                //   // colorBuilder: const FixedColorBuilder(Colors.transparent),
-                                //   // ),
-                                // ),
-                                // SizedBox(
-                                //   width: double.infinity,
-                                //   child: Obx(
-                                //     () => loginController.isLoading.value
-                                //         ? loader
-                                //         : ElevatedButton(
-                                //             onPressed: () {
-                                //               final isValid = _form.currentState!.validate();
-                                //               if (isValid) {
-                                //                 // loginController.loginAPI();
-                                //                 Get.offAll(() => HomePage());
-                                //               }
-                                //             },
-                                //             child: const Text('Ver'),
-                                //           ),
-                                //   ),
-                                // ),
                               ],
                             ),
                           ),
+
+                          /// Send Tab -> Register
                           Padding(
                             padding: const EdgeInsets.all(16),
-                            child: Column(
-                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomTextFields(
-                                  textFieldController: loginController.nameTextField.value,
-                                  textFieldName: 'Full Name',
-                                ),
-                                SizedBox(height: 8),
-                                CustomTextFields(
-                                  textFieldName: 'Mobile No.',
-                                  hintText: 'Enter Mobile No.',
-                                  textFieldController: mobileNumber,
-                                  textInputType: TextInputType.number,
-                                  validator: (input) {
-                                    var result = ValidationsFunction.phoneValidation(input ?? '');
-                                    return result.$1;
-                                  },
-                                  leadingIcon: SizedBox(
-                                    width: 90,
-                                    child: InkWell(
+                            child: Form(
+                              key: _registerForm,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CustomTextFields(
+                                    textFieldController: loginController.nameTextField.value,
+                                    textFieldName: 'Full Name',
+                                    validator: (input) {
+                                      var result = ValidationsFunction.textValidation(input ?? '');
+                                      return result.$1;
+                                    },
+                                  ),
+                                  const SizedBox(height: 12),
+                                  CustomTextFields(
+                                    textFieldName: 'Mobile No.',
+                                    hintText: 'Enter Mobile No.',
+                                    textFieldController: loginController.mobileTextField.value,
+                                    textInputType: TextInputType.number,
+                                    validator: (input) {
+                                      var result = ValidationsFunction.phoneValidation(input ?? '');
+                                      return result.$1;
+                                    },
+                                    leadingIcon: SizedBox(
+                                      width: 90,
+                                      child: InkWell(
                                         onTap: () => loginController.openCountryPickerDialog(context),
                                         child: Obx(
                                           () {
@@ -221,54 +163,36 @@ class LoginPage extends StatelessWidget {
                                               children: [
                                                 Text(loginController.selectedCountry.value.flagEmoji),
                                                 Text('+${loginController.selectedCountry.value.phoneCode} '), // style: appTextStyle.montserrat16W600
-                                                Text('| '),
+                                                const Text('| '),
                                               ],
                                             );
                                           },
-                                        )),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8, bottom: 16),
-                                  child: TextButton(
+                                  const SizedBox(height: 26),
+
+                                  /// Register button
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
                                       onPressed: () {
-                                        loginController.isOTP.value = true;
+                                        final isValid = _registerForm.currentState!.validate();
+                                        if (isValid) {
+                                          Get.to(
+                                            () => OTPScreen(
+                                              phoneNumber: loginController.mobileTextField.value.text,
+                                              countryCode: loginController.selectedCountry.value.phoneCode,
+                                            ),
+                                          );
+                                        }
                                       },
-                                      child: const Text('Get OTP')),
-                                ),
-                                PinCodeTextField(
-                                  appContext: context,
-                                  controller: otpEditingController,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  enabled: loginController.isOTP.value ? true : false,
-                                  length: 6,
-                                  cursorColor: Colors.transparent,
-                                  keyboardType: TextInputType.number,
-                                  autoFocus: false,
-                                  pinTheme: PinTheme(
-                                    shape: PinCodeFieldShape.box,
-                                    selectedColor: AppColors.primaryColor,
-                                    inactiveColor: AppColors.textFieldBorderColor,
-                                    activeColor: AppColors.primaryColor,
-                                    borderRadius: BorderRadius.circular(4),
-                                    fieldHeight: 45,
-                                    fieldWidth: 45,
-                                    activeBorderWidth: 1.2,
-                                    inactiveBorderWidth: 0.8,
-                                    disabledBorderWidth: 1.2,
-                                    errorBorderWidth: 1.2,
-                                    selectedBorderWidth: 1.2,
-                                    borderWidth: 1.2,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: () => loginController.registrationAPI(),
-                                    child: const Text('Register'),
-                                  ),
-                                )
-                              ],
+                                      child: const Text('Register'),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ],

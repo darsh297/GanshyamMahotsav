@@ -6,12 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../widgets/widgets.dart';
-
 import 'api_strings.dart';
 
 class ApiBaseHelper {
   ApiBaseHelper._();
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  // final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static final ApiBaseHelper _instance = ApiBaseHelper._();
 
   factory ApiBaseHelper() {
