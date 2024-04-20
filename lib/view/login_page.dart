@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
                 painter: ShapesPainter(),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 18),
-                  child: Image.asset(StringUtils.logo, height: 220, width: double.infinity),
+                  child: Hero(tag: 'logo', child: Image.asset(StringUtils.logo, height: 220, width: double.infinity)),
                 ),
               ),
               const SizedBox(height: 30),
@@ -93,8 +93,7 @@ class LoginPage extends StatelessWidget {
                                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: [
                                                   Text(loginController.selectedCountry.value.flagEmoji),
-                                                  Text(
-                                                      '+${loginController.selectedCountry.value.phoneCode} '), // style: appTextStyle.montserrat16W600
+                                                  Text('+${loginController.selectedCountry.value.phoneCode} '), // style: appTextStyle.montserrat16W600
                                                   Text('| '),
                                                 ],
                                               );
