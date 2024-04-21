@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ghanshyam_mahotsav/view/otp_screen.dart';
 
 import '../controller/login_controller.dart';
 import '../utils/app_colors.dart';
@@ -21,187 +20,192 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              CustomPaint(
-                painter: ShapesPainter(),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 18),
-                  child: Hero(tag: 'logo', child: Image.asset(StringUtils.logo, height: 220, width: double.infinity)),
-                ),
-              ),
-              const SizedBox(height: 30),
-              DefaultTabController(
-                length: 2,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), border: Border.all(color: AppColors.textFieldBorderColor)),
-                      child: TabBar(
-                        indicator: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        tabAlignment: TabAlignment.fill,
-                        dividerHeight: 0,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        labelColor: Colors.white,
-                        unselectedLabelColor: AppColors.hintTextColor,
-                        onTap: (int tabNumber) {
-                          loginController.nameTextField.value.text = '';
-                          loginController.mobileTextField.value.text = '';
-                        },
-                        tabs: const [
-                          Tab(child: Text('Login')),
-                          Tab(child: Text('Register')),
-                        ],
-                      ),
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  CustomPaint(
+                    painter: ShapesPainter(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 18),
+                      child: Hero(tag: 'logo', child: Image.asset(StringUtils.logo, height: 220, width: double.infinity)),
                     ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 350,
-                      child: TabBarView(
-                        children: [
-                          /// First Tab -> Login
-                          Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                /// Login - Mobile textbox
-                                Form(
-                                  key: _loginForm,
-                                  child: CustomTextFields(
-                                    textFieldName: 'Mobile No.',
-                                    hintText: 'Enter Mobile No.',
-                                    textFieldController: loginController.mobileTextField.value,
-                                    textInputType: TextInputType.number,
-                                    validator: (input) {
-                                      var result = ValidationsFunction.phoneValidation(input ?? '');
-                                      return result.$1;
-                                    },
-                                    leadingIcon: SizedBox(
-                                      width: 90,
-                                      child: InkWell(
-                                          onTap: () => loginController.openCountryPickerDialog(context),
-                                          child: Obx(
-                                            () {
-                                              return Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                children: [
-                                                  Text(loginController.selectedCountry.value.flagEmoji),
-                                                  Text('+${loginController.selectedCountry.value.phoneCode} '), // style: appTextStyle.montserrat16W600
-                                                  Text('| '),
-                                                ],
-                                              );
-                                            },
-                                          )),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 26),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: Obx(
-                                    () => loginController.isLoading.value
-                                        ? loader
-                                        : ElevatedButton(
-                                            onPressed: () {
-                                              final isValid = _loginForm.currentState!.validate();
-                                              if (isValid) {
-                                                Get.to(() => OTPScreen(
-                                                    phoneNumber: loginController.mobileTextField.value.text,
-                                                    countryCode: loginController.selectedCountry.value.phoneCode));
-                                              }
-                                            },
-                                            child: const Text('Get OTP'),
-                                          ),
-                                  ),
-                                ),
-                              ],
+                  ),
+                  const SizedBox(height: 30),
+                  DefaultTabController(
+                    length: 2,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), border: Border.all(color: AppColors.textFieldBorderColor)),
+                          child: TabBar(
+                            indicator: BoxDecoration(
+                              color: AppColors.primaryColor,
+                              borderRadius: BorderRadius.circular(6),
                             ),
+                            tabAlignment: TabAlignment.fill,
+                            dividerHeight: 0,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            labelColor: Colors.white,
+                            unselectedLabelColor: AppColors.hintTextColor,
+                            onTap: (int tabNumber) {
+                              loginController.nameTextField.value.text = '';
+                              loginController.mobileTextField.value.text = '';
+                            },
+                            tabs: const [
+                              Tab(child: Text('Login')),
+                              Tab(child: Text('Register')),
+                            ],
                           ),
-
-                          /// Send Tab -> Register
-                          Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Form(
-                              key: _registerForm,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomTextFields(
-                                    textFieldController: loginController.nameTextField.value,
-                                    textFieldName: 'Full Name',
-                                    validator: (input) {
-                                      var result = ValidationsFunction.textValidation(input ?? '');
-                                      return result.$1;
-                                    },
-                                  ),
-                                  const SizedBox(height: 12),
-                                  CustomTextFields(
-                                    textFieldName: 'Mobile No.',
-                                    hintText: 'Enter Mobile No.',
-                                    textFieldController: loginController.mobileTextField.value,
-                                    textInputType: TextInputType.number,
-                                    validator: (input) {
-                                      var result = ValidationsFunction.phoneValidation(input ?? '');
-                                      return result.$1;
-                                    },
-                                    leadingIcon: SizedBox(
-                                      width: 90,
-                                      child: InkWell(
-                                        onTap: () => loginController.openCountryPickerDialog(context),
-                                        child: Obx(
-                                          () {
-                                            return Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(loginController.selectedCountry.value.flagEmoji),
-                                                Text('+${loginController.selectedCountry.value.phoneCode} '), // style: appTextStyle.montserrat16W600
-                                                const Text('| '),
-                                              ],
-                                            );
-                                          },
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 350,
+                          child: TabBarView(
+                            children: [
+                              /// First Tab -> Login
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    /// Login - Mobile textbox
+                                    Form(
+                                      key: _loginForm,
+                                      child: CustomTextFields(
+                                        textFieldName: 'Mobile No.',
+                                        hintText: 'Enter Mobile No.',
+                                        textFieldController: loginController.mobileTextField.value,
+                                        textInputType: TextInputType.number,
+                                        validator: (input) {
+                                          var result = ValidationsFunction.phoneValidation(input ?? '');
+                                          return result.$1;
+                                        },
+                                        leadingIcon: SizedBox(
+                                          width: 90,
+                                          child: InkWell(
+                                              onTap: () => loginController.openCountryPickerDialog(context),
+                                              child: Obx(
+                                                () {
+                                                  return Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    children: [
+                                                      Text(loginController.selectedCountry.value.flagEmoji),
+                                                      Text('+${loginController.selectedCountry.value.phoneCode} '), // style: appTextStyle.montserrat16W600
+                                                      const Text('| '),
+                                                    ],
+                                                  );
+                                                },
+                                              )),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 26),
-
-                                  /// Register button
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        final isValid = _registerForm.currentState!.validate();
-                                        if (isValid) {
-                                          Get.to(
-                                            () => OTPScreen(
-                                              phoneNumber: loginController.mobileTextField.value.text,
-                                              countryCode: loginController.selectedCountry.value.phoneCode,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      child: const Text('Register'),
+                                    const SizedBox(height: 26),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: Obx(
+                                        () => loginController.isLoading.value
+                                            ? CustomWidgets.loader
+                                            : ElevatedButton(
+                                                onPressed: () {
+                                                  final isValid = _loginForm.currentState!.validate();
+                                                  if (isValid) {
+                                                    loginController.verifyNumber(context: context, isLogin: true);
+                                                  }
+                                                },
+                                                child: const Text('Get OTP'),
+                                              ),
+                                      ),
                                     ),
-                                  )
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
+
+                              /// Send Tab -> Register
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Form(
+                                  key: _registerForm,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomTextFields(
+                                        textFieldController: loginController.nameTextField.value,
+                                        textFieldName: 'Full Name',
+                                        validator: (input) {
+                                          var result = ValidationsFunction.textValidation(input ?? '');
+                                          return result.$1;
+                                        },
+                                      ),
+                                      const SizedBox(height: 12),
+                                      CustomTextFields(
+                                        textFieldName: 'Mobile No.',
+                                        hintText: 'Enter Mobile No.',
+                                        textFieldController: loginController.mobileTextField.value,
+                                        textInputType: TextInputType.number,
+                                        validator: (input) {
+                                          var result = ValidationsFunction.phoneValidation(input ?? '');
+                                          return result.$1;
+                                        },
+                                        leadingIcon: SizedBox(
+                                          width: 90,
+                                          child: InkWell(
+                                            onTap: () => loginController.openCountryPickerDialog(context),
+                                            child: Obx(
+                                              () {
+                                                return Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  children: [
+                                                    Text(loginController.selectedCountry.value.flagEmoji),
+                                                    Text('+${loginController.selectedCountry.value.phoneCode} '), // style: appTextStyle.montserrat16W600
+                                                    const Text('| '),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 26),
+
+                                      /// Register button
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            final isValid = _registerForm.currentState!.validate();
+                                            if (isValid) {
+                                              loginController.verifyNumber(context: context, isLogin: false);
+                                            }
+                                          },
+                                          child: const Text('Register'),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            // Obx(
+            //   () => loginController.isLoading.value
+            //       ? Container(
+            //           color: AppColors.lightBorder.withOpacity(0.8),
+            //           child: CustomWidgets.loader,
+            //         )
+            //       : const SizedBox(height: 0, width: 0),
+            // ),
+          ],
         ),
       ),
     );

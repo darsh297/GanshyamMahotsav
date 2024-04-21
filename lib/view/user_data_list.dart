@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ghanshyam_mahotsav/controller/user_data_list_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 
 ///User data list
@@ -12,43 +13,30 @@ class UserDataWidget extends StatefulWidget {
 }
 
 class _UserDataWidgetState extends State<UserDataWidget> {
-  List<Map<String, dynamic>> userDataList = [];
-  RxBool isExpanded = true.obs;
+  final UserDataListController userDataListController = Get.put(UserDataListController());
+
   @override
   void initState() {
+    userDataListController.getAllUserData();
     super.initState();
-    // Assume fetchUserDataList() fetches a list of user data from the API
-    fetchUserDataList().then((dataList) {
-      setState(() {
-        userDataList = dataList;
-      });
-    }).catchError((error) {
-      print('Error fetching user data: $error');
-    });
   }
 
-  Future<List<Map<String, dynamic>>> fetchUserDataList() async {
-    // Fetch user data list from API
-    return [
-      {'username': 'User 1', 'mobile': '1234567890', 'credits': 100},
-      {'username': 'User 2', 'mobile': '9876543210', 'credits': 200},
-      // Add more user data as needed
-    ];
-  }
+  // final RxBool isExpanded = true.obs;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
       appBar: AppBar(
-        title: Text('User Data List'),
+        title: const Text('User Data List'),
       ),
-      body: userDataList.isNotEmpty
-          ? ListView.builder(
-              itemCount: userDataList.length,
+      body: Stack(
+        children: [
+          Obx(
+            () => ListView.builder(
+              itemCount: userDataListController.userDataList.length,
               itemBuilder: (context, index) {
-                final userData = userDataList[index];
-                bool isExpanded = false; // Variable to track if the details are expanded
+                final userData = userDataListController.userDataList[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: Card(
@@ -60,41 +48,56 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                             // You can set user profile images here
                             child: Icon(Icons.person),
                           ),
-                          title: Text(userData['username']),
-                          subtitle: Text('Mobile: ${userData['mobile']}'),
+                          title: Text(userData.fullName ?? ''),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Mobile: ${userData.phoneNumber}'),
+                              Text('Total Credits: ${userData.creditCount}'),
+                            ],
+                          ),
+                          // isThreeLine: true,
                           onTap: () {
-                            // Toggle the expansion state
-                            setState(() {
-                              isExpanded = !isExpanded;
-                            });
+                            print('isExpanded.value:${userData.isExpand.value}');
+
+                            userData.isExpand.value = !userData.isExpand.value;
+                            print('isExpanded.value:${userData.isExpand.value}');
                           },
                         ),
                         // Show credits only when the tile is tapped (expanded)
-                        if (isExpanded)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text('Date: ${userData['credits']}'),
-                                    Text('Credits: ${userData['credits']}'),
-                                  ],
-                                ),
-                                // Add more details here if needed
-                              ],
-                            ),
-                          ),
+                        Obx(
+                          () => (userData.isExpand.value)
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: userData.creditList?.length,
+                                    itemBuilder: (context, index) {
+                                      return Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text('Date: ${userData.creditList?[index].date}'),
+                                          Text('Credits: ${userData.creditList?[index].count}'),
+                                        ],
+                                      );
+                                    },
+                                  ))
+                              : const SizedBox(),
+                        )
                       ],
                     ),
                   ),
                 );
               },
-            )
-          : Center(
-              child: CircularProgressIndicator(),
             ),
+          ),
+          Obx(() => userDataListController.isLoading.value
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SizedBox())
+        ],
+      ),
     );
   }
 }

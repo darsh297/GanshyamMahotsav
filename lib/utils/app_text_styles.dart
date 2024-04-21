@@ -31,6 +31,7 @@ class AppTextStyle {
   TextStyle montserrat14W600Grey1 = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.grey1);
   TextStyle montserrat14W700 = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w700);
   TextStyle montserrat14W600 = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600);
+  TextStyle montserrat14W600White = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.white);
   TextStyle montserrat14W500 = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.black);
   TextStyle montserrat14W600Green = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.primaryColor);
 

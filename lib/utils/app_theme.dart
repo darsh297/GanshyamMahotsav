@@ -90,5 +90,5 @@ class AppTheme {
       ),
 
       ///AppBar theme
-      appBarTheme: const AppBarTheme(centerTitle: true));
+      appBarTheme: const AppBarTheme(centerTitle: true, backgroundColor: Colors.transparent, surfaceTintColor: Colors.transparent));
 }

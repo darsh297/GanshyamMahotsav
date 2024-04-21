@@ -5,7 +5,6 @@ import 'package:ghanshyam_mahotsav/view/mala_jap_screen.dart';
 import 'package:ghanshyam_mahotsav/view/vanchan_screen.dart';
 
 import '../utils/app_colors.dart';
-import 'extra.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -25,7 +24,7 @@ class HomePage extends StatelessWidget {
             icon: const Icon(Icons.menu),
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),
           )),
-      drawer: DrawerScreen(),
+      drawer: const DrawerScreen(),
       body: const SizedBox(
         width: double.infinity,
         height: double.infinity,
@@ -40,8 +39,7 @@ class HomePage extends StatelessWidget {
               isMalaJap: false,
             ),
             MenuCard(
-              imageUrl:
-                  'https://www.swaminarayan.faith/media/2449/mahraj-writting-a-letter.jpg?anchor=center&mode=crop&width=400&height=300&rnd=132019680760000000',
+              imageUrl: 'https://www.baps.org/Data/Sites/1/Media/staticpageimages/bhagwanswaminarayan01.jpg',
               cardName: 'Mala Jap',
               isMalaJap: true,
             ),
@@ -74,10 +72,10 @@ class MenuCard extends StatelessWidget {
           border: Border.all(color: AppColors.white, width: 4),
           boxShadow: [
             BoxShadow(
-              color: Colors.white.withOpacity(0.1),
-              spreadRadius: 0,
+              color: AppColors.black.withOpacity(0.2),
+              spreadRadius: 2,
               blurRadius: 3,
-              offset: const Offset(0, 1.5),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -85,11 +83,11 @@ class MenuCard extends StatelessWidget {
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image.network(
               imageUrl,
-              height: 100,
+              height: 120,
             ),
             const Divider(),
             Text(

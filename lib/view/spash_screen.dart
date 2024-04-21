@@ -3,6 +3,8 @@ import 'package:ghanshyam_mahotsav/utils/string_utils.dart';
 import 'package:ghanshyam_mahotsav/view/login_page.dart';
 
 class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 1), () {

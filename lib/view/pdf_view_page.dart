@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 
 class PDFViewerFromUrl extends StatefulWidget {
@@ -45,7 +44,7 @@ class _PDFViewerFromUrlState extends State<PDFViewerFromUrl> {
           ).fromUrl(widget.url),
           Text(
             'Progress: ${_progress.toStringAsFixed(2)}%',
-            style: TextStyle(fontSize: 20.0),
+            style: const TextStyle(fontSize: 20.0),
           ),
         ],
       ),

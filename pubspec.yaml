@@ -27,6 +27,8 @@ dependencies:
   path: ^1.8.3
   file_picker: ^8.0.0+1
   dotted_border: ^2.1.0
+  firebase_auth: ^4.17.4
+  firebase_core: ^2.27.0
 #  intl_phone_field: ^3.2.0
 #  pinput: ^4.0.0
 #  sms_autofill: ^2.3.1

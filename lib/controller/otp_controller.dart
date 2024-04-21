@@ -2,12 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ghanshyam_mahotsav/model/register_response.dart';
 import 'package:ghanshyam_mahotsav/view/home_page.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import '../model/global_response.dart';
+import '../model/login_response.dart';
 import '../network/api_config.dart';
 import '../network/api_strings.dart';
 import '../utils/app_colors.dart';
 import '../utils/shared_preference.dart';
+import '../utils/string_utils.dart';
+import '../utils/widgets.dart';
 
 class OTPController extends GetxController {
   ApiBaseHelper apiBaseHelper = ApiBaseHelper();
@@ -20,6 +25,7 @@ class OTPController extends GetxController {
   int? _resendCode;
   RxBool sendOtpLoader = true.obs;
   RxBool verifyOtpLoader = false.obs;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void startTimer() {
     const oneSec = Duration(seconds: 1);
@@ -43,49 +49,47 @@ class OTPController extends GetxController {
   }
 
   void sendOTP(phoneNumber) async {
-    Future.delayed(
-      const Duration(seconds: 6),
-      () {
-        sendOtpLoader.value = false;
-        startTimer();
-      },
-    );
-    // codeSent(String verificationId, [int? forceResendingToken]) {
-    //   debugPrint('Code Sent - $verificationId');
-    //   sendOtpLoader.value = false;
-    //   startTimer();
-    //   _verificationId = verificationId;
-    //   resendOTP.value = false;
-    //   _resendCode = forceResendingToken ?? 0;
-    // }
+    codeSent(String verificationId, [int? forceResendingToken]) {
+      debugPrint('Code Sent - $verificationId');
+      sendOtpLoader.value = false;
+      startTimer();
+      _verificationId = verificationId;
+      resendOTP.value = false;
+      _resendCode = forceResendingToken ?? 0;
+    }
 
-    // await _auth.verifyPhoneNumber(
-    //   phoneNumber: phoneNumber,
-    //   timeout: const Duration(seconds: 58),
-    //   verificationCompleted: (AuthCredential credential) => debugPrint('Automatically Read SMS ${credential.providerId}'),
-    //   verificationFailed: (FirebaseAuthException e) {
-    //     CustomWidgets.toastValidation(msg: "${e.message}");
-    //     sendOtpLoader.value = false;
-    //   },
-    //   codeSent: codeSent,
-    //   codeAutoRetrievalTimeout: (String verificationId) => debugPrint('Auto Retrieval Timeout'),
-    //   forceResendingToken: _resendCode,
-    // );
+    await _auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      timeout: const Duration(seconds: 58),
+      verificationCompleted: (AuthCredential credential) => debugPrint('Automatically Read SMS ${credential.providerId}'),
+      verificationFailed: (FirebaseAuthException e) {
+        CustomWidgets.toastValidation(msg: "${e.message}");
+        sendOtpLoader.value = false;
+      },
+      codeSent: codeSent,
+      codeAutoRetrievalTimeout: (String verificationId) => debugPrint('Auto Retrieval Timeout'),
+      forceResendingToken: _resendCode,
+    );
   }
 
-  void verifyOTP({required String otp, required BuildContext context, String phoneNumber = '0000000000', String countryCode = '91'}) async {
+  void verifyOTP(
+      {required String otp,
+      required BuildContext context,
+      String phoneNumber = '0000000000',
+      String countryCode = '91',
+      bool isLogin = true,
+      String fullName = ''}) async {
     try {
       verifyOtpLoader.value = true;
       // String? token = await FirebaseMessaging.instance.getToken();
-      // PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: _verificationId, smsCode: otp);
-      // User? user = (await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential)).user;
+      PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: _verificationId, smsCode: otp);
+      User? user = (await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential)).user;
       verifyOtpLoader.value = false;
-      if (otp == '123456') {
-        Get.to(() => HomePage());
 
-        // if (user != null) {
-        //   timer?.value.cancel();
-        //   loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, deviceToken: token ?? '');
+      if (user != null) {
+        timer?.value.cancel();
+
+        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, isLogin: isLogin, fullName: fullName);
       } else {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -100,55 +104,79 @@ class OTPController extends GetxController {
     } catch (e) {
       verifyOtpLoader.value = false;
       if (!context.mounted) return;
-      if (otp == '123456') {
-        //String? token = await FirebaseMessaging.instance.getToken();
-        String? token = "fdjfkgdjfgdhfgjdgdlfgdfgjdfhgjghldjfgffd";
-
-        timer?.value.cancel();
-        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, deviceToken: token);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text("The code was entered incorrectly"),
-            showCloseIcon: true,
-            backgroundColor: AppColors.redColor,
-            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(5))),
-          ),
-        );
-      }
+      // if (otp == '123456') {
+      //   String? token = "fdjfkgdjfgdhfgjdgdlfgdfgjdfhgjghldjfgffd";
+      //   timer?.value.cancel();
+      //   loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, deviceToken: token);
+      // } else {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       content: const Text("From catch"),
+      //       showCloseIcon: true,
+      //       backgroundColor: AppColors.redColor,
+      //       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(5))),
+      //     ),
+      //   );
+      // }
     }
   }
 
   /// Verify number API call - to get User device token- after verified OTP
-  loginAPICall({String phoneNumber = '0000000000', String countryCode = '91', String deviceToken = 'String'}) async {
-    var apiResponse = await apiBaseHelper.postDataAPI(
-      leadAPI: ApiStrings.kLogin,
-      jsonObjectBody: {
-        "phone_number": phoneNumber,
-        "country_code": countryCode,
-        "device_token": deviceToken,
-        "device_type": "1",
-      },
-    );
-    //
-    // GlobalResponse globalResponse = GlobalResponse.fromJson(apiResponse);
-    // late LoginResponse loginResponse;
-    // if (globalResponse.payload != null) {
-    //   loginResponse = LoginResponse.fromJson(globalResponse.payload);
-    // }
+  loginAPICall({String phoneNumber = '0000000000', String countryCode = '91', bool isLogin = true, String fullName = ''}) async {
+    if (isLogin) {
+      var apiResponse = await apiBaseHelper.postDataAPI(
+        leadAPI: ApiStrings.kLogin,
+        jsonObjectBody: {
+          "phoneNumber": phoneNumber,
+          "countryCode": '+$countryCode',
+        },
+      );
 
-    ///Success
-    // if (globalResponse.status == 200) {
-    // sharedPreferenceClass.storeData(StringUtils.prefUserTokenKey, loginResponse.token);
-    // sharedPreferenceClass.storeData(StringUtils.prefUserName, '${loginResponse.userData?.firstName} ${loginResponse.userData?.lastName}');
-    // sharedPreferenceClass.storeData(StringUtils.prefUserProfileURL, loginResponse.userData?.profileImg);
-    // sharedPreferenceClass.storeData(StringUtils.prefUserId, loginResponse.userData?.userId);
-    Get.offAll(() => HomePage());
-    // }
+      GlobalResponse globalResponse = GlobalResponse.fromJson(apiResponse);
+      LoginResponse loginResponse = LoginResponse.fromJson(globalResponse.data);
 
-    /// Fail
-    // else {
-    //   CustomWidgets.toastValidation(msg: globalResponse.message ?? '');
-    // }
+      ///Success
+      if (globalResponse.status == 200) {
+        print('${loginResponse.dDoc?.isAdmin}|| ${loginResponse.dDoc?.creditCount}||${loginResponse.dDoc?.fullName}');
+        sharedPreferenceClass.storeData(StringUtils.prefUserTokenKey, loginResponse.token ?? '');
+        sharedPreferenceClass.storeData(StringUtils.prefUserName, loginResponse.dDoc?.fullName ?? '');
+        // sharedPreferenceClass.storeData(StringUtils.prefUserId, loginResponse.dDoc?.sId);
+        sharedPreferenceClass.storeData(StringUtils.prefUserCredit, loginResponse.dDoc?.creditCount);
+        sharedPreferenceClass.storeData(StringUtils.prefIsAdmin, loginResponse.dDoc?.isAdmin);
+        Get.offAll(() => HomePage());
+      }
+
+      /// Fail
+      else {
+        CustomWidgets.toastValidation(msg: globalResponse.message ?? '');
+      }
+    } else {
+      var apiResponse = await apiBaseHelper.postDataAPI(
+        leadAPI: ApiStrings.kRegister,
+        jsonObjectBody: {
+          "phone_number": phoneNumber,
+          "country_code": countryCode,
+          "fullName": fullName,
+        },
+      );
+
+      GlobalResponse globalResponse = GlobalResponse.fromJson(apiResponse);
+      RegisterResponse registerResponse = RegisterResponse.fromJson(globalResponse.data);
+
+      ///Success
+      if (globalResponse.status == 200) {
+        sharedPreferenceClass.storeData(StringUtils.prefUserTokenKey, registerResponse.token ?? '');
+        sharedPreferenceClass.storeData(StringUtils.prefUserName, registerResponse.fullName ?? '');
+        sharedPreferenceClass.storeData(StringUtils.prefUserId, registerResponse.sId);
+        sharedPreferenceClass.storeData(StringUtils.prefUserCredit, registerResponse.creditCount);
+        sharedPreferenceClass.storeData(StringUtils.prefIsAdmin, registerResponse.isAdmin);
+        Get.offAll(() => HomePage());
+      }
+
+      /// Fail
+      else {
+        CustomWidgets.toastValidation(msg: globalResponse.message ?? '');
+      }
+    }
   }
 }
