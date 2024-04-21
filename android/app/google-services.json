@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "456460570449",
+    "project_id": "easstemple-b710e",
+    "storage_bucket": "easstemple-b710e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456460570449:android:13251b2dbfaef86dd54d70",
+        "android_client_info": {
+          "package_name": "com.ghanshyam.ghanshyam_mahotsav"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1UZwhQmEe0f-POtlAfZNiN9ZO27bwmSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
