@@ -77,8 +77,8 @@ class _VanchanScreenState extends State<VanchanScreen> {
                               return Card(
                                 margin: const EdgeInsets.symmetric(vertical: 10),
                                 child: ListTile(
-                                  onTap: () => Get.to(() =>
-                                      const PDFViewerFromUrl(url: 'https://gm-backend-1fve.onrender.com/files/Project%20Document_Expo%20Hub%20latest.pdf')),
+                                  onTap: () =>
+                                      Get.to(() => PDFViewerFromUrl(url: 'https://gm-backend-1fve.onrender.com/files/${pdfData[index].fileName}')),
                                   contentPadding: const EdgeInsets.all(10),
                                   leading: const SizedBox(
                                     height: 50,
