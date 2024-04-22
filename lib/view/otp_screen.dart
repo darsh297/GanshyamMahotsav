@@ -10,8 +10,10 @@ import '../utils/widgets.dart';
 class OTPScreen extends StatefulWidget {
   final String phoneNumber;
   final String countryCode;
+  final String? fullName;
+  final bool isExist;
 
-  const OTPScreen({super.key, required this.phoneNumber, required this.countryCode});
+  const OTPScreen({super.key, required this.phoneNumber, required this.countryCode, required this.isExist, this.fullName});
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -56,17 +58,15 @@ class _OTPScreenState extends State<OTPScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 34),
                     child: Column(
                       children: [
-                        // CircleAvatar(
-                        //   radius: 38,
-                        //   backgroundColor: AppColors.primaryColor,
-                        //   child: Image.asset(
-                        //     ImagePath.lock,
-                        //     height: 40,
-                        //     width: 26,
-                        //     cacheHeight: 120,
-                        //     cacheWidth: 78,
-                        //   ),
-                        // ),
+                        CircleAvatar(
+                          radius: 38,
+                          backgroundColor: AppColors.primaryColor,
+                          child: Icon(
+                            Icons.lock,
+                            color: AppColors.white,
+                            size: 30,
+                          ),
+                        ),
                         const SizedBox(height: 28),
                         Text(
                           'Enter Verification code',
@@ -81,10 +81,10 @@ class _OTPScreenState extends State<OTPScreen> {
                             children: <InlineSpan>[
                               TextSpan(
                                 text: '+${widget.countryCode}-${widget.phoneNumber}',
-                                // style: appTextStyle.montserrat12W600green,
+                                style: appTextStyle.montserrat12W600green,
                               ),
                               TextSpan(
-                                // style: appTextStyle.montserrat12W500,
+                                style: appTextStyle.montserrat12W500,
                                 text: ' to access your account.',
                               ),
                             ],
@@ -93,7 +93,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         const SizedBox(height: 30),
                         Text(
                           'Enter Code Here',
-                          // style: appTextStyle.montserrat14W600,
+                          style: appTextStyle.montserrat14W600,
                         ),
                         const SizedBox(height: 14),
                         Padding(
@@ -139,9 +139,11 @@ class _OTPScreenState extends State<OTPScreen> {
                                     onPressed: () => otpEditingController.text != ''
                                         ? otpController.verifyOTP(
                                             context: context,
+                                            isLogin: widget.isExist,
                                             otp: otpEditingController.text,
                                             phoneNumber: widget.phoneNumber,
                                             countryCode: widget.countryCode,
+                                            fullName: widget.fullName ?? '',
                                           )
                                         : null,
                                     child: const Text('Verify Now'),

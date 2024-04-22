@@ -1,13 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ghanshyam_mahotsav/view/user_data_list.dart';
 import 'package:ghanshyam_mahotsav/view/login_page.dart';
+import 'package:ghanshyam_mahotsav/view/upload_pdf.dart';
 
 import '../utils/app_colors.dart';
+import '../utils/app_text_styles.dart';
+import '../utils/shared_preference.dart';
+import '../utils/string_utils.dart';
 
-class DrawerScreen extends StatelessWidget {
-  DrawerScreen({super.key});
+class DrawerScreen extends StatefulWidget {
+  const DrawerScreen({super.key});
+
+  @override
+  State<DrawerScreen> createState() => _DrawerScreenState();
+}
+
+class _DrawerScreenState extends State<DrawerScreen> {
   String _selectedLanguage = 'English';
-  // final AppTextStyle appTextStyle = AppTextStyle();
+  final SharedPreferenceClass sharedPreferenceClass = SharedPreferenceClass();
+  final AppTextStyle appTextStyle = AppTextStyle();
+  RxBool isAdmin = false.obs;
+
+  @override
+  void initState() {
+    getIfAdmin();
+    super.initState();
+  }
+
+  getIfAdmin() async {
+    isAdmin.value = await sharedPreferenceClass.retrieveData(StringUtils.prefIsAdmin);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,46 +46,17 @@ class DrawerScreen extends StatelessWidget {
                   Container(
                     color: AppColors.primaryColor,
                     height: 100,
-                    padding: EdgeInsets.only(bottom: 40),
+                    padding: const EdgeInsets.only(bottom: 40),
                   ),
-                  // Container(
-                  //   color: AppColors.scaffoldColor,
-                  //   height: 50,
-                  // ),
                 ],
               ),
-              // Positioned(
-              //   top: 50,
-              //   child: CircleAvatar(
-              //     radius: 45,
-              //     backgroundColor: AppColors.scaffoldColor.withOpacity(0.4),
-              //     child: CircleAvatar(
-              //       backgroundColor: AppColors.grey,
-              //       radius: 40,
-              //       // child: Image.asset(ImagePath.person, height: 35, width: 32),
-              //     ),
-              //   ),
-              // )
             ],
           ),
-
-          // Text('Tanya Hill '),
-
-          ///Edit profile
-          // TextButton(
-          //   child: Text(
-          //     'Edit Profile',
-          //     // style: appTextStyle.montserrat14Grey,
-          //   ),
-          //   onPressed: () => Get.to(() => EditProfile()),
-          // ),
           const SizedBox(height: 10),
           DrawerTile(
               title: 'Home',
-              // image: ImagePath.dashboard,
               onTap: () {
                 Get.back();
-                // Get.to(() => const ChatScreen());
               }),
           DrawerTile(
             title: 'Language',
@@ -73,12 +67,12 @@ class DrawerScreen extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Select Language'),
+                    title: const Text('Select Language'),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         RadioListTile<String>(
-                          title: Text('English'),
+                          title: const Text('English'),
                           value: 'English',
                           activeColor: AppColors.scaffoldColor,
                           groupValue: _selectedLanguage,
@@ -89,7 +83,7 @@ class DrawerScreen extends StatelessWidget {
                           },
                         ),
                         RadioListTile<String>(
-                          title: Text('Gujrati'),
+                          title: const Text('Gujarati'),
                           value: 'Gujarati',
                           groupValue: _selectedLanguage,
                           activeColor: AppColors.scaffoldColor,
@@ -106,14 +100,14 @@ class DrawerScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).pop(); // Close the dialog
                         },
-                        child: Text('Cancel'),
+                        child: const Text('Cancel'),
                       ),
                       TextButton(
                         onPressed: () {
                           // Perform language change here with _selectedLanguage
                           Navigator.of(context).pop(); // Close the dialog
                         },
-                        child: Text('Done'),
+                        child: const Text('Done'),
                       ),
                     ],
                   );
@@ -122,8 +116,26 @@ class DrawerScreen extends StatelessWidget {
               // Get.to(() => const MyAgentScreen());
             },
           ),
-
           DrawerTile(title: 'Refer a friend', onTap: () {}),
+          // isAdmin.value
+          //     ?
+          Column(
+            children: [
+              DrawerTile(
+                  title: 'Upload PDF',
+                  onTap: () {
+                    Get.back();
+                    Get.to(() => UploadPDF());
+                  }),
+              DrawerTile(
+                  title: 'User Data List',
+                  onTap: () {
+                    Get.back();
+                    Get.to(() => const UserDataWidget());
+                  }),
+            ],
+          ),
+          // : SizedBox(),
           DrawerTile(title: 'Rate Us', onTap: () {}),
           DrawerTile(
             title: 'Sign Out',

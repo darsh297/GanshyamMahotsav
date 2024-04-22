@@ -1,7 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ghanshyam_mahotsav/controller/malajap_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
+
+import '../utils/widgets.dart';
 
 class MalaJapScreen extends StatefulWidget {
   const MalaJapScreen({super.key});
@@ -11,15 +15,7 @@ class MalaJapScreen extends StatefulWidget {
 }
 
 class _MalaJapScreenState extends State<MalaJapScreen> {
-  int progress = 0;
-  List<bool> dots = List.generate(108, (_) => false); // List to track dot colors
-
-  void updateProgress() {
-    setState(() {
-      dots[progress] = true; // Update dot color
-      progress = (progress + 1) % 108; // Increment progress
-    });
-  }
+  MalaJapController malaJapController = Get.put(MalaJapController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,40 +25,69 @@ class _MalaJapScreenState extends State<MalaJapScreen> {
         title: const Text('Mala Jap'),
         backgroundColor: Colors.transparent,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('$progress'),
-          Stack(
-            children: [
-              Positioned.fill(
-                child: CustomPaint(
-                  painter: DotPainter(dots: dots),
-                ),
-              ),
-              GestureDetector(
-                onTap: updateProgress,
-                child: Container(
-                  margin: const EdgeInsets.all(20),
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    shape: BoxShape.circle,
+      body: Container(
+        height: Get.height,
+        width: Get.width,
+        padding: const EdgeInsets.all(20),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(120),
+                  child: Image.asset(
+                    'assets/mala_jap_logo.jpg',
+                    height: 250,
                   ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 40,
+                ),
+                Obx(() => Text('${malaJapController.progress.value}', style: malaJapController.appTextStyle.montserrat28W700)),
+                Obx(() => Text('Swaminarayan',
+                    style: malaJapController.appTextStyle.montserrat28W700
+                        .copyWith(color: malaJapController.isEnabled.value ? AppColors.grey1 : AppColors.primaryColor))),
+                Stack(
+                  children: [
+                    Positioned.fill(
+                      child: CustomPaint(
+                        painter: DotPainter(dots: malaJapController.dots),
+                      ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: malaJapController.updateProgress,
+                      child: Obx(
+                        () => Container(
+                          margin: const EdgeInsets.all(20),
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: malaJapController.isEnabled.value ? AppColors.primaryColor : AppColors.grey1,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            Obx(
+              () => malaJapController.isLogin.value
+                  ? Container(
+                      color: AppColors.lightBorder.withOpacity(0.8),
+                      child: CustomWidgets.loader,
+                    )
+                  : const SizedBox(height: 0, width: 0),
+            ),
+          ],
+        ),
       ),
     );
   }

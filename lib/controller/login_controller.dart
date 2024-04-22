@@ -1,10 +1,13 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ghanshyam_mahotsav/model/global_response.dart';
+import 'package:ghanshyam_mahotsav/widgets/widgets.dart';
 
 import '../network/api_config.dart';
 import '../network/api_strings.dart';
 import '../utils/app_colors.dart';
+import '../view/otp_screen.dart';
 
 class LoginController extends GetxController {
   ApiBaseHelper apiBaseHelper = ApiBaseHelper();
@@ -52,39 +55,46 @@ class LoginController extends GetxController {
     );
   }
 
-  /// Login API call
-  loginAPI() async {
+  verifyNumber({required BuildContext context, required bool isLogin}) async {
     isLoading.value = true;
-    var apiResponse = await apiBaseHelper.postDataAPI(
-      leadAPI: ApiStrings.kLogin,
-      jsonObjectBody: {"mobileNumber": mobileTextField.value.text},
-    );
-    isLoading.value = false;
-    print('1111 $apiResponse');
-    // GlobalResponse globalResponse = GlobalResponse.fromJson(apiResponse);
-    //
-    // if (globalResponse.status == 200) {
-    //   Get.to(() => OTPScreen(phoneNumber: phoneNumber, countryCode: countryCode));
-    // } else {
-    //   toastValidation(msg: globalResponse.message ?? '');
-    // }
-  }
+    try {
+      var apiRes =
+          await apiBaseHelper.postDataAPI(leadAPI: ApiStrings.kCheckPhoneNumber, isLogin: true, jsonObjectBody: {"phoneNumber": mobileTextField.value.text});
+      GlobalResponse globalResponse = GlobalResponse.fromJson(apiRes);
 
-  ///Registration API call
-  registrationAPI() async {
-    isLoading.value = true;
-    var apiResponse = await apiBaseHelper.postDataAPI(
-      leadAPI: ApiStrings.kLogin,
-      jsonObjectBody: {"name": nameTextField.value.text, "mobileNumber": mobileTextField.value.text},
-    );
-    isLoading.value = false;
-    print('2222 $apiResponse');
-    // GlobalResponse globalResponse = GlobalResponse.fromJson(apiResponse);
-    //
-    // if (globalResponse.status == 200) {
-    //   Get.to(() => OTPScreen(phoneNumber: phoneNumber, countryCode: countryCode));
-    // } else {
-    //   toastValidation(msg: globalResponse.message ?? '');
-    // }
+      if (globalResponse.status == 200) {
+        if (isLogin) {
+          if (globalResponse.data['exists']) {
+            Get.to(
+              () => OTPScreen(
+                phoneNumber: mobileTextField.value.text,
+                countryCode: selectedCountry.value.phoneCode,
+                isExist: globalResponse.data['exists'],
+              ),
+            );
+          } else {
+            if (context.mounted) CustomWidgets.showCustomDialog(context, 'Registration', 'Please create your account first');
+          }
+        } else {
+          if (globalResponse.data['exists']) {
+            CustomWidgets.toastValidation(msg: 'Number is already registered');
+          } else {
+            Get.to(
+              () => OTPScreen(
+                phoneNumber: mobileTextField.value.text,
+                countryCode: selectedCountry.value.phoneCode,
+                fullName: nameTextField.value.text,
+                isExist: globalResponse.data['exists'],
+              ),
+            );
+          }
+        }
+      }
+
+      isLoading.value = false;
+    } catch (e) {
+      isLoading.value = false;
+      CustomWidgets.toastValidation(msg: '$e');
+    }
   }
 }

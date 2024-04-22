@@ -1,24 +1,27 @@
 class ApiStrings {
   /// deploy URL
-  // static const String kBaseAPI = 'http://139.59.16.64:4100/';
 
   /// testing URL
-  static const String kBaseAPI = 'https://machine-api.onrender.com/api/';
+  static const String kBaseAPI = 'https://gm-backend-1fve.onrender.com/api/';
+
+  /// Check phone number
+  static const String kCheckPhoneNumber = 'user/checkPhoneNumber';
 
   /// Login API
   static const String kLogin = 'user/login';
+
+  /// Register API
+  static const String kRegister = 'user/register';
+
+  /// PDF listing
+  static const String kPDFListing = 'pdf/list';
+
+  /// Add Credits
+  static const String kAddCredits = 'credit/add';
+
+  /// Add Credits
+  static const String kUploadPDF = 'pdf/upload';
+
+  /// Add Credits
+  static const String kGetAllUsers = 'user/getAllUsers';
 }
-//https://machine-api.onrender.com/api/user/login
-// {
-//     "mobileNumber": "45454545454",
-//     "password": "test@1234"
-// }
-//
-//
-// https://machine-api.onrender.com/api/user/register
-//
-// {
-//     "name": "meet",
-//     "mobileNumber": "45454545454",
-//     "password": "test@1234"
-// }
