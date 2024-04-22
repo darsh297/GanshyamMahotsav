@@ -4,8 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 import 'package:ghanshyam_mahotsav/utils/app_theme.dart';
+import 'package:ghanshyam_mahotsav/utils/loacl_strings.dart';
 import 'package:ghanshyam_mahotsav/view/home_page.dart';
 
+// Text('First Name'.tr),  Get.updateLocale(Locale('hi', 'IN'));
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -32,6 +34,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: appTheme.themeData,
       title: 'Ghanshyam Mahotsav',
+      translations: LocalStrings(),
+      locale: Locale('en', 'US'),
       home: HomePage(),
     );
   }
