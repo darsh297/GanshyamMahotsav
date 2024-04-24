@@ -17,19 +17,25 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
-  String _selectedLanguage = 'English';
+  final RxString _selectedLanguage = 'English'.obs;
   final SharedPreferenceClass sharedPreferenceClass = SharedPreferenceClass();
   final AppTextStyle appTextStyle = AppTextStyle();
-  RxBool isAdmin = false.obs;
+  final RxBool isAdmin = false.obs;
+  final RxInt credits = 0.obs;
 
   @override
   void initState() {
     getIfAdmin();
+    getCredits();
     super.initState();
   }
 
   getIfAdmin() async {
     isAdmin.value = await sharedPreferenceClass.retrieveData(StringUtils.prefIsAdmin);
+  }
+
+  getCredits() async {
+    credits.value = await SharedPreferenceClass().retrieveData(StringUtils.prefUserCredit);
   }
 
   @override
@@ -48,6 +54,40 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     height: 100,
                     padding: const EdgeInsets.only(bottom: 40),
                   ),
+                  Container(
+                    height: 60,
+                    width: double.infinity,
+                    // margin: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
+                      color: AppColors.primaryColor,
+                      border: Border.all(color: AppColors.white, width: 1),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.black.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 3,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          'Mahek Mehta',
+                          style: appTextStyle.montserrat14W600White,
+                        ),
+                        Text(
+                          'Credit Score : ${credits.value}',
+                          style: appTextStyle.montserrat14W600White,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -55,11 +95,13 @@ class _DrawerScreenState extends State<DrawerScreen> {
           const SizedBox(height: 10),
           DrawerTile(
               title: 'Home',
+              icons: Icon(Icons.home),
               onTap: () {
                 Get.back();
               }),
           DrawerTile(
             title: 'Language',
+            icons: Icon(Icons.language),
             // image: ImagePath.myAgent,
             onTap: () {
               Get.back();
@@ -67,30 +109,28 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text('Select Language'),
+                    title: Text('Select Language'.tr),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         RadioListTile<String>(
-                          title: const Text('English'),
+                          title: Text('English'.tr),
                           value: 'English',
                           activeColor: AppColors.scaffoldColor,
-                          groupValue: _selectedLanguage,
+                          groupValue: _selectedLanguage.value,
                           onChanged: (value) {
-                            // setState(() {
-                            _selectedLanguage = value!;
-                            // });
+                            _selectedLanguage.value = value!;
+                            Get.updateLocale(const Locale('en', 'US'));
                           },
                         ),
                         RadioListTile<String>(
-                          title: const Text('Gujarati'),
+                          title: Text('Gujarati'.tr),
                           value: 'Gujarati',
-                          groupValue: _selectedLanguage,
+                          groupValue: _selectedLanguage.value,
                           activeColor: AppColors.scaffoldColor,
                           onChanged: (value) {
-                            // setState(() {
-                            _selectedLanguage = value!;
-                            // });
+                            _selectedLanguage.value = value!;
+                            Get.updateLocale(const Locale('hi', 'IN'));
                           },
                         ),
                       ],
@@ -100,14 +140,14 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         onPressed: () {
                           Navigator.of(context).pop(); // Close the dialog
                         },
-                        child: const Text('Cancel'),
+                        child: Text('Cancel'.tr),
                       ),
                       TextButton(
                         onPressed: () {
                           // Perform language change here with _selectedLanguage
                           Navigator.of(context).pop(); // Close the dialog
                         },
-                        child: const Text('Done'),
+                        child: Text('Done'.tr),
                       ),
                     ],
                   );
@@ -116,32 +156,40 @@ class _DrawerScreenState extends State<DrawerScreen> {
               // Get.to(() => const MyAgentScreen());
             },
           ),
-          DrawerTile(title: 'Refer a friend', onTap: () {}),
-          // isAdmin.value
-          //     ?
-          Column(
-            children: [
-              DrawerTile(
-                  title: 'Upload PDF',
-                  onTap: () {
-                    Get.back();
-                    Get.to(() => UploadPDF());
-                  }),
-              DrawerTile(
-                  title: 'User Data List',
-                  onTap: () {
-                    Get.back();
-                    Get.to(() => const UserDataWidget());
-                  }),
-            ],
+          DrawerTile(
+            title: 'Refer a friend',
+            onTap: () {},
+            icons: Icon(Icons.front_hand_outlined),
           ),
-          // : SizedBox(),
-          DrawerTile(title: 'Rate Us', onTap: () {}),
+          Obx(
+            () => isAdmin.value
+                ? Column(
+                    children: [
+                      DrawerTile(
+                          title: 'Upload PDF',
+                          icons: Icon(Icons.picture_as_pdf),
+                          onTap: () {
+                            Get.back();
+                            Get.to(() => UploadPDF());
+                          }),
+                      DrawerTile(
+                          title: 'User Data List',
+                          icons: Icon(Icons.person),
+                          onTap: () {
+                            Get.back();
+                            Get.to(() => const UserDataWidget());
+                          }),
+                    ],
+                  )
+                : const SizedBox(),
+          ),
+          DrawerTile(title: 'Rate Us', onTap: () {}, icons: Icon(Icons.star_rate)),
           DrawerTile(
             title: 'Sign Out',
+            icons: Icon(Icons.login_outlined),
             // image: ImagePath.signOut,
             onTap: () async {
-              // SharedPreferenceClass().removeData(StringUtils.userTokenKey);
+              SharedPreferenceClass().removeAllData();
 
               Get.offAll(() => LoginPage());
             },
@@ -156,22 +204,17 @@ class _DrawerScreenState extends State<DrawerScreen> {
 class DrawerTile extends StatelessWidget {
   final String title;
   final Function() onTap;
-  // final String image;
-  // final AppTextStyle appTextStyle = AppTextStyle();
   final bool isLast;
-  DrawerTile({super.key, required this.title, required this.onTap, this.isLast = false});
+  final Widget icons;
+  const DrawerTile({super.key, required this.title, required this.onTap, this.isLast = false, required this.icons});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: ListTile(
-        // leading: Image.asset(
-        //   image,
-        //   height: 22,
-        //   width: 22,
-        // ),
-        title: Text(title),
+        title: Text(title.tr),
+        leading: icons,
         onTap: onTap,
         shape: Border(
           bottom: BorderSide(color: AppColors.lightBorderColor, width: 1.5),

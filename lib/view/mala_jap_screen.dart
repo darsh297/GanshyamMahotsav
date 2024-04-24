@@ -19,77 +19,80 @@ class _MalaJapScreenState extends State<MalaJapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.scaffoldColor,
-      appBar: AppBar(
-        title: const Text('Mala Jap'),
-        backgroundColor: Colors.transparent,
-      ),
-      body: Container(
-        height: Get.height,
-        width: Get.width,
-        padding: const EdgeInsets.all(20),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(120),
-                  child: Image.asset(
-                    'assets/mala_jap_logo.jpg',
-                    height: 250,
-                  ),
+    return
+        // Scaffold(
+        // backgroundColor: AppColors.scaffoldColor,
+        // appBar: AppBar(
+        //   title: Text('Mala Jap'.tr),
+        //   backgroundColor: Colors.transparent,
+        // ),
+        // body:
+        Container(
+      // height: Get.height,
+      width: Get.width,
+      padding: const EdgeInsets.all(20),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(120),
+                child: Image.asset(
+                  'assets/mala_jap_logo.jpg',
+                  height: 250,
                 ),
-                Obx(() => Text('${malaJapController.progress.value}', style: malaJapController.appTextStyle.montserrat28W700)),
-                Obx(() => Text('Swaminarayan',
-                    style: malaJapController.appTextStyle.montserrat28W700
-                        .copyWith(color: malaJapController.isEnabled.value ? AppColors.grey1 : AppColors.primaryColor))),
-                Stack(
-                  children: [
-                    Positioned.fill(
-                      child: CustomPaint(
-                        painter: DotPainter(dots: malaJapController.dots),
-                      ),
+              ),
+              Obx(() => Text('${malaJapController.progress.value}', style: malaJapController.appTextStyle.montserrat28W700)),
+              Obx(() => Text('Swaminarayan'.tr,
+                  style: malaJapController.appTextStyle.montserrat28W700
+                      .copyWith(color: malaJapController.isEnabled.value ? AppColors.grey1 : AppColors.primaryColor))),
+              Stack(
+                children: [
+                  Positioned.fill(
+                    child: CustomPaint(
+                      painter: DotPainter(dots: malaJapController.dots),
                     ),
-                    GestureDetector(
-                      onTap: malaJapController.updateProgress,
-                      child: Obx(
-                        () => Container(
-                          margin: const EdgeInsets.all(20),
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: malaJapController.isEnabled.value ? AppColors.primaryColor : AppColors.grey1,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: 40,
-                            ),
+                  ),
+                  GestureDetector(
+                    onTap: malaJapController.updateProgress,
+                    child: Obx(
+                      () => Container(
+                        margin: const EdgeInsets.all(20),
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: malaJapController.isEnabled.value ? AppColors.primaryColor : AppColors.grey1,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 40,
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-            Obx(
-              () => malaJapController.isLogin.value
-                  ? Container(
-                      color: AppColors.lightBorder.withOpacity(0.8),
-                      child: CustomWidgets.loader,
-                    )
-                  : const SizedBox(height: 0, width: 0),
-            ),
-          ],
-        ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Obx(
+            () => malaJapController.isLogin.value
+                ? Container(
+                    color: AppColors.lightBorder.withOpacity(0.8),
+                    child: CustomWidgets.loader,
+                  )
+                : const SizedBox(height: 0, width: 0),
+          ),
+        ],
       ),
     );
+    // );
   }
 }
 

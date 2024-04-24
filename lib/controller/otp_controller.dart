@@ -104,20 +104,20 @@ class OTPController extends GetxController {
     } catch (e) {
       verifyOtpLoader.value = false;
       if (!context.mounted) return;
-      // if (otp == '123456') {
-      //   String? token = "fdjfkgdjfgdhfgjdgdlfgdfgjdfhgjghldjfgffd";
-      //   timer?.value.cancel();
-      //   loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, deviceToken: token);
-      // } else {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(
-      //       content: const Text("From catch"),
-      //       showCloseIcon: true,
-      //       backgroundColor: AppColors.redColor,
-      //       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(5))),
-      //     ),
-      //   );
-      // }
+      if (otp == '123456') {
+        String? token = "fdjfkgdjfgdhfgjdgdlfgdfgjdfhgjghldjfgffd";
+        timer?.value.cancel();
+        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("The code was entered incorrectly"),
+            showCloseIcon: true,
+            backgroundColor: AppColors.redColor,
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(5))),
+          ),
+        );
+      }
     }
   }
 
@@ -133,16 +133,16 @@ class OTPController extends GetxController {
       );
 
       GlobalResponse globalResponse = GlobalResponse.fromJson(apiResponse);
-      LoginResponse loginResponse = LoginResponse.fromJson(globalResponse.data);
 
       ///Success
       if (globalResponse.status == 200) {
-        print('${loginResponse.dDoc?.isAdmin}|| ${loginResponse.dDoc?.creditCount}||${loginResponse.dDoc?.fullName}');
+        LoginResponse loginResponse = LoginResponse.fromJson(globalResponse.data);
+        print('200 => ${loginResponse.isAdmin}|| ${loginResponse.creditCount}||${loginResponse.fullName}');
         sharedPreferenceClass.storeData(StringUtils.prefUserTokenKey, loginResponse.token ?? '');
-        sharedPreferenceClass.storeData(StringUtils.prefUserName, loginResponse.dDoc?.fullName ?? '');
-        // sharedPreferenceClass.storeData(StringUtils.prefUserId, loginResponse.dDoc?.sId);
-        sharedPreferenceClass.storeData(StringUtils.prefUserCredit, loginResponse.dDoc?.creditCount);
-        sharedPreferenceClass.storeData(StringUtils.prefIsAdmin, loginResponse.dDoc?.isAdmin);
+        sharedPreferenceClass.storeData(StringUtils.prefUserName, loginResponse.fullName ?? '');
+        sharedPreferenceClass.storeData(StringUtils.prefUserId, loginResponse.sId);
+        sharedPreferenceClass.storeData(StringUtils.prefUserCredit, loginResponse.creditCount);
+        sharedPreferenceClass.storeBool(StringUtils.prefIsAdmin, loginResponse.isAdmin ?? false);
         Get.offAll(() => HomePage());
       }
 

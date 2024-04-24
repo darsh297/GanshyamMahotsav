@@ -69,7 +69,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         ),
                         const SizedBox(height: 28),
                         Text(
-                          'Enter Verification code',
+                          'Enter Verification OTP',
                           style: appTextStyle.montserrat22W700,
                         ),
                         const SizedBox(height: 6),
@@ -77,7 +77,7 @@ class _OTPScreenState extends State<OTPScreen> {
                           textAlign: TextAlign.center,
                           TextSpan(
                             // style: appTextStyle.montserrat12W500,
-                            text: 'Input the code we sent to ',
+                            text: 'Verify phone number ',
                             children: <InlineSpan>[
                               TextSpan(
                                 text: '+${widget.countryCode}-${widget.phoneNumber}',
@@ -92,7 +92,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         ),
                         const SizedBox(height: 30),
                         Text(
-                          'Enter Code Here',
+                          'Enter OTP Here',
                           style: appTextStyle.montserrat14W600,
                         ),
                         const SizedBox(height: 14),
@@ -159,7 +159,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                 otpController.resendOTP.value ? otpController.resetTimer('+${widget.countryCode}${widget.phoneNumber}') : null;
                               },
                               child: Obx(
-                                () => Text('Resend Code',
+                                () => Text('Resend OTP',
                                     style: otpController.resendOTP.value
                                         ? appTextStyle.montserrat14W500
                                         : appTextStyle.montserrat14W500.copyWith(color: AppColors.grey)),

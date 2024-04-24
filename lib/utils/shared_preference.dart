@@ -46,6 +46,11 @@ class SharedPreferenceClass {
     await prefs.setBool(key, value);
   }
 
+  void removeAllData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
+
   // Increment the value stored in shared preferences
   Future<void> incrementCredit(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

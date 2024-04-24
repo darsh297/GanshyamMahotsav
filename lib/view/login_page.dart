@@ -63,7 +63,7 @@ class LoginPage extends StatelessWidget {
                         ),
                         SizedBox(
                           width: double.infinity,
-                          height: 350,
+                          height: 380,
                           child: TabBarView(
                             children: [
                               /// First Tab -> Login
@@ -142,6 +142,15 @@ class LoginPage extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 12),
                                       CustomTextFields(
+                                        textFieldController: loginController.nameTextField.value,
+                                        textFieldName: 'Full Name',
+                                        validator: (input) {
+                                          var result = ValidationsFunction.textValidation(input ?? '');
+                                          return result.$1;
+                                        },
+                                      ),
+                                      const SizedBox(height: 12),
+                                      CustomTextFields(
                                         textFieldName: 'Mobile No.',
                                         hintText: 'Enter Mobile No.',
                                         textFieldController: loginController.mobileTextField.value,
@@ -169,6 +178,7 @@ class LoginPage extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+
                                       const SizedBox(height: 26),
 
                                       /// Register button

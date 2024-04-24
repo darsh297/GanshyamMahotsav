@@ -1,60 +1,36 @@
 class LoginResponse {
-  bool? isNew;
-  Doc? dDoc;
-  String? token;
-
-  LoginResponse({this.isNew, this.dDoc, this.token});
-
-  LoginResponse.fromJson(Map<String, dynamic> json) {
-    isNew = json['$isNew'];
-    dDoc = json['_doc'] != null ? Doc.fromJson(json['_doc']) : null;
-    token = json['token'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['$isNew'] = isNew;
-    if (dDoc != null) {
-      data['_doc'] = dDoc!.toJson();
-    }
-    data['token'] = token;
-    return data;
-  }
-}
-
-class Doc {
   String? sId;
   String? phoneNumber;
   String? countryCode;
   String? fullName;
+  String? createdAt;
   bool? isAdmin;
   int? creditCount;
-  String? createdAt;
-  int? iV;
+  String? token;
 
-  Doc({this.sId, this.phoneNumber, this.countryCode, this.fullName, this.isAdmin, this.creditCount, this.createdAt, this.iV});
+  LoginResponse({this.sId, this.phoneNumber, this.countryCode, this.fullName, this.createdAt, this.isAdmin, this.creditCount, this.token});
 
-  Doc.fromJson(Map<String, dynamic> json) {
+  LoginResponse.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     phoneNumber = json['phoneNumber'];
     countryCode = json['countryCode'];
     fullName = json['fullName'];
+    createdAt = json['createdAt'];
     isAdmin = json['isAdmin'];
     creditCount = json['creditCount'];
-    createdAt = json['createdAt'];
-    iV = json['__v'];
+    token = json['token'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['phoneNumber'] = phoneNumber;
-    data['countryCode'] = countryCode;
-    data['fullName'] = fullName;
-    data['isAdmin'] = isAdmin;
-    data['creditCount'] = creditCount;
-    data['createdAt'] = createdAt;
-    data['__v'] = iV;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['phoneNumber'] = this.phoneNumber;
+    data['countryCode'] = this.countryCode;
+    data['fullName'] = this.fullName;
+    data['createdAt'] = this.createdAt;
+    data['isAdmin'] = this.isAdmin;
+    data['creditCount'] = this.creditCount;
+    data['token'] = this.token;
     return data;
   }
 }

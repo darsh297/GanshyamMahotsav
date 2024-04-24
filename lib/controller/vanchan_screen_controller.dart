@@ -9,14 +9,20 @@ class VanchanScreenController extends GetxController {
   final RxString selectedLanguage = 'English'.obs;
   final TextEditingController searchText = TextEditingController();
   final ApiBaseHelper apiBaseHelper = ApiBaseHelper();
-  final List<PdfListingResponse> allPDFListing = <PdfListingResponse>[].obs;
+  final RxList<PdfListingResponse> allPDFListing = <PdfListingResponse>[].obs;
   final RxBool isLoading = true.obs;
-  getAllPDF() async {
+  getAllPDF({String? queryParam}) async {
     isLoading.value = true;
-    var apiRes = await apiBaseHelper.getData(leadAPI: ApiStrings.kPDFListing);
+    var url = ApiStrings.kPDFListing;
+    if (queryParam != null) {
+      url += queryParam;
+    }
+    print('===$url');
+    var apiRes = await apiBaseHelper.getData(leadAPI: url); //?language=English
     GlobalResponse globalResponse = GlobalResponse.fromJson(apiRes);
     isLoading.value = false;
     if (globalResponse.status == 200) {
+      allPDFListing.value = [];
       List<dynamic> pdfList = globalResponse.data;
       List<PdfListingResponse> pdfResponses = [];
 

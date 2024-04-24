@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../utils/app_colors.dart';
 
@@ -40,7 +41,7 @@ class CustomTextFields extends StatelessWidget {
           Column(
             children: [
               Text(
-                textFieldName,
+                textFieldName.tr,
                 // style: appTextStyle.montserrat14W600,
               ),
               const SizedBox(height: 6)

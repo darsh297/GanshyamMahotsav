@@ -7,7 +7,7 @@ import 'package:ghanshyam_mahotsav/utils/app_theme.dart';
 import 'package:ghanshyam_mahotsav/utils/loacl_strings.dart';
 import 'package:ghanshyam_mahotsav/view/home_page.dart';
 
-// Text('First Name'.tr),  Get.updateLocale(Locale('hi', 'IN'));
+// Text('First Name'.tr),
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

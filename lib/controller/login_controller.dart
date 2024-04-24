@@ -16,23 +16,23 @@ class LoginController extends GetxController {
   RxBool isLoading = false.obs;
 
   Rx<Country> selectedCountry = Country(
-    phoneCode: '91',
-    countryCode: 'IN',
+    phoneCode: '254',
+    countryCode: 'KE',
     e164Sc: 0,
     geographic: true,
     level: 1,
-    name: 'India',
-    example: '9123456789',
-    displayName: 'India (IN) [+91]',
-    displayNameNoCountryCode: 'India (IN)',
-    e164Key: '91-IN-0',
+    name: 'Kenya',
+    example: '254123456789',
+    displayName: 'Kenya (KE) [+254]',
+    displayNameNoCountryCode: 'Kenya (KE)',
+    e164Key: '254-KE-0',
   ).obs;
 
   /// Country select bottom sheet
   openCountryPickerDialog(BuildContext context) {
     showCountryPicker(
       context: context,
-      favorite: <String>['IN'],
+      // favorite: <String>['IN'],
       showPhoneCode: true,
       onSelect: (Country country) => selectedCountry.value = country,
       countryListTheme: CountryListThemeData(
