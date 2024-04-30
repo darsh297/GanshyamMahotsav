@@ -4,5 +4,9 @@ class StringUtils {
   static String prefUserId = 'UserId';
   static String prefUserCredit = 'UserCredit';
   static String prefIsAdmin = 'IsAdmin';
+  static String prefLanguage = 'Language';
   static String logo = 'assets/org logo.png';
+  static String malaJapLogo = 'assets/mala_jap_logo.jpg';
+  static String english = 'English';
+  static String gujarati = 'Gujarati';
 }

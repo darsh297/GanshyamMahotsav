@@ -3,11 +3,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/controller/upload_pdf_controller.dart';
-import 'package:ghanshyam_mahotsav/utils/widgets.dart';
 import 'package:path/path.dart' as path;
-import 'package:dotted_border/dotted_border.dart';
-import 'package:file_picker/file_picker.dart';
 import '../utils/app_colors.dart';
+import '../widgets/widgets.dart';
 
 class UploadPDF extends StatelessWidget {
   UploadPDF({super.key});
@@ -160,8 +158,6 @@ class UploadPDF extends StatelessWidget {
       if (result != null) {
         uploadPDFController.filePath.value = result.files.single.path ?? '';
       }
-    } catch (e) {
-      print('Error picking PDF file: $e');
-    }
+    } catch (e) {}
   }
 }

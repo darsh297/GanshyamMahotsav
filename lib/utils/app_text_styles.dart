@@ -5,11 +5,12 @@ import 'app_colors.dart';
 
 class AppTextStyle {
   TextStyle montserrat28W700 = GoogleFonts.montserrat(fontSize: 28, fontWeight: FontWeight.w700);
+  TextStyle montserrat22W700White = GoogleFonts.montserrat(fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.white);
   TextStyle montserrat22W700 = GoogleFonts.montserrat(fontSize: 22, fontWeight: FontWeight.w700);
 
   /// 18
   TextStyle montserrat18W700 = GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w700);
-  TextStyle montserrat18W600 = GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black);
+  TextStyle montserrat18W600 = GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black);
   TextStyle montserrat18W600Green = GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.primaryColor);
 
   /// 17
@@ -21,7 +22,7 @@ class AppTextStyle {
   TextStyle montserrat16W600Green = GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.primaryColor);
   TextStyle montserrat16W500Black = GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black);
   TextStyle montserrat16W500Grey = GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.hintTextColor);
-  TextStyle montserrat16 = GoogleFonts.montserrat(fontSize: 16);
+  TextStyle montserrat16 = GoogleFonts.roboto(fontSize: 16);
 
   /// 15
   TextStyle montserrat15W600 = GoogleFonts.montserrat(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.black);
@@ -32,7 +33,8 @@ class AppTextStyle {
   TextStyle montserrat14W700 = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w700);
   TextStyle montserrat14W600 = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600);
   TextStyle montserrat14W600White = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.white);
-  TextStyle montserrat14W500 = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.black);
+  TextStyle montserrat14W500White = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.white);
+  TextStyle montserrat14W500 = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500);
   TextStyle montserrat14W600Green = GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.primaryColor);
 
   /// 13
@@ -47,4 +49,13 @@ class AppTextStyle {
   /// 8
   TextStyle montserrat8W500 = GoogleFonts.montserrat(fontSize: 8, fontWeight: FontWeight.w500, color: AppColors.black);
   TextStyle montserrat10W500Grey = GoogleFonts.montserrat(fontSize: 10, fontWeight: FontWeight.w500, color: AppColors.hintTextColor);
+
+  ///
+  TextStyle inter20Grey = GoogleFonts.inter(
+    fontSize: 20,
+    color: AppColors.grey3,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 4,
+  );
+  TextStyle inter20DarkGrey = GoogleFonts.inter(fontSize: 20, color: AppColors.grey4, fontWeight: FontWeight.w400, letterSpacing: 2);
 }

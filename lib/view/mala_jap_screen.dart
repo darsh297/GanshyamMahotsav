@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/controller/malajap_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 
-import '../utils/widgets.dart';
+import '../utils/string_utils.dart';
+import '../widgets/widgets.dart';
 
 class MalaJapScreen extends StatefulWidget {
   const MalaJapScreen({super.key});
@@ -19,31 +20,23 @@ class _MalaJapScreenState extends State<MalaJapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // Scaffold(
-        // backgroundColor: AppColors.scaffoldColor,
-        // appBar: AppBar(
-        //   title: Text('Mala Jap'.tr),
-        //   backgroundColor: Colors.transparent,
-        // ),
-        // body:
-        Container(
-      // height: Get.height,
+    precacheImage(AssetImage(StringUtils.malaJapLogo), context);
+    return SizedBox(
       width: Get.width,
-      padding: const EdgeInsets.all(20),
       child: Stack(
         alignment: Alignment.center,
         children: [
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(120),
                 child: Image.asset(
-                  'assets/mala_jap_logo.jpg',
+                  StringUtils.malaJapLogo,
                   height: 250,
                 ),
+                // child:  precacheImage(const AssetImage(“path_to_asset_image”), context),
               ),
               Obx(() => Text('${malaJapController.progress.value}', style: malaJapController.appTextStyle.montserrat28W700)),
               Obx(() => Text('Swaminarayan'.tr,

@@ -4,22 +4,13 @@ class SharedPreferenceClass {
   void storeData(String key, dynamic value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    print('||||$key $value');
     if (value is String) {
-      print('1111$key $value');
-
       await prefs.setString(key, value);
     } else if (value is int) {
-      print('2222$key $value');
-
       await prefs.setInt(key, value);
     } else if (value is double) {
-      print('333$key $value');
-
       await prefs.setDouble(key, value);
     } else if (value is bool) {
-      print('444$key $value');
-
       await prefs.setBool(key, value);
     }
   }

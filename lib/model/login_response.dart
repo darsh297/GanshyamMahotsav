@@ -22,15 +22,15 @@ class LoginResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['phoneNumber'] = this.phoneNumber;
-    data['countryCode'] = this.countryCode;
-    data['fullName'] = this.fullName;
-    data['createdAt'] = this.createdAt;
-    data['isAdmin'] = this.isAdmin;
-    data['creditCount'] = this.creditCount;
-    data['token'] = this.token;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['phoneNumber'] = phoneNumber;
+    data['countryCode'] = countryCode;
+    data['fullName'] = fullName;
+    data['createdAt'] = createdAt;
+    data['isAdmin'] = isAdmin;
+    data['creditCount'] = creditCount;
+    data['token'] = token;
     return data;
   }
 }

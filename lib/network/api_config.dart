@@ -32,7 +32,6 @@ class ApiBaseHelper {
       log("response=====> ${response.body}");
       responseJson = _returnResponse(response);
     } catch (e) {
-      print('$e');
       CustomWidgets.toastValidation(msg: 'Action can not perform : $e');
     }
     return responseJson;

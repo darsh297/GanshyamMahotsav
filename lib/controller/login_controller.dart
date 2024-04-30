@@ -12,6 +12,7 @@ import '../view/otp_screen.dart';
 class LoginController extends GetxController {
   ApiBaseHelper apiBaseHelper = ApiBaseHelper();
   final Rx<TextEditingController> nameTextField = TextEditingController().obs;
+  final Rx<TextEditingController> villageTextField = TextEditingController().obs;
   final Rx<TextEditingController> mobileTextField = TextEditingController().obs;
   RxBool isLoading = false.obs;
 

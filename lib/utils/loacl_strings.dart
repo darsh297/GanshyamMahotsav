@@ -22,6 +22,9 @@ class LocalStrings extends Translations {
           'Upload PDF': 'Upload PDF',
           'Select Language': 'Select Language',
           'No PDF found': 'No PDF found',
+          'Go to MalaJap': 'Go to MalaJap',
+          'Go to Vanchan': 'Go to Vanchan',
+          'Welcome': 'Welcome',
         },
         'hi_IN': {
           'Vanchan': 'વાંચન',
@@ -39,8 +42,11 @@ class LocalStrings extends Translations {
           'Swaminarayan': 'સ્વામિનારાયણ',
           'Select Language': 'ભાષા પસંદ કરો',
           'Upload PDF': 'પીડીએફ અપલોડ કરો',
-          'User data list': 'વપરાશકર્તા ડેટા સૂચિ',
+          'User Data list': 'વપરાશકર્તા ડેટા સૂચિ',
           'No PDF found': 'કોઈ PDF મળી નથી',
+          'Go to MalaJap': 'માલાજાપ પર જાઓ',
+          'Go to Vanchan': 'વાંચન પર જાઓ',
+          'Welcome': 'સુસ્વાગતમ્',
         }
       };
 }

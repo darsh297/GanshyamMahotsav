@@ -53,6 +53,7 @@ class LoginPage extends StatelessWidget {
                             unselectedLabelColor: AppColors.hintTextColor,
                             onTap: (int tabNumber) {
                               loginController.nameTextField.value.text = '';
+                              loginController.villageTextField.value.text = '';
                               loginController.mobileTextField.value.text = '';
                             },
                             tabs: const [
@@ -63,7 +64,7 @@ class LoginPage extends StatelessWidget {
                         ),
                         SizedBox(
                           width: double.infinity,
-                          height: 380,
+                          height: 420,
                           child: TabBarView(
                             children: [
                               /// First Tab -> Login
@@ -108,7 +109,11 @@ class LoginPage extends StatelessWidget {
                                       width: double.infinity,
                                       child: Obx(
                                         () => loginController.isLoading.value
-                                            ? CustomWidgets.loader
+                                            ? Container(
+                                                padding: EdgeInsets.all(8),
+                                                decoration: BoxDecoration(color: AppColors.scaffoldColor, borderRadius: BorderRadius.circular(5)),
+                                                child: CustomWidgets.loader,
+                                              )
                                             : ElevatedButton(
                                                 onPressed: () {
                                                   final isValid = _loginForm.currentState!.validate();
@@ -142,8 +147,8 @@ class LoginPage extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 12),
                                       CustomTextFields(
-                                        textFieldController: loginController.nameTextField.value,
-                                        textFieldName: 'Full Name',
+                                        textFieldController: loginController.villageTextField.value,
+                                        textFieldName: 'Village',
                                         validator: (input) {
                                           var result = ValidationsFunction.textValidation(input ?? '');
                                           return result.$1;
@@ -179,7 +184,7 @@ class LoginPage extends StatelessWidget {
                                         ),
                                       ),
 
-                                      const SizedBox(height: 26),
+                                      const SizedBox(height: 22),
 
                                       /// Register button
                                       SizedBox(

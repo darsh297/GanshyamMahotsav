@@ -5,7 +5,12 @@ import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 import 'package:ghanshyam_mahotsav/utils/app_theme.dart';
 import 'package:ghanshyam_mahotsav/utils/loacl_strings.dart';
+import 'package:ghanshyam_mahotsav/utils/shared_preference.dart';
+import 'package:ghanshyam_mahotsav/utils/string_utils.dart';
 import 'package:ghanshyam_mahotsav/view/home_page.dart';
+import 'package:ghanshyam_mahotsav/view/login_page.dart';
+
+import 'view/spash_screen.dart';
 
 // Text('First Name'.tr),
 Future<void> main() async {
@@ -20,14 +25,32 @@ Future<void> main() async {
   );
   runApp(MyApp());
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    // systemNavigationBarColor: Colors.blue, // navigation bar color
     statusBarColor: AppColors.scaffoldColor, // status bar color
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final AppTheme appTheme = AppTheme();
+  final RxString _selectedLanguage = StringUtils.english.obs;
+  final SharedPreferenceClass sharedPreferenceClass = SharedPreferenceClass();
+
+  @override
+  void initState() {
+    getIfAdmin();
+    super.initState();
+  }
+
+  getIfAdmin() async {
+    _selectedLanguage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ?? 'English';
+    print('object ${_selectedLanguage}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +58,8 @@ class MyApp extends StatelessWidget {
       theme: appTheme.themeData,
       title: 'Ghanshyam Mahotsav',
       translations: LocalStrings(),
-      locale: Locale('en', 'US'),
-      home: HomePage(),
+      locale: _selectedLanguage.value == 'English' ? const Locale('en', 'US') : const Locale('hi', 'IN'),
+      home: const SplashScreen(),
     );
   }
 }

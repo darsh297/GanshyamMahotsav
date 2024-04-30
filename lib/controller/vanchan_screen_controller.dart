@@ -5,8 +5,10 @@ import 'package:ghanshyam_mahotsav/model/pdf_listing_response.dart';
 import 'package:ghanshyam_mahotsav/network/api_config.dart';
 import 'package:ghanshyam_mahotsav/network/api_strings.dart';
 
+import '../utils/string_utils.dart';
+
 class VanchanScreenController extends GetxController {
-  final RxString selectedLanguage = 'English'.obs;
+  final RxString selectedLanguage = StringUtils.english.obs;
   final TextEditingController searchText = TextEditingController();
   final ApiBaseHelper apiBaseHelper = ApiBaseHelper();
   final RxList<PdfListingResponse> allPDFListing = <PdfListingResponse>[].obs;
@@ -17,7 +19,6 @@ class VanchanScreenController extends GetxController {
     if (queryParam != null) {
       url += queryParam;
     }
-    print('===$url');
     var apiRes = await apiBaseHelper.getData(leadAPI: url); //?language=English
     GlobalResponse globalResponse = GlobalResponse.fromJson(apiRes);
     isLoading.value = false;

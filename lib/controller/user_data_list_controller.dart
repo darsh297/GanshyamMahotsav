@@ -1,4 +1,4 @@
-import 'dart:developer';
+// import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/model/global_response.dart';
@@ -10,12 +10,17 @@ class UserDataListController extends GetxController {
   final ApiBaseHelper apiBaseHelper = ApiBaseHelper();
   final RxList<UserDataListModel> userDataList = <UserDataListModel>[].obs;
   final RxBool isLoading = false.obs;
-  getAllUserData() async {
+  getAllUserData({String? queryParam}) async {
     isLoading.value = true;
-    var api = await apiBaseHelper.getData(leadAPI: ApiStrings.kGetAllUsers);
+    var url = ApiStrings.kGetAllUsers;
+    if (queryParam != null) {
+      url += queryParam;
+    }
+    var api = await apiBaseHelper.getData(leadAPI: url);
     GlobalResponse globalResponse = GlobalResponse.fromJson(api);
     isLoading.value = false;
     if (globalResponse.status == 200) {
+      userDataList.value = [];
       List<dynamic> pdfList = globalResponse.data;
       List<UserDataListModel> pdfResponses = [];
 
@@ -24,7 +29,6 @@ class UserDataListController extends GetxController {
         pdfResponses.add(pdfListingResponse);
       }
       userDataList.addAll(pdfResponses);
-      print(userDataList.first.fullName);
     }
   }
 }

@@ -12,7 +12,7 @@ import '../network/api_strings.dart';
 import '../utils/app_colors.dart';
 import '../utils/shared_preference.dart';
 import '../utils/string_utils.dart';
-import '../utils/widgets.dart';
+import '../widgets/widgets.dart';
 
 class OTPController extends GetxController {
   ApiBaseHelper apiBaseHelper = ApiBaseHelper();
@@ -105,7 +105,7 @@ class OTPController extends GetxController {
       verifyOtpLoader.value = false;
       if (!context.mounted) return;
       if (otp == '123456') {
-        String? token = "fdjfkgdjfgdhfgjdgdlfgdfgjdfhgjghldjfgffd";
+        // String? token = "fdjfkgdjfgdhfgjdgdlfgdfgjdfhgjghldjfgffd";
         timer?.value.cancel();
         loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber);
       } else {
@@ -137,13 +137,13 @@ class OTPController extends GetxController {
       ///Success
       if (globalResponse.status == 200) {
         LoginResponse loginResponse = LoginResponse.fromJson(globalResponse.data);
-        print('200 => ${loginResponse.isAdmin}|| ${loginResponse.creditCount}||${loginResponse.fullName}');
         sharedPreferenceClass.storeData(StringUtils.prefUserTokenKey, loginResponse.token ?? '');
         sharedPreferenceClass.storeData(StringUtils.prefUserName, loginResponse.fullName ?? '');
         sharedPreferenceClass.storeData(StringUtils.prefUserId, loginResponse.sId);
         sharedPreferenceClass.storeData(StringUtils.prefUserCredit, loginResponse.creditCount);
         sharedPreferenceClass.storeBool(StringUtils.prefIsAdmin, loginResponse.isAdmin ?? false);
-        Get.offAll(() => HomePage());
+        sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
+        Get.offAll(() => const HomePage());
       }
 
       /// Fail
@@ -170,7 +170,9 @@ class OTPController extends GetxController {
         sharedPreferenceClass.storeData(StringUtils.prefUserId, registerResponse.sId);
         sharedPreferenceClass.storeData(StringUtils.prefUserCredit, registerResponse.creditCount);
         sharedPreferenceClass.storeData(StringUtils.prefIsAdmin, registerResponse.isAdmin);
-        Get.offAll(() => HomePage());
+        sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
+
+        Get.offAll(() => const HomePage());
       }
 
       /// Fail

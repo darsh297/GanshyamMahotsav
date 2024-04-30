@@ -2,9 +2,9 @@ import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/model/global_response.dart';
 import 'package:ghanshyam_mahotsav/network/api_config.dart';
 import 'package:ghanshyam_mahotsav/network/api_strings.dart';
-import 'package:ghanshyam_mahotsav/utils/widgets.dart';
 
 import '../utils/app_text_styles.dart';
+import '../widgets/widgets.dart';
 
 class UploadPDFController extends GetxController {
   final ApiBaseHelper apiBaseHelper = ApiBaseHelper();

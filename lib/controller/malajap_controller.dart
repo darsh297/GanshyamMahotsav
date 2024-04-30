@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/model/global_response.dart';
 import 'package:ghanshyam_mahotsav/network/api_config.dart';
 import 'package:ghanshyam_mahotsav/network/api_strings.dart';
-import 'package:ghanshyam_mahotsav/utils/widgets.dart';
 
 import '../utils/app_text_styles.dart';
 import '../utils/shared_preference.dart';
 import '../utils/string_utils.dart';
+import '../widgets/widgets.dart';
 
 class MalaJapController extends GetxController {
   final RxInt progress = 0.obs;

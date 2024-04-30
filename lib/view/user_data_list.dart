@@ -21,14 +21,28 @@ class _UserDataWidgetState extends State<UserDataWidget> {
     super.initState();
   }
 
-  // final RxBool isExpanded = true.obs;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
       appBar: AppBar(
-        title: const Text('User Data List'),
+        title: Text('User Data List', style: TextStyle(color: AppColors.white)),
+        actions: [
+          PopupMenuButton<String>(
+            icon: Icon(Icons.filter_alt, color: AppColors.white),
+            onSelected: (value) {
+              (value != 'All') ? userDataListController.getAllUserData(queryParam: '?filter=$value') : userDataListController.getAllUserData();
+            },
+            itemBuilder: (BuildContext context) {
+              return ['All', 'Last Month', 'Last Week'].map((String language) {
+                return PopupMenuItem<String>(
+                  value: language.tr,
+                  child: Text(language),
+                );
+              }).toList();
+            },
+          )
+        ],
       ),
       body: Stack(
         children: [
@@ -70,14 +84,15 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                                   child: ListView.builder(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10),
                                     shrinkWrap: true,
                                     itemCount: userData.creditList?.length,
                                     itemBuilder: (context, index) {
                                       return Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('Date: ${userData.creditList?[index].date}'),
-                                          Text('Credits: ${userData.creditList?[index].count}'),
+                                          Text('Credits:${userData.creditList?[index].count}'),
                                         ],
                                       );
                                     },
@@ -95,7 +110,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : SizedBox())
+              : const SizedBox())
         ],
       ),
     );

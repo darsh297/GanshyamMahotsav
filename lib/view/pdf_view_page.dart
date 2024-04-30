@@ -27,7 +27,6 @@ class _PDFViewerFromUrlState extends State<PDFViewerFromUrl> {
         children: [
           PDF(
             onPageChanged: (int? page, int? totalPages) {
-              print(' $_currentPage $_totalPages $_progress');
               setState(() {
                 _currentPage = page ?? 0 + 1; // Adding 1 because page numbering starts from 0
                 _totalPages = (totalPages ?? 1) - 1;
@@ -41,9 +40,7 @@ class _PDFViewerFromUrlState extends State<PDFViewerFromUrl> {
                 }
               });
             },
-            onError: (dynamic error) {
-              print('Error: $error');
-            },
+            onError: (dynamic error) {},
           ).fromUrl(widget.url),
           Positioned(
             bottom: 20.0,

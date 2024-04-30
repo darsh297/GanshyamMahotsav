@@ -5,7 +5,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import '../controller/otp_controller.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
-import '../utils/widgets.dart';
+import '../widgets/widgets.dart';
 
 class OTPScreen extends StatefulWidget {
   final String phoneNumber;
@@ -76,7 +76,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         Text.rich(
                           textAlign: TextAlign.center,
                           TextSpan(
-                            // style: appTextStyle.montserrat12W500,
+                            style: appTextStyle.montserrat12W500,
                             text: 'Verify phone number ',
                             children: <InlineSpan>[
                               TextSpan(
@@ -128,12 +128,9 @@ class _OTPScreenState extends State<OTPScreen> {
                           child: Obx(
                             () => otpController.verifyOtpLoader.value
                                 ? Container(
+                                    padding: EdgeInsets.all(8),
                                     decoration: BoxDecoration(color: AppColors.scaffoldColor, borderRadius: BorderRadius.circular(5)),
-                                    child: Center(
-                                        child: CircularProgressIndicator(
-                                      color: AppColors.primaryColor,
-                                      backgroundColor: AppColors.scaffoldColor,
-                                    )),
+                                    child: CustomWidgets.loader,
                                   )
                                 : ElevatedButton(
                                     onPressed: () => otpEditingController.text != ''
