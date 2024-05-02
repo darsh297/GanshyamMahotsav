@@ -26,20 +26,24 @@ class _PDFViewerFromUrlState extends State<PDFViewerFromUrl> {
         alignment: Alignment.topCenter,
         children: [
           PDF(
-            onPageChanged: (int? page, int? totalPages) {
-              setState(() {
-                _currentPage = page ?? 0 + 1; // Adding 1 because page numbering starts from 0
-                _totalPages = (totalPages ?? 1) - 1;
-                if (!_isScrollComplete) {
-                  _progress = (_currentPage / _totalPages) * 100; // Calculate progress based on current page and total pages
-                  // Ensure progress is 100% when scrolled to the last page
-                  if (_currentPage == _totalPages) {
-                    _progress = 100.0;
-                    _isScrollComplete = true; // Mark scroll as complete
-                  }
-                }
-              });
-            },
+            defaultPage: 1,
+
+            // enableSwipe: true,
+            // nightMode: true,
+            // onPageChanged: (int? page, int? totalPages) {
+            //   setState(() {
+            //     _currentPage = page ?? 0 + 1; // Adding 1 because page numbering starts from 0
+            //     _totalPages = (totalPages ?? 1) - 1;
+            //     if (!_isScrollComplete) {
+            //       _progress = (_currentPage / _totalPages) * 100; // Calculate progress based on current page and total pages
+            //       // Ensure progress is 100% when scrolled to the last page
+            //       if (_currentPage == _totalPages) {
+            //         _progress = 100.0;
+            //         _isScrollComplete = true; // Mark scroll as complete
+            //       }
+            //     }
+            //   });
+            // },
             onError: (dynamic error) {},
           ).fromUrl(widget.url),
           Positioned(

@@ -7,6 +7,9 @@ class StringUtils {
   static String prefLanguage = 'Language';
   static String logo = 'assets/org logo.png';
   static String malaJapLogo = 'assets/mala_jap_logo.jpg';
+  static String reading = 'assets/reading.png';
+  static String malaJap = 'assets/malajap.png';
+  static String profile = 'assets/profile.png';
   static String english = 'English';
   static String gujarati = 'Gujarati';
 }

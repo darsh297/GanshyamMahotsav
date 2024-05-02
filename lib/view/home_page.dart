@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ghanshyam_mahotsav/controller/malajap_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_text_styles.dart';
 import 'package:ghanshyam_mahotsav/utils/shared_preference.dart';
 import 'package:ghanshyam_mahotsav/utils/string_utils.dart';
@@ -8,6 +9,7 @@ import 'package:ghanshyam_mahotsav/view/mala_jap_screen.dart';
 import 'package:ghanshyam_mahotsav/view/vanchan_screen.dart';
 import '../controller/vanchan_screen_controller.dart';
 import '../utils/app_colors.dart';
+import 'profile_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,13 +19,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final VanchanScreenController vanchanScreenController = Get.put(VanchanScreenController());
   final SharedPreferenceClass sharedPreferenceClass = SharedPreferenceClass();
-  final RxBool isListView = true.obs;
-  final RxBool isPDFView = true.obs;
+  final RxInt _value = 0.obs;
   final RxString userName = ''.obs;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final VanchanScreenController vanchanScreenController = Get.put(VanchanScreenController());
+  final MalaJapController malaJapController = Get.put(MalaJapController());
   final AppTextStyle appTextStyle = AppTextStyle();
+  final RxInt _selectedIndex = 0.obs;
+  final RxInt creditScore = 0.obs;
+  final List language = ['All', 'English', 'Gujarati'];
 
   @override
   void initState() {
@@ -33,14 +37,15 @@ class _HomePageState extends State<HomePage> {
 
   getUserName() async {
     userName.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserName);
+    creditScore.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserCredit);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+      // key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      drawer: const DrawerScreen(),
+      // drawer: const DrawerScreen(),
       body: SafeArea(
         child: Column(
           children: [
@@ -52,21 +57,38 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Align(
-                      child: IconButton(onPressed: () => _scaffoldKey.currentState?.openDrawer(), icon: Icon(Icons.menu), padding: EdgeInsets.zero),
-                      alignment: Alignment.topLeft),
+                  // Align(
+                  //   alignment: Alignment.topLeft,
+                  //   child: IconButton(
+                  //     onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                  //     icon: const Icon(Icons.menu),
+                  //     padding: EdgeInsets.zero,
+                  //   ),
+                  // ),
                   Text(
-                    'Welcome',
+                    'Welcome'.tr,
                     style: appTextStyle.inter20Grey,
                   ),
-                  Text(
-                    '$userName',
-                    style: appTextStyle.inter20DarkGrey,
+                  Obx(
+                    () => Column(
+                      children: [
+                        Text(
+                          '$userName',
+                          style: appTextStyle.inter20DarkGrey,
+                        ),
+                        SizedBox(height: 24),
+                        Text(
+                          'Credit Score: ${creditScore.value}'.tr,
+                          style: appTextStyle.inter12DarkGrey,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
             // SizedBox(height: 3),
+
             Stack(
               children: [
                 ClipPath(
@@ -76,25 +98,99 @@ class _HomePageState extends State<HomePage> {
                     color: AppColors.scaffoldColor,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const SizedBox(width: 20),
-                    ElevatedButton(onPressed: () {}, child: const Text('All')),
-                    ElevatedButton(onPressed: () {}, child: const Text('English')),
-                    ElevatedButton(onPressed: () {}, child: const Text('Gujarati')),
-                  ],
-                ),
+                Obx(
+                  () {
+                    if (_selectedIndex.value == 0) {
+                      return Container(
+                        padding: EdgeInsets.only(right: 20),
+                        width: Get.width,
+                        child: Wrap(
+                          spacing: 10,
+                          alignment: WrapAlignment.end,
+                          children: List.generate(
+                            3,
+                            (int index) {
+                              // choice chip allow us to
+                              // set its properties.
+                              return ChoiceChip(
+                                padding: const EdgeInsets.all(8),
+                                label: Text('${language[index]}'.tr),
+                                selectedColor: AppColors.primaryColor,
+                                selected: _value.value == index,
+                                onSelected: (bool selected) {
+                                  print(index);
+                                  (index != 0)
+                                      ? vanchanScreenController.getAllPDF(queryParam: '?language=${language[index]}')
+                                      : vanchanScreenController.getAllPDF();
+
+                                  _value.value = (selected ? index : null)!;
+                                },
+                              );
+                            },
+                          ).toList(),
+                        ),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                )
               ],
             ),
-            VanchanScreen()
+            Obx(
+              () => _selectedIndex.value == 0
+                  ? const VanchanScreen()
+                  : _selectedIndex.value == 1
+                      ? const MalaJapScreen()
+                      : const ProfileScreen(),
+            )
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(items: [
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Vanchan'),
-        BottomNavigationBarItem(icon: Icon(Icons.rebase_edit), label: 'Malajap')
-      ]),
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          selectedItemColor: AppColors.primaryColor,
+          type: BottomNavigationBarType.shifting,
+          currentIndex: _selectedIndex.value,
+          iconSize: 40,
+          onTap: (value) {
+            if (value == 0) {
+              _value.value = 0;
+            } else if (value == 1) {
+              malaJapController.progress.value = 0;
+              malaJapController.dots.assignAll(List.generate(108, (_) => false));
+            }
+            _selectedIndex.value = value;
+          },
+          elevation: 5,
+          items: [
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                StringUtils.reading,
+                height: 30,
+                width: 30,
+              ),
+              label: 'Vanchan'.tr,
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                StringUtils.malaJap,
+                height: 30,
+                width: 30,
+              ),
+              label: 'Mala Jap'.tr,
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                StringUtils.profile,
+                height: 30,
+                width: 30,
+              ),
+              label: 'Profile'.tr,
+            ),
+          ],
+        ),
+      ),
     );
 
     // return Scaffold(

@@ -35,7 +35,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
     credits.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserCredit);
     userName.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserName);
     _selectedLanguage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ?? 'English';
-    print('object ${_selectedLanguage}');
   }
 
   @override
@@ -89,141 +88,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 10),
-          DrawerTile(title: 'Home', icons: const Icon(Icons.home), onTap: () => Get.back()),
-          DrawerTile(
-            title: 'Language',
-            icons: const Icon(Icons.language),
-            // image: ImagePath.myAgent,
-            onTap: () {
-              Get.back();
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('Select Language'),
-                    content: Obx(
-                      () => Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          RadioListTile<String>(
-                            title: const Text('English'),
-                            value: StringUtils.english,
-                            activeColor: AppColors.scaffoldColor,
-                            groupValue: _selectedLanguage.value,
-                            onChanged: (value) => _selectedLanguage.value = value!,
-                          ),
-                          RadioListTile<String>(
-                            title: const Text('ગુજરાતી'),
-                            value: 'Gujarati',
-                            groupValue: _selectedLanguage.value,
-                            activeColor: AppColors.scaffoldColor,
-                            onChanged: (value) => _selectedLanguage.value = value!,
-                          ),
-                        ],
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Get.back(),
-                        child: const Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          _selectedLanguage.value == 'English' ? Get.updateLocale(const Locale('en', 'US')) : Get.updateLocale(const Locale('hi', 'IN'));
-                          sharedPreferenceClass.storeData(StringUtils.prefLanguage, _selectedLanguage.value);
-
-                          Get.back(); // Close the dialog
-                        },
-                        child: const Text('Done'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-          Obx(
-            () => isAdmin.value
-                ? Column(
-                    children: [
-                      DrawerTile(
-                          title: 'Upload PDF',
-                          icons: const Icon(Icons.picture_as_pdf),
-                          onTap: () {
-                            Get.back();
-                            Get.to(() => UploadPDF());
-                          }),
-                      DrawerTile(
-                          title: 'User Data List',
-                          icons: const Icon(Icons.person),
-                          onTap: () {
-                            Get.back();
-                            Get.to(() => const UserDataWidget());
-                          }),
-                    ],
-                  )
-                : const SizedBox(),
-          ),
-          DrawerTile(
-            title: 'Refer a friend',
-            onTap: () {},
-            icons: const Icon(Icons.front_hand_outlined),
-          ),
-          DrawerTile(title: 'Rate Us', onTap: () {}, icons: const Icon(Icons.star_rate)),
-          DrawerTile(
-            title: 'Sign Out',
-            icons: const Icon(Icons.login_outlined),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('Log Out'),
-                    content: const Text('Are you sure you want to log out?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Get.back(),
-                        child: const Text('No'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          SharedPreferenceClass().removeAllData();
-                          Get.offAll(() => LoginPage());
-                        },
-                        child: const Text('Yes'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            isLast: true,
-          ),
+          // const SizedBox(height: 10),
+          // DrawerTile(title: 'Home', icons: const Icon(Icons.home), onTap: () => Get.back()),
         ],
-      ),
-    );
-  }
-}
-
-class DrawerTile extends StatelessWidget {
-  final String title;
-  final Function() onTap;
-  final bool isLast;
-  final Widget icons;
-  const DrawerTile({super.key, required this.title, required this.onTap, this.isLast = false, required this.icons});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: ListTile(
-        title: Text(title.tr),
-        leading: icons,
-        onTap: onTap,
-        shape: Border(
-          bottom: BorderSide(color: AppColors.lightBorderColor, width: 1.5),
-        ),
       ),
     );
   }

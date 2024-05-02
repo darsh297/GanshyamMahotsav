@@ -15,7 +15,7 @@ class VanchanScreen extends StatefulWidget {
 }
 
 class _VanchanScreenState extends State<VanchanScreen> {
-  VanchanScreenController vanchanScreenController = Get.find();
+  final VanchanScreenController vanchanScreenController = Get.find();
   AppTextStyle appTextStyle = AppTextStyle();
   @override
   void initState() {
@@ -33,10 +33,16 @@ class _VanchanScreenState extends State<VanchanScreen> {
             textFieldController: vanchanScreenController.searchText,
             hintText: 'Search PDF by Name',
             leadingIcon: const Icon(Icons.search_sharp),
-            onChange: (value) {
-              vanchanScreenController.getAllPDF(queryParam: '?fileName=$value');
-            },
+            onChange: (value) => vanchanScreenController.getAllPDF(queryParam: '?fileName=$value'),
             inputBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.white)),
+            trailingIcon: IconButton(
+                icon: const Icon(Icons.cancel),
+                onPressed: () {
+                  if (vanchanScreenController.searchText.text != '') {
+                    vanchanScreenController.getAllPDF();
+                    vanchanScreenController.searchText.text = '';
+                  }
+                }),
           ),
           // Container(
           //   margin: const EdgeInsets.only(left: 8),
@@ -65,7 +71,7 @@ class _VanchanScreenState extends State<VanchanScreen> {
                   ? vanchanScreenController.allPDFListing.isNotEmpty
                       ? GridView.builder(
                           shrinkWrap: true,
-                          padding: const EdgeInsets.only(top: 18, left: 20, right: 20),
+                          padding: const EdgeInsets.only(top: 18, left: 12, right: 12),
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                             // childAspectRatio: 1,
@@ -76,7 +82,8 @@ class _VanchanScreenState extends State<VanchanScreen> {
                           itemCount: vanchanScreenController.allPDFListing.length,
                           itemBuilder: (context, index) {
                             var pdfData = vanchanScreenController.allPDFListing;
-                            return Container(
+                            return InkWell(
+                              onTap: () => Get.to(() => PDFViewerFromUrl(url: 'https://gm-backend-1fve.onrender.com/files/${pdfData[index].fileName}')),
                               // color: Colors.red,
                               child: Column(
                                 children: [

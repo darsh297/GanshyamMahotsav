@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../utils/app_colors.dart';
+import '../utils/app_text_styles.dart';
 
 class CustomTextFields extends StatelessWidget {
-  const CustomTextFields({
+  CustomTextFields({
     super.key,
     this.textFieldName = '',
     this.hintText = '',
@@ -15,6 +16,8 @@ class CustomTextFields extends StatelessWidget {
     this.validator,
     this.textInputType = TextInputType.text,
     this.onChange,
+    this.maxLength,
+    this.maxLine,
     required this.textFieldController,
   });
 
@@ -23,8 +26,10 @@ class CustomTextFields extends StatelessWidget {
   final String textFieldName;
   final String hintText;
   final TextInputType textInputType;
-  // final AppTextStyle appTextStyle = AppTextStyle();
+  final AppTextStyle appTextStyle = AppTextStyle();
   final bool filled;
+  final int? maxLine;
+  final int? maxLength;
   final TextEditingController textFieldController;
   final Function(String)? onChange;
 
@@ -42,12 +47,14 @@ class CustomTextFields extends StatelessWidget {
             children: [
               Text(
                 textFieldName.tr,
-                // style: appTextStyle.montserrat14W600,
+                style: appTextStyle.montserrat14W600,
               ),
               const SizedBox(height: 6)
             ],
           ),
         TextFormField(
+          maxLines: maxLine,
+          maxLength: maxLength,
           validator: validator,
           keyboardType: textInputType,
           controller: textFieldController,
@@ -55,7 +62,7 @@ class CustomTextFields extends StatelessWidget {
             border: inputBorder,
             filled: filled,
             fillColor: AppColors.lightGrey,
-            hintText: hintText,
+            hintText: hintText.tr,
             suffixIcon: trailingIcon,
             prefixIcon: leadingIcon,
           ),

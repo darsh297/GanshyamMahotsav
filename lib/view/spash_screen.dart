@@ -13,8 +13,21 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final Rx<Locale> initLang = const Locale('en', 'US').obs;
+
+  final SharedPreferenceClass sharedPreferenceClass = SharedPreferenceClass();
+
+  final RxString _selectedLanguage = StringUtils.english.obs;
+  getIfAdmin() async {
+    _selectedLanguage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ?? StringUtils.english;
+    print('|||||||||||||||||||||||||||||||||||||||||||||||||||||||| $_selectedLanguage');
+    if (_selectedLanguage.value != StringUtils.english) {
+      Get.updateLocale(const Locale('hi', 'IN'));
+    }
+  }
+
   checkLogin(context) async {
-    String? token = await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey);
+    String? token = await sharedPreferenceClass.retrieveData(StringUtils.prefUserTokenKey);
     print('Token Splesh screen $token');
     Future.delayed(
       Duration(seconds: 1),
@@ -26,6 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
+    getIfAdmin();
     checkLogin(context);
     super.initState();
   }

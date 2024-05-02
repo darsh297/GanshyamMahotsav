@@ -16,12 +16,13 @@ class MalaJapScreen extends StatefulWidget {
 }
 
 class _MalaJapScreenState extends State<MalaJapScreen> {
-  MalaJapController malaJapController = Get.put(MalaJapController());
+  MalaJapController malaJapController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     precacheImage(AssetImage(StringUtils.malaJapLogo), context);
     return SizedBox(
+      height: Get.height - 320,
       width: Get.width,
       child: Stack(
         alignment: Alignment.center,

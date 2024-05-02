@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/controller/user_data_list_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 
+import '../widgets/widgets.dart';
+
 ///User data list
 
 class UserDataWidget extends StatefulWidget {
@@ -107,8 +109,9 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             ),
           ),
           Obx(() => userDataListController.isLoading.value
-              ? const Center(
-                  child: CircularProgressIndicator(),
+              ? Container(
+                  color: AppColors.lightBorder.withOpacity(0.8),
+                  child: CustomWidgets.loader,
                 )
               : const SizedBox())
         ],

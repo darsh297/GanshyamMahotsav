@@ -38,19 +38,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final AppTheme appTheme = AppTheme();
-  final RxString _selectedLanguage = StringUtils.english.obs;
-  final SharedPreferenceClass sharedPreferenceClass = SharedPreferenceClass();
-
-  @override
-  void initState() {
-    getIfAdmin();
-    super.initState();
-  }
-
-  getIfAdmin() async {
-    _selectedLanguage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ?? 'English';
-    print('object ${_selectedLanguage}');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +45,7 @@ class _MyAppState extends State<MyApp> {
       theme: appTheme.themeData,
       title: 'Ghanshyam Mahotsav',
       translations: LocalStrings(),
-      locale: _selectedLanguage.value == 'English' ? const Locale('en', 'US') : const Locale('hi', 'IN'),
+      locale: const Locale('en', 'US'),
       home: const SplashScreen(),
     );
   }

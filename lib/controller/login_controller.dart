@@ -78,7 +78,7 @@ class LoginController extends GetxController {
           }
         } else {
           if (globalResponse.data['exists']) {
-            CustomWidgets.toastValidation(msg: 'Number is already registered');
+            if (context.mounted) CustomWidgets.showCustomDialog(context, 'Login', 'Number is already registered');
           } else {
             Get.to(
               () => OTPScreen(

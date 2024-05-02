@@ -5,6 +5,7 @@ class LocalStrings extends Translations {
   // TODO: implement keys
   Map<String, Map<String, String>> get keys => {
         'en_US': {
+          'All': 'All',
           'Vanchan': 'Vanchan',
           'Mala jap': 'Mala Jap',
           'Home': 'Home',
@@ -25,8 +26,14 @@ class LocalStrings extends Translations {
           'Go to MalaJap': 'Go to MalaJap',
           'Go to Vanchan': 'Go to Vanchan',
           'Welcome': 'Welcome',
+          'Profile': 'Profile',
+          'Credit Score': 'Credit Score',
+          'PDF Description': 'PDF Description',
+          'Click here to upload PDF Photo': 'Click here to upload PDF Photo',
+          'Select PDF language': 'Select PDF language',
         },
         'hi_IN': {
+          'All': 'તમામ',
           'Vanchan': 'વાંચન',
           'Mala Jap': 'માલા જાપ',
           'Home': 'ઘર',
@@ -42,11 +49,16 @@ class LocalStrings extends Translations {
           'Swaminarayan': 'સ્વામિનારાયણ',
           'Select Language': 'ભાષા પસંદ કરો',
           'Upload PDF': 'પીડીએફ અપલોડ કરો',
-          'User Data list': 'વપરાશકર્તા ડેટા સૂચિ',
+          'User Data List': 'વપરાશકર્તા ડેટા સૂચિ',
           'No PDF found': 'કોઈ PDF મળી નથી',
           'Go to MalaJap': 'માલાજાપ પર જાઓ',
           'Go to Vanchan': 'વાંચન પર જાઓ',
           'Welcome': 'સુસ્વાગતમ્',
+          'Profile': 'પ્રોફાઇલ',
+          'Credit Score': 'ક્રેડિટ સ્કોર',
+          'PDF Description': 'પીડીએફ વર્ણન',
+          'Select PDF language': 'પીડીએફ ની ભાષા પસંદ કરો ',
+          'Click here to upload PDF Photo': 'પીડીએફ ફોટો અપલોડ કરવા માટે અહીં ક્લિક કરો ',
         }
       };
 }
