@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -41,6 +42,20 @@ class CustomWidgets {
       offset: const Offset(0, 1.5),
     ),
   ];
+
+  static Future<bool> isNetworkAvailable() async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    for (var element in connectivityResult) {
+      debugPrint("element $element");
+    }
+    if (connectivityResult.contains(ConnectivityResult.mobile) ||
+        connectivityResult.contains(ConnectivityResult.wifi) ||
+        connectivityResult.contains(ConnectivityResult.ethernet)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   // static Widget menuLeadingIcon = Image.asset(
   //   ImagePath.drawerIcon,
