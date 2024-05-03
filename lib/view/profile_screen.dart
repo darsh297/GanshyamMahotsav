@@ -6,7 +6,6 @@ import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 import '../utils/shared_preference.dart';
 import '../utils/string_utils.dart';
-import 'drawer_screen.dart';
 import 'upload_pdf.dart';
 import 'user_data_list.dart';
 
@@ -41,10 +40,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          margin: const EdgeInsets.all(12),
+          decoration: BoxDecoration(border: Border.all(color: AppColors.primaryColor)),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(child: Text('Mobile No'.tr)),
+                  const Expanded(child: Text(':')),
+                  const Expanded(child: Text('6356379786')),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Expanded(child: Text('Village'.tr)),
+                  const Expanded(child: Text(':')),
+                  const Expanded(child: Text('Bhavnagar')),
+                ],
+              ),
+            ],
+          ),
+        ),
         DrawerTile(
           title: 'Language',
           icons: const Icon(Icons.language),
-          // image: ImagePath.myAgent,
           onTap: () {
             Get.back();
             showDialog(
@@ -80,7 +102,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        _selectedLanguage.value == 'English' ? Get.updateLocale(const Locale('en', 'US')) : Get.updateLocale(const Locale('hi', 'IN'));
+                        _selectedLanguage.value == 'English'
+                            ? Get.updateLocale(const Locale('en', 'US'))
+                            : Get.updateLocale(const Locale('hi', 'IN'));
                         sharedPreferenceClass.storeData(StringUtils.prefLanguage, _selectedLanguage.value);
                         Get.back(); // Close the dialog
                       },
@@ -128,19 +152,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: const Text('Sign Out'),
-                  content: const Text('Are you sure you want to sign out?'),
+                  title: Text('Sign Out'.tr),
+                  content: Text('Are you sure you want to sign out?'.tr),
                   actions: [
                     TextButton(
                       onPressed: () => Get.back(),
-                      child: const Text('No'),
+                      child: Text('No'.tr),
                     ),
                     TextButton(
                       onPressed: () {
                         SharedPreferenceClass().removeAllData();
                         Get.offAll(() => LoginPage());
                       },
-                      child: const Text('Yes'),
+                      child: Text('Yes'.tr),
                     ),
                   ],
                 );

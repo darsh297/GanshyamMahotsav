@@ -28,7 +28,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
       appBar: AppBar(
-        title: Text('User Data List', style: TextStyle(color: AppColors.white)),
+        title: Text('User Data List'.tr, style: TextStyle(color: AppColors.white)),
         actions: [
           PopupMenuButton<String>(
             icon: Icon(Icons.filter_alt, color: AppColors.white),
@@ -38,8 +38,8 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             itemBuilder: (BuildContext context) {
               return ['All', 'Last Month', 'Last Week'].map((String language) {
                 return PopupMenuItem<String>(
-                  value: language.tr,
-                  child: Text(language),
+                  value: language,
+                  child: Text(language.tr),
                 );
               }).toList();
             },
@@ -68,16 +68,13 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Mobile: ${userData.phoneNumber}'),
-                              Text('Total Credits: ${userData.creditCount}'),
+                              Text('${'Mobile No'.tr} : ${userData.phoneNumber}'),
+                              Text('${'Village'.tr} : ${userData.creditCount}'),
+                              Text('${'Total Credits'.tr} : ${userData.creditCount}'),
                             ],
                           ),
-                          // isThreeLine: true,
                           onTap: () {
-                            print('isExpanded.value:${userData.isExpand.value}');
-
                             userData.isExpand.value = !userData.isExpand.value;
-                            print('isExpanded.value:${userData.isExpand.value}');
                           },
                         ),
                         // Show credits only when the tile is tapped (expanded)
@@ -93,8 +90,8 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                                       return Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text('Date: ${userData.creditList?[index].date}'),
-                                          Text('Credits:${userData.creditList?[index].count}'),
+                                          Text('${'Date'.tr} : ${userData.creditList?[index].date}'),
+                                          Text('${'Credits'.tr} :${userData.creditList?[index].count}'),
                                         ],
                                       );
                                     },

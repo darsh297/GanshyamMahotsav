@@ -5,14 +5,9 @@ import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 import 'package:ghanshyam_mahotsav/utils/app_theme.dart';
 import 'package:ghanshyam_mahotsav/utils/loacl_strings.dart';
-import 'package:ghanshyam_mahotsav/utils/shared_preference.dart';
-import 'package:ghanshyam_mahotsav/utils/string_utils.dart';
-import 'package:ghanshyam_mahotsav/view/home_page.dart';
-import 'package:ghanshyam_mahotsav/view/login_page.dart';
 
 import 'view/spash_screen.dart';
 
-// Text('First Name'.tr),
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

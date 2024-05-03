@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/controller/upload_pdf_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_text_styles.dart';
 import 'package:path/path.dart' as path;
+
 import '../utils/app_colors.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/widgets.dart';
@@ -22,7 +23,7 @@ class UploadPDF extends StatelessWidget {
       backgroundColor: AppColors.scaffoldColor,
       appBar: AppBar(
         title: Text(
-          'Upload PDF',
+          'Upload PDF'.tr,
           style: appTextStyle.montserrat20W500White,
         ),
         backgroundColor: Colors.transparent,
@@ -46,7 +47,7 @@ class UploadPDF extends StatelessWidget {
                   InkWell(
                     onTap: () => pickPDFFile(),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 12),
+                      margin: const EdgeInsets.symmetric(vertical: 12),
                       height: Get.height / 2.8,
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -79,7 +80,7 @@ class UploadPDF extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 20),
                                       Text(
-                                        "Click here to upload PDF",
+                                        "Click here to upload PDF".tr,
                                         textAlign: TextAlign.center,
                                         style: uploadPDFController.appTextStyle.montserrat16W500Grey,
                                       )
@@ -93,7 +94,7 @@ class UploadPDF extends StatelessWidget {
                   InkWell(
                     onTap: () => pickPDFFile(),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 12),
+                      margin: const EdgeInsets.symmetric(vertical: 12),
                       height: Get.height / 4,
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -153,7 +154,7 @@ class UploadPDF extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Select PDF language',
+                        'Select PDF language'.tr,
                         style: appTextStyle.montserrat14W600,
                       ),
                       Container(
@@ -178,7 +179,7 @@ class UploadPDF extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Text(
-                                      value,
+                                      value.tr,
                                       style: appTextStyle.montserrat14W600,
                                     ),
                                   ),
@@ -203,7 +204,7 @@ class UploadPDF extends StatelessWidget {
                           CustomWidgets.toastValidation(msg: 'Select PDF and PDF language');
                         }
                       },
-                      child: const Text('Upload PDF'),
+                      child: Text('Upload PDF'.tr),
                     ),
                   )
                 ],

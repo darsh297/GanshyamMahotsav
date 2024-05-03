@@ -128,7 +128,7 @@ class _OTPScreenState extends State<OTPScreen> {
                           child: Obx(
                             () => otpController.verifyOtpLoader.value
                                 ? Container(
-                                    padding: EdgeInsets.all(8),
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(color: AppColors.scaffoldColor, borderRadius: BorderRadius.circular(5)),
                                     child: CustomWidgets.loader,
                                   )
