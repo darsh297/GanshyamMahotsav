@@ -43,9 +43,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      // drawer: const DrawerScreen(),
       body: SafeArea(
         child: Column(
           children: [
@@ -152,50 +150,51 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 50),
           child: ClipPath(
             clipper: ShapeBorderClipper(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-            child: BottomNavigationBar(
-              landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
-              fixedColor: AppColors.scaffoldColor,
-              backgroundColor: AppColors.scaffoldColor,
-              // selectedItemColor: AppColors.primaryColor,
-              type: BottomNavigationBarType.shifting,
-              currentIndex: _selectedIndex.value,
-              iconSize: 40,
-              onTap: (value) {
-                if (value == 0) {
-                  _value.value = 0;
-                } else if (value == 1) {
-                  malaJapController.progress.value = 0;
-                  malaJapController.dots.assignAll(List.generate(108, (_) => false));
-                }
-                _selectedIndex.value = value;
-              },
-              elevation: 5,
-              items: [
-                BottomNavigationBarItem(
-                  icon: Image.asset(
-                    StringUtils.reading,
-                    height: 30,
-                    width: 30,
+            child: Container(
+              color: AppColors.primaryColor,
+              child: BottomNavigationBar(
+                landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
+                type: BottomNavigationBarType.shifting,
+                currentIndex: _selectedIndex.value,
+                iconSize: 40,
+                onTap: (value) {
+                  if (value == 0) {
+                    _value.value = 0;
+                  } else if (value == 1) {
+                    malaJapController.progress.value = 0;
+                    malaJapController.dots.assignAll(List.generate(108, (_) => false));
+                  }
+                  _selectedIndex.value = value;
+                },
+                elevation: 5,
+                items: [
+                  BottomNavigationBarItem(
+                    backgroundColor: AppColors.scaffoldColor,
+                    icon: Image.asset(
+                      StringUtils.reading,
+                      height: 30,
+                      width: 30,
+                    ),
+                    label: 'Vanchan'.tr,
                   ),
-                  label: 'Vanchan'.tr,
-                ),
-                BottomNavigationBarItem(
-                  icon: Image.asset(
-                    StringUtils.malaJap,
-                    height: 30,
-                    width: 30,
+                  BottomNavigationBarItem(
+                    icon: Image.asset(
+                      StringUtils.malaJap,
+                      height: 30,
+                      width: 30,
+                    ),
+                    label: 'Mala Jap'.tr,
                   ),
-                  label: 'Mala Jap'.tr,
-                ),
-                BottomNavigationBarItem(
-                  icon: Image.asset(
-                    StringUtils.profile,
-                    height: 30,
-                    width: 30,
+                  BottomNavigationBarItem(
+                    icon: Image.asset(
+                      StringUtils.profile,
+                      height: 30,
+                      width: 30,
+                    ),
+                    label: 'Profile'.tr,
                   ),
-                  label: 'Profile'.tr,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

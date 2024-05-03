@@ -51,7 +51,7 @@ class _MalaJapScreenState extends State<MalaJapScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: malaJapController.updateProgress,
+                    onTap: () => malaJapController.updateProgress(context),
                     child: Obx(
                       () => Container(
                         margin: const EdgeInsets.all(20),
