@@ -5,10 +5,6 @@ import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 import 'package:ghanshyam_mahotsav/utils/app_theme.dart';
 import 'package:ghanshyam_mahotsav/utils/loacl_strings.dart';
-import 'package:ghanshyam_mahotsav/utils/shared_preference.dart';
-import 'package:ghanshyam_mahotsav/utils/string_utils.dart';
-import 'package:ghanshyam_mahotsav/view/home_page.dart';
-import 'package:ghanshyam_mahotsav/view/login_page.dart';
 
 import 'view/spash_screen.dart';
 
@@ -23,14 +19,14 @@ Future<void> main() async {
       projectId: "easstemple-b710e",
     ),
   );
-  runApp(MyApp());
+  runApp(const MyApp());
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: AppColors.scaffoldColor, // status bar color
   ));
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();

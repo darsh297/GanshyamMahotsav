@@ -11,7 +11,7 @@ class UserDataWidget extends StatefulWidget {
   const UserDataWidget({super.key});
 
   @override
-  _UserDataWidgetState createState() => _UserDataWidgetState();
+  State<UserDataWidget> createState() => _UserDataWidgetState();
 }
 
 class _UserDataWidgetState extends State<UserDataWidget> {
@@ -72,12 +72,8 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                               Text('Total Credits: ${userData.creditCount}'),
                             ],
                           ),
-                          // isThreeLine: true,
                           onTap: () {
-                            print('isExpanded.value:${userData.isExpand.value}');
-
                             userData.isExpand.value = !userData.isExpand.value;
-                            print('isExpanded.value:${userData.isExpand.value}');
                           },
                         ),
                         // Show credits only when the tile is tapped (expanded)

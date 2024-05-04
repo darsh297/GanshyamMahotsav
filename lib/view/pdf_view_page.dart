@@ -14,10 +14,10 @@ class PDFViewerFromUrl extends StatefulWidget {
 }
 
 class _PDFViewerFromUrlState extends State<PDFViewerFromUrl> {
-  int _totalPages = 0;
-  int _currentPage = 0;
-  double _progress = 0.0;
-  bool _isScrollComplete = false;
+  final int _totalPages = 0;
+  final int _currentPage = 0;
+  final double _progress = 0.0;
+  final bool _isScrollComplete = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +30,21 @@ class _PDFViewerFromUrlState extends State<PDFViewerFromUrl> {
 
             // enableSwipe: true,
             // nightMode: true,
-            // onPageChanged: (int? page, int? totalPages) {
-            //   setState(() {
-            //     _currentPage = page ?? 0 + 1; // Adding 1 because page numbering starts from 0
-            //     _totalPages = (totalPages ?? 1) - 1;
-            //     if (!_isScrollComplete) {
-            //       _progress = (_currentPage / _totalPages) * 100; // Calculate progress based on current page and total pages
-            //       // Ensure progress is 100% when scrolled to the last page
-            //       if (_currentPage == _totalPages) {
-            //         _progress = 100.0;
-            //         _isScrollComplete = true; // Mark scroll as complete
-            //       }
-            //     }
-            //   });
-            // },
+            onPageChanged: (int? page, int? totalPages) {
+              debugPrint('PDF view $_isScrollComplete $_currentPage $_totalPages ');
+              // setState(() {
+              //   _currentPage = page ?? 0 + 1; // Adding 1 because page numbering starts from 0
+              //   _totalPages = (totalPages ?? 1) - 1;
+              //   if (!_isScrollComplete) {
+              //     _progress = (_currentPage / _totalPages) * 100; // Calculate progress based on current page and total pages
+              //     // Ensure progress is 100% when scrolled to the last page
+              //     if (_currentPage == _totalPages) {
+              //       _progress = 100.0;
+              //       _isScrollComplete = true; // Mark scroll as complete
+              //     }
+              //   }
+              // });
+            },
             onError: (dynamic error) {},
           ).fromUrl(widget.url),
           Positioned(

@@ -4,7 +4,6 @@ import 'package:ghanshyam_mahotsav/controller/malajap_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_text_styles.dart';
 import 'package:ghanshyam_mahotsav/utils/shared_preference.dart';
 import 'package:ghanshyam_mahotsav/utils/string_utils.dart';
-import 'package:ghanshyam_mahotsav/view/drawer_screen.dart';
 import 'package:ghanshyam_mahotsav/view/mala_jap_screen.dart';
 import 'package:ghanshyam_mahotsav/view/vanchan_screen.dart';
 import '../controller/vanchan_screen_controller.dart';
@@ -76,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                           '$userName',
                           style: appTextStyle.inter20DarkGrey,
                         ),
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
                         Text(
                           'Credit Score: ${creditScore.value}'.tr,
                           style: appTextStyle.inter12DarkGrey,
@@ -102,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                   () {
                     if (_selectedIndex.value == 0) {
                       return Container(
-                        padding: EdgeInsets.only(right: 20),
+                        padding: const EdgeInsets.only(right: 20),
                         width: Get.width,
                         child: Wrap(
                           spacing: 10,
@@ -118,7 +117,6 @@ class _HomePageState extends State<HomePage> {
                                 selectedColor: AppColors.primaryColor,
                                 selected: _value.value == index,
                                 onSelected: (bool selected) {
-                                  print(index);
                                   (index != 0)
                                       ? vanchanScreenController.getAllPDF(queryParam: '?language=${language[index]}')
                                       : vanchanScreenController.getAllPDF();

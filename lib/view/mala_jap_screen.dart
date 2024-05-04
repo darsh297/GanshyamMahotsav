@@ -12,7 +12,7 @@ class MalaJapScreen extends StatefulWidget {
   const MalaJapScreen({super.key});
 
   @override
-  _MalaJapScreenState createState() => _MalaJapScreenState();
+  State<MalaJapScreen> createState() => _MalaJapScreenState();
 }
 
 class _MalaJapScreenState extends State<MalaJapScreen> {

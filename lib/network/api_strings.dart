@@ -3,6 +3,7 @@ class ApiStrings {
 
   /// testing URL
   static const String kBaseAPI = 'https://gm-backend-1fve.onrender.com/api/';
+  // static const String kBaseAPI = 'https://sea-lion-app-pnyik.ondigitalocean.app/';
 
   /// Check phone number
   static const String kCheckPhoneNumber = 'user/checkPhoneNumber';

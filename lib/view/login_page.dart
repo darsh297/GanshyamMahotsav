@@ -110,7 +110,7 @@ class LoginPage extends StatelessWidget {
                                       child: Obx(
                                         () => loginController.isLoading.value
                                             ? Container(
-                                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                                padding: const EdgeInsets.all(2),
                                                 decoration: BoxDecoration(color: AppColors.scaffoldColor, borderRadius: BorderRadius.circular(5)),
                                                 child: CustomWidgets.loader,
                                               )
@@ -189,14 +189,22 @@ class LoginPage extends StatelessWidget {
                                       /// Register button
                                       SizedBox(
                                         width: double.infinity,
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            final isValid = _registerForm.currentState!.validate();
-                                            if (isValid) {
-                                              loginController.verifyNumber(context: context, isLogin: false);
-                                            }
-                                          },
-                                          child: const Text('Register'),
+                                        child: Obx(
+                                          () => loginController.isLoading.value
+                                              ? Container(
+                                                  padding: const EdgeInsets.all(2),
+                                                  decoration: BoxDecoration(color: AppColors.scaffoldColor, borderRadius: BorderRadius.circular(5)),
+                                                  child: CustomWidgets.loader,
+                                                )
+                                              : ElevatedButton(
+                                                  onPressed: () {
+                                                    final isValid = _registerForm.currentState!.validate();
+                                                    if (isValid) {
+                                                      loginController.verifyNumber(context: context, isLogin: false);
+                                                    }
+                                                  },
+                                                  child: const Text('Register'),
+                                                ),
                                         ),
                                       )
                                     ],

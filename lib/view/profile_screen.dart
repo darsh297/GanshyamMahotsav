@@ -6,7 +6,6 @@ import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 import '../utils/shared_preference.dart';
 import '../utils/string_utils.dart';
-import 'drawer_screen.dart';
 import 'upload_pdf.dart';
 import 'user_data_list.dart';
 
@@ -28,7 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     isAdmin.value = await sharedPreferenceClass.retrieveData(StringUtils.prefIsAdmin);
     credits.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserCredit);
     _selectedLanguage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ?? 'English';
-    print('object $_selectedLanguage|| isAdmin.value ${isAdmin.value}');
+    debugPrint('object $_selectedLanguage|| isAdmin.value ${isAdmin.value}');
   }
 
   @override

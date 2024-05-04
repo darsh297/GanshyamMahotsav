@@ -1,12 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
-
-// import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-// import 'dart:io';
 import '../utils/shared_preference.dart';
 import '../utils/string_utils.dart';
 import '../widgets/widgets.dart';
@@ -14,7 +9,6 @@ import 'api_strings.dart';
 
 class ApiBaseHelper {
   ApiBaseHelper._();
-  // final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static final ApiBaseHelper _instance = ApiBaseHelper._();
 
   factory ApiBaseHelper() {
@@ -43,46 +37,14 @@ class ApiBaseHelper {
     }
   }
 
-  // Future<dynamic> putDataAPI({required String leadAPI, Object? jsonObjectBody}) async {
-  //   debugPrint('putDataAPI ======= [${json.encode(jsonObjectBody)}]= URL :[$leadAPI]]=> ');
-  //   if (await CustomWidgets.isNetworkAvailable()) {
-  //     try {
-  //       var headers = {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Bearer ${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}',
-  //       };
-  //       var body = json.encode(jsonObjectBody);
-  //
-  //       final response = await http.put(
-  //         Uri.parse(ApiStrings.kBaseAPI + leadAPI),
-  //         body: body,
-  //         headers: headers,
-  //       );
-  //
-  //       responseJson = _returnResponse(response);
-  //     } catch (e) {
-  //       CustomWidgets.toastValidation(msg: '$e');
-  //       // throw FetchDataException('No Internet connection');
-  //     }
-  //     return responseJson;
-  //   } else {
-  //     CustomWidgets.toastValidation(msg: 'Please connect to internet');
-  //   }
-  // }
-
   Future<dynamic> postDataAPI({required String leadAPI, Object? jsonObjectBody, bool isLogin = false}) async {
-    debugPrint('request ===> ${json.encode(jsonObjectBody)}');
-    debugPrint('api ===> :$leadAPI, isLoggedIn = $isLogin  ');
+    debugPrint('request ===> ${json.encode(jsonObjectBody)} api ===> :${ApiStrings.kBaseAPI + leadAPI}, isLoggedIn = $isLogin ');
     if (await CustomWidgets.isNetworkAvailable()) {
       try {
-        var headers = isLogin
-            ? {
-                'Content-Type': 'application/json',
-              }
-            : {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}',
-              };
+        var headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}',
+        };
 
         var body = json.encode(jsonObjectBody);
 
@@ -91,8 +53,7 @@ class ApiBaseHelper {
           headers: headers,
           body: body,
         );
-        log("response ===> ${response.statusCode}");
-        log("response body ===> ${response.body}");
+        log("response ===> ${response.statusCode} response body ===> ${response.body}");
         responseJson = _returnResponse(response);
       } catch (e) {
         CustomWidgets.toastValidation(msg: '$e');
@@ -131,20 +92,6 @@ class ApiBaseHelper {
     }
   }
 
-  // Future<dynamic> deleteDataAPI({required String leadAPI, Object? jsonObjectBody}) async {
-  //   debugPrint('deleteDataAPI ======== URL = $leadAPI');
-  //
-  //   try {
-  //     var headers = {
-  //       'Content-Type': 'application/json',
-  //       // 'Authorization': 'Bearer ${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}',
-  //     };
-  //     var body = jsonObjectBody != null ? json.encode(jsonObjectBody) : null;
-  //     final response = await http.delete(
-  //       Uri.parse(ApiStrings.kBaseAPI + leadAPI),
-  //       headers: headers,
-  //       body: body,
-  //     );
   //
   //     responseJson = _returnResponse(response);
   //   } catch (e) {

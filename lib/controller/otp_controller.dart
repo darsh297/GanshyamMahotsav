@@ -81,7 +81,6 @@ class OTPController extends GetxController {
       String fullName = ''}) async {
     try {
       verifyOtpLoader.value = true;
-      // String? token = await FirebaseMessaging.instance.getToken();
       PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: _verificationId, smsCode: otp);
       User? user = (await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential)).user;
       verifyOtpLoader.value = false;
@@ -105,9 +104,8 @@ class OTPController extends GetxController {
       verifyOtpLoader.value = false;
       if (!context.mounted) return;
       if (otp == '123456') {
-        // String? token = "fdjfkgdjfgdhfgjdgdlfgdfgjdfhgjghldjfgffd";
         timer?.value.cancel();
-        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber);
+        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, isLogin: isLogin, fullName: fullName);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -154,8 +152,8 @@ class OTPController extends GetxController {
       var apiResponse = await apiBaseHelper.postDataAPI(
         leadAPI: ApiStrings.kRegister,
         jsonObjectBody: {
-          "phone_number": phoneNumber,
-          "country_code": countryCode,
+          "phoneNumber": phoneNumber,
+          "countryCode": '+$countryCode',
           "fullName": fullName,
         },
       );

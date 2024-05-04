@@ -46,7 +46,7 @@ class UploadPDF extends StatelessWidget {
                   InkWell(
                     onTap: () => pickPDFFile(),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 12),
+                      margin: const EdgeInsets.symmetric(vertical: 12),
                       height: Get.height / 2.8,
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -93,7 +93,7 @@ class UploadPDF extends StatelessWidget {
                   InkWell(
                     onTap: () => pickPDFFile(),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 12),
+                      margin: const EdgeInsets.symmetric(vertical: 12),
                       height: Get.height / 4,
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -232,6 +232,8 @@ class UploadPDF extends StatelessWidget {
       if (result != null) {
         uploadPDFController.filePath.value = result.files.single.path ?? '';
       }
-    } catch (e) {}
+    } catch (e) {
+      debugPrint('$e');
+    }
   }
 }
