@@ -141,6 +141,8 @@ class OTPController extends GetxController {
         sharedPreferenceClass.storeData(StringUtils.prefUserCredit, loginResponse.creditCount);
         sharedPreferenceClass.storeBool(StringUtils.prefIsAdmin, loginResponse.isAdmin ?? false);
         sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
+        sharedPreferenceClass.storeData(StringUtils.prefUserPhone, loginResponse.phoneNumber);
+        sharedPreferenceClass.storeData(StringUtils.prefUserVillage, 'Ahmedabad');
         Get.offAll(() => const HomePage());
       }
 
@@ -169,6 +171,8 @@ class OTPController extends GetxController {
         sharedPreferenceClass.storeData(StringUtils.prefUserCredit, registerResponse.creditCount);
         sharedPreferenceClass.storeData(StringUtils.prefIsAdmin, registerResponse.isAdmin);
         sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
+        sharedPreferenceClass.storeData(StringUtils.prefUserPhone, registerResponse.phoneNumber);
+        sharedPreferenceClass.storeData(StringUtils.prefUserVillage, 'Ahmedabad');
 
         Get.offAll(() => const HomePage());
       }

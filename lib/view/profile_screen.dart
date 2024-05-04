@@ -18,6 +18,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final RxString _selectedLanguage = StringUtils.english.obs;
+  final RxString userVillage = ''.obs;
+  final RxString userMobile = ''.obs;
   final SharedPreferenceClass sharedPreferenceClass = SharedPreferenceClass();
   final AppTextStyle appTextStyle = AppTextStyle();
   final RxInt credits = 0.obs;
@@ -27,6 +29,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     isAdmin.value = await sharedPreferenceClass.retrieveData(StringUtils.prefIsAdmin);
     credits.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserCredit);
     _selectedLanguage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ?? 'English';
+    userMobile.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserPhone);
+    userVillage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserVillage);
     debugPrint('object $_selectedLanguage|| isAdmin.value ${isAdmin.value}');
   }
 
@@ -50,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Expanded(child: Text('Mobile No'.tr)),
                   const Expanded(child: Text(':')),
-                  const Expanded(child: Text('6356379786')),
+                  Expanded(child: Obx(() => Text(userMobile.value))),
                 ],
               ),
               const SizedBox(height: 4),
@@ -58,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Expanded(child: Text('Village'.tr)),
                   const Expanded(child: Text(':')),
-                  const Expanded(child: Text('Bhavnagar')),
+                  Expanded(child: Obx(() => Text(userVillage.value))),
                 ],
               ),
             ],
@@ -102,9 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        _selectedLanguage.value == 'English'
-                            ? Get.updateLocale(const Locale('en', 'US'))
-                            : Get.updateLocale(const Locale('hi', 'IN'));
+                        _selectedLanguage.value == 'English' ? Get.updateLocale(const Locale('en', 'US')) : Get.updateLocale(const Locale('hi', 'IN'));
                         sharedPreferenceClass.storeData(StringUtils.prefLanguage, _selectedLanguage.value);
                         Get.back(); // Close the dialog
                       },

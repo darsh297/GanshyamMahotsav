@@ -3,6 +3,8 @@ class StringUtils {
   static String prefUserName = 'UserName';
   static String prefUserId = 'UserId';
   static String prefUserCredit = 'UserCredit';
+  static String prefUserPhone = 'UserPhone';
+  static String prefUserVillage = 'UserVillage';
   static String prefIsAdmin = 'IsAdmin';
   static String prefLanguage = 'Language';
   static String logo = 'assets/org logo.png';

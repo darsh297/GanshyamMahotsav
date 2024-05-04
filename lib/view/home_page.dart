@@ -55,14 +55,6 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Align(
-                  //   alignment: Alignment.topLeft,
-                  //   child: IconButton(
-                  //     onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-                  //     icon: const Icon(Icons.menu),
-                  //     padding: EdgeInsets.zero,
-                  //   ),
-                  // ),
                   Text(
                     'Welcome'.tr,
                     style: appTextStyle.inter20Grey,
