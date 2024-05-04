@@ -8,7 +8,6 @@ import 'package:ghanshyam_mahotsav/utils/loacl_strings.dart';
 
 import 'view/spash_screen.dart';
 
-// Text('First Name'.tr),
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

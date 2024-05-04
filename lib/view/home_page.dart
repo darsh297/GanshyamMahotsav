@@ -6,6 +6,7 @@ import 'package:ghanshyam_mahotsav/utils/shared_preference.dart';
 import 'package:ghanshyam_mahotsav/utils/string_utils.dart';
 import 'package:ghanshyam_mahotsav/view/mala_jap_screen.dart';
 import 'package:ghanshyam_mahotsav/view/vanchan_screen.dart';
+
 import '../controller/vanchan_screen_controller.dart';
 import '../utils/app_colors.dart';
 import 'profile_screen.dart';
@@ -42,9 +43,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      // drawer: const DrawerScreen(),
       body: SafeArea(
         child: Column(
           children: [
@@ -77,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const SizedBox(height: 24),
                         Text(
-                          'Credit Score: ${creditScore.value}'.tr,
+                          '${'Credit Score:'.tr}:${creditScore.value}',
                           style: appTextStyle.inter12DarkGrey,
                         ),
                       ],
@@ -146,93 +145,60 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-          selectedItemColor: AppColors.primaryColor,
-          type: BottomNavigationBarType.shifting,
-          currentIndex: _selectedIndex.value,
-          iconSize: 40,
-          onTap: (value) {
-            if (value == 0) {
-              _value.value = 0;
-            } else if (value == 1) {
-              malaJapController.progress.value = 0;
-              malaJapController.dots.assignAll(List.generate(108, (_) => false));
-            }
-            _selectedIndex.value = value;
-          },
-          elevation: 5,
-          items: [
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                StringUtils.reading,
-                height: 30,
-                width: 30,
+        () => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 50),
+          child: ClipPath(
+            clipper: ShapeBorderClipper(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+            child: Container(
+              color: AppColors.primaryColor,
+              child: BottomNavigationBar(
+                landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
+                type: BottomNavigationBarType.shifting,
+                currentIndex: _selectedIndex.value,
+                iconSize: 40,
+                onTap: (value) {
+                  if (value == 0) {
+                    _value.value = 0;
+                  } else if (value == 1) {
+                    malaJapController.progress.value = 0;
+                    malaJapController.dots.assignAll(List.generate(108, (_) => false));
+                  }
+                  _selectedIndex.value = value;
+                },
+                elevation: 5,
+                items: [
+                  BottomNavigationBarItem(
+                    backgroundColor: AppColors.scaffoldColor,
+                    icon: Image.asset(
+                      StringUtils.reading,
+                      height: 30,
+                      width: 30,
+                    ),
+                    label: 'Vanchan'.tr,
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Image.asset(
+                      StringUtils.malaJap,
+                      height: 30,
+                      width: 30,
+                    ),
+                    label: 'Mala Jap'.tr,
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Image.asset(
+                      StringUtils.profile,
+                      height: 30,
+                      width: 30,
+                    ),
+                    label: 'Profile'.tr,
+                  ),
+                ],
               ),
-              label: 'Vanchan'.tr,
             ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                StringUtils.malaJap,
-                height: 30,
-                width: 30,
-              ),
-              label: 'Mala Jap'.tr,
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                StringUtils.profile,
-                height: 30,
-                width: 30,
-              ),
-              label: 'Profile'.tr,
-            ),
-          ],
+          ),
         ),
       ),
     );
-
-    // return Scaffold(
-    //   key: _scaffoldKey,
-    //   resizeToAvoidBottomInset: false,
-    //   backgroundColor: AppColors.scaffoldColor,
-    //   appBar: AppBar(
-    //     backgroundColor: Colors.transparent,
-    //     leading: IconButton(
-    //       icon: const Icon(Icons.menu),
-    //       onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-    //     ),
-    //   ),
-    //   drawer: const DrawerScreen(),
-    //   body: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //     children: [
-    //       Container(
-    //         height: MediaQuery.of(context).size.height * 0.11,
-    //         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 18),
-    //         child: Obx(() => Text(userName.value != '' ? 'Welcome,${userName.value}!'.tr : 'Welcome'.tr, style: appTextStyle.montserrat22W700White)),
-    //       ),
-    //       Expanded(child: Obx(() => isPDFView.value ? const VanchanScreen() : const MalaJapScreen())),
-    //       InkWell(
-    //         onTap: () => isPDFView.value = !isPDFView.value,
-    //         child: Container(
-    //           height: MediaQuery.of(context).size.height * 0.05,
-    //           width: Get.width,
-    //           alignment: Alignment.center,
-    //           padding: const EdgeInsets.all(8),
-    //           margin: const EdgeInsets.all(8),
-    //           decoration: BoxDecoration(color: AppColors.primaryColor, borderRadius: BorderRadius.circular(10)),
-    //           child: Obx(
-    //             () => Text(
-    //               isPDFView.value ? 'Go to Malajap'.tr : 'Go to Vanchan'.tr,
-    //               style: appTextStyle.montserrat14W500White,
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }
 
