@@ -11,9 +11,10 @@ class OTPScreen extends StatefulWidget {
   final String phoneNumber;
   final String countryCode;
   final String? fullName;
+  final String? villageName;
   final bool isExist;
 
-  const OTPScreen({super.key, required this.phoneNumber, required this.countryCode, required this.isExist, this.fullName});
+  const OTPScreen({super.key, required this.phoneNumber, required this.countryCode, required this.isExist, this.fullName, this.villageName});
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -141,6 +142,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                             phoneNumber: widget.phoneNumber,
                                             countryCode: widget.countryCode,
                                             fullName: widget.fullName ?? '',
+                                            villageName: widget.villageName ?? '',
                                           )
                                         : null,
                                     child: const Text('Verify Now'),

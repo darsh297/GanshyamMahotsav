@@ -85,6 +85,7 @@ class LoginController extends GetxController {
                 phoneNumber: mobileTextField.value.text,
                 countryCode: selectedCountry.value.phoneCode,
                 fullName: nameTextField.value.text,
+                villageName: villageTextField.value.text,
                 isExist: globalResponse.data['exists'],
               ),
             );

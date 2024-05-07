@@ -47,7 +47,6 @@ class ApiBaseHelper {
         };
 
         var body = json.encode(jsonObjectBody);
-
         final response = await http.post(
           Uri.parse(ApiStrings.kBaseAPI + leadAPI),
           headers: headers,

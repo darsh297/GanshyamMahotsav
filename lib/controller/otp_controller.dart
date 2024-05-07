@@ -78,7 +78,8 @@ class OTPController extends GetxController {
       String phoneNumber = '0000000000',
       String countryCode = '91',
       bool isLogin = true,
-      String fullName = ''}) async {
+      String fullName = '',
+      String villageName = ''}) async {
     try {
       verifyOtpLoader.value = true;
       PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: _verificationId, smsCode: otp);
@@ -88,7 +89,7 @@ class OTPController extends GetxController {
       if (user != null) {
         timer?.value.cancel();
 
-        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, isLogin: isLogin, fullName: fullName);
+        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, isLogin: isLogin, fullName: fullName, villageName: villageName);
       } else {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -105,7 +106,7 @@ class OTPController extends GetxController {
       if (!context.mounted) return;
       if (otp == '123456') {
         timer?.value.cancel();
-        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, isLogin: isLogin, fullName: fullName);
+        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, isLogin: isLogin, fullName: fullName, villageName: villageName);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -120,7 +121,7 @@ class OTPController extends GetxController {
   }
 
   /// Verify number API call - to get User device token- after verified OTP
-  loginAPICall({String phoneNumber = '0000000000', String countryCode = '91', bool isLogin = true, String fullName = ''}) async {
+  loginAPICall({String phoneNumber = '0000000000', String countryCode = '91', bool isLogin = true, String fullName = '', String villageName = ''}) async {
     if (isLogin) {
       var apiResponse = await apiBaseHelper.postDataAPI(
         leadAPI: ApiStrings.kLogin,
@@ -151,12 +152,14 @@ class OTPController extends GetxController {
         CustomWidgets.toastValidation(msg: globalResponse.message ?? '');
       }
     } else {
+      print('village $villageName');
       var apiResponse = await apiBaseHelper.postDataAPI(
         leadAPI: ApiStrings.kRegister,
         jsonObjectBody: {
           "phoneNumber": phoneNumber,
           "countryCode": '+$countryCode',
           "fullName": fullName,
+          "village": villageName,
         },
       );
 
@@ -172,7 +175,7 @@ class OTPController extends GetxController {
         sharedPreferenceClass.storeData(StringUtils.prefIsAdmin, registerResponse.isAdmin);
         sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
         sharedPreferenceClass.storeData(StringUtils.prefUserPhone, registerResponse.phoneNumber);
-        sharedPreferenceClass.storeData(StringUtils.prefUserVillage, 'Ahmedabad');
+        // sharedPreferenceClass.storeData(StringUtils.prefUserVillage, registerResponse.);
 
         Get.offAll(() => const HomePage());
       }

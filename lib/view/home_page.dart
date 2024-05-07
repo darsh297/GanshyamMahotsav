@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: Obx(
         () => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50),
+          padding: const EdgeInsets.only(left: 50, right: 50, bottom: 8),
           child: ClipPath(
             clipper: ShapeBorderClipper(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
             child: Container(
@@ -169,6 +169,7 @@ class _HomePageState extends State<HomePage> {
                     label: 'Vanchan'.tr,
                   ),
                   BottomNavigationBarItem(
+                    backgroundColor: AppColors.scaffoldColor,
                     icon: Image.asset(
                       StringUtils.malaJap,
                       height: 30,
@@ -177,6 +178,7 @@ class _HomePageState extends State<HomePage> {
                     label: 'Mala Jap'.tr,
                   ),
                   BottomNavigationBarItem(
+                    backgroundColor: AppColors.scaffoldColor,
                     icon: Image.asset(
                       StringUtils.profile,
                       height: 30,

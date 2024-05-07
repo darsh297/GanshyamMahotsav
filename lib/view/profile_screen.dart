@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/view/login_page.dart';
 
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 import '../utils/shared_preference.dart';
@@ -142,10 +144,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         DrawerTile(
           title: 'Refer a friend',
-          onTap: () {},
+          onTap: () => Share.share('Check out my website https://example.com'),
           icons: const Icon(Icons.front_hand_outlined),
         ),
-        DrawerTile(title: 'Rate Us', onTap: () {}, icons: const Icon(Icons.star_rate)),
+        DrawerTile(
+            title: 'Rate Us',
+            onTap: () {
+              launchUrl(Uri.parse(''));
+            },
+            icons: const Icon(Icons.star_rate)),
         DrawerTile(
           title: 'Sign Out',
           icons: const Icon(Icons.login_outlined),

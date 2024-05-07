@@ -83,7 +83,8 @@ class _VanchanScreenState extends State<VanchanScreen> {
                           itemBuilder: (context, index) {
                             var pdfData = vanchanScreenController.allPDFListing;
                             return InkWell(
-                              onTap: () => Get.to(() => PDFViewerFromUrl(url: 'https://gm-backend-1fve.onrender.com/files/${pdfData[index].fileName}')),
+                              onTap: () =>
+                                  Get.to(() => PDFViewerFromUrl(url: 'https://gm-files.blr1.cdn.digitaloceanspaces.com/pdfs/${pdfData[index].fileName}')),
                               // color: Colors.red,
                               child: Column(
                                 children: [
@@ -92,7 +93,7 @@ class _VanchanScreenState extends State<VanchanScreen> {
                                       width: 100,
                                       decoration: BoxDecoration(color: AppColors.grey3, borderRadius: BorderRadius.circular(20)),
                                       child: Image.network(
-                                        'https://upload.wikimedia.org/wikipedia/commons/4/4c/Swaminarayan%2C_founder_of_the_Swaminarayan_Sampradaya.png',
+                                        'https://gm-files.blr1.cdn.digitaloceanspaces.com/images/${pdfData[index].image}',
                                         // height: 20,
                                       )),
                                   Text(
@@ -101,8 +102,7 @@ class _VanchanScreenState extends State<VanchanScreen> {
                                   ),
                                   // Text('${pdfData[index].language}'),
                                   Text(
-                                    'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing '
-                                    'layouts and visual mockups',
+                                    pdfData[index].description ?? '',
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: appTextStyle.montserrat10W500Grey,
