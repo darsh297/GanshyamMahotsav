@@ -31,6 +31,7 @@ dependencies:
   firebase_auth: ^4.17.4
   firebase_core: ^2.27.0
   connectivity_plus: ^6.0.1
+  http_parser: ^4.0.2
   share_plus: ^7.2.2           # Share this app with others (Drawer-Refer a friend)
 #  intl_phone_field: ^3.2.0
 #  pinput: ^4.0.0

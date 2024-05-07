@@ -5,6 +5,7 @@ import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 import 'package:ghanshyam_mahotsav/utils/app_text_styles.dart';
 import 'package:ghanshyam_mahotsav/view/pdf_view_page.dart';
 import 'package:ghanshyam_mahotsav/widgets/custom_textfield.dart';
+
 import '../widgets/widgets.dart';
 
 class VanchanScreen extends StatefulWidget {
@@ -83,19 +84,27 @@ class _VanchanScreenState extends State<VanchanScreen> {
                           itemBuilder: (context, index) {
                             var pdfData = vanchanScreenController.allPDFListing;
                             return InkWell(
-                              onTap: () =>
-                                  Get.to(() => PDFViewerFromUrl(url: 'https://gm-files.blr1.cdn.digitaloceanspaces.com/pdfs/${pdfData[index].fileName}')),
+                              onTap: () => Get.to(() => PDFViewerFromUrl(
+                                    url: 'https://gm-files.blr1.cdn.digitaloceanspaces.com/pdfs/${pdfData[index].fileName}',
+                                    id: pdfData[index].sId ?? '',
+                                  )),
                               // color: Colors.red,
                               child: Column(
                                 children: [
                                   Container(
-                                      height: 120,
-                                      width: 100,
-                                      decoration: BoxDecoration(color: AppColors.grey3, borderRadius: BorderRadius.circular(20)),
-                                      child: Image.network(
-                                        'https://gm-files.blr1.cdn.digitaloceanspaces.com/images/${pdfData[index].image}',
-                                        // height: 20,
-                                      )),
+                                    height: 120,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey3,
+                                      borderRadius: BorderRadius.circular(20),
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                          'https://gm-files.blr1.cdn.digitaloceanspaces.com/images/${pdfData[index].image}',
+                                        ),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
                                   Text(
                                     '${pdfData[index].fileName}',
                                     style: appTextStyle.montserrat12W500,
