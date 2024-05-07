@@ -129,7 +129,7 @@ class _OTPScreenState extends State<OTPScreen> {
                           child: Obx(
                             () => otpController.verifyOtpLoader.value
                                 ? Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    padding: const EdgeInsets.all(2),
                                     decoration: BoxDecoration(color: AppColors.scaffoldColor, borderRadius: BorderRadius.circular(5)),
                                     child: CustomWidgets.loader,
                                   )
@@ -142,6 +142,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                             phoneNumber: widget.phoneNumber,
                                             countryCode: widget.countryCode,
                                             fullName: widget.fullName ?? '',
+                                            villageName: widget.villageName ?? '',
                                           )
                                         : null,
                                     child: const Text('Verify Now'),

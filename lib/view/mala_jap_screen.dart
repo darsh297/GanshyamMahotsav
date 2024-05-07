@@ -12,7 +12,7 @@ class MalaJapScreen extends StatefulWidget {
   const MalaJapScreen({super.key});
 
   @override
-  _MalaJapScreenState createState() => _MalaJapScreenState();
+  State<MalaJapScreen> createState() => _MalaJapScreenState();
 }
 
 class _MalaJapScreenState extends State<MalaJapScreen> {
@@ -41,7 +41,7 @@ class _MalaJapScreenState extends State<MalaJapScreen> {
               ),
               Obx(() => Text('${malaJapController.progress.value}', style: malaJapController.appTextStyle.montserrat28W700)),
               Obx(() => Text('Swaminarayan'.tr,
-                  style: malaJapController.appTextStyle.montserrat28W700
+                  style: malaJapController.appTextStyle.montserrat22W700
                       .copyWith(color: malaJapController.isEnabled.value ? AppColors.grey1 : AppColors.primaryColor))),
               Stack(
                 children: [

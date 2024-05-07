@@ -55,14 +55,6 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Align(
-                  //   alignment: Alignment.topLeft,
-                  //   child: IconButton(
-                  //     onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-                  //     icon: const Icon(Icons.menu),
-                  //     padding: EdgeInsets.zero,
-                  //   ),
-                  // ),
                   Text(
                     'Welcome'.tr,
                     style: appTextStyle.inter20Grey,
@@ -74,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                           '$userName',
                           style: appTextStyle.inter20DarkGrey,
                         ),
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
                         Text(
                           '${'Credit Score:'.tr}:${creditScore.value}',
                           style: appTextStyle.inter12DarkGrey,
@@ -100,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                   () {
                     if (_selectedIndex.value == 0) {
                       return Container(
-                        padding: EdgeInsets.only(right: 20),
+                        padding: const EdgeInsets.only(right: 20),
                         width: Get.width,
                         child: Wrap(
                           spacing: 10,
@@ -116,7 +108,6 @@ class _HomePageState extends State<HomePage> {
                                 selectedColor: AppColors.primaryColor,
                                 selected: _value.value == index,
                                 onSelected: (bool selected) {
-                                  print(index);
                                   (index != 0)
                                       ? vanchanScreenController.getAllPDF(queryParam: '?language=${language[index]}')
                                       : vanchanScreenController.getAllPDF();
@@ -147,7 +138,7 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: Obx(
         () => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50),
+          padding: const EdgeInsets.only(left: 50, right: 50, bottom: 8),
           child: ClipPath(
             clipper: ShapeBorderClipper(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
             child: Container(
@@ -178,6 +169,7 @@ class _HomePageState extends State<HomePage> {
                     label: 'Vanchan'.tr,
                   ),
                   BottomNavigationBarItem(
+                    backgroundColor: AppColors.scaffoldColor,
                     icon: Image.asset(
                       StringUtils.malaJap,
                       height: 30,
@@ -186,6 +178,7 @@ class _HomePageState extends State<HomePage> {
                     label: 'Mala Jap'.tr,
                   ),
                   BottomNavigationBarItem(
+                    backgroundColor: AppColors.scaffoldColor,
                     icon: Image.asset(
                       StringUtils.profile,
                       height: 30,

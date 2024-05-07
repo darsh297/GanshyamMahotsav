@@ -18,14 +18,14 @@ Future<void> main() async {
       projectId: "easstemple-b710e",
     ),
   );
-  runApp(MyApp());
+  runApp(const MyApp());
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: AppColors.scaffoldColor, // status bar color
   ));
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();

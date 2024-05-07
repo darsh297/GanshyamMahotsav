@@ -9,26 +9,44 @@ import 'package:ghanshyam_mahotsav/network/api_strings.dart';
 class UserDataListController extends GetxController {
   final ApiBaseHelper apiBaseHelper = ApiBaseHelper();
   final RxList<UserDataListModel> userDataList = <UserDataListModel>[].obs;
-  final RxBool isLoading = false.obs;
-  getAllUserData({String? queryParam}) async {
-    isLoading.value = true;
-    var url = ApiStrings.kGetAllUsers;
-    if (queryParam != null) {
-      url += queryParam;
-    }
-    var api = await apiBaseHelper.getData(leadAPI: url);
-    GlobalResponse globalResponse = GlobalResponse.fromJson(api);
-    isLoading.value = false;
-    if (globalResponse.status == 200) {
-      userDataList.value = [];
-      List<dynamic> pdfList = globalResponse.data;
-      List<UserDataListModel> pdfResponses = [];
-
-      for (var item in pdfList) {
-        UserDataListModel pdfListingResponse = UserDataListModel.fromJson(item);
-        pdfResponses.add(pdfListingResponse);
+  final RxBool isLoading = true.obs;
+  final RxBool isLoadingMore = false.obs;
+  // For lazy loading () -> If user has scrolled-up and lazy loading (pagination's) next page data API is already called then new API with next page do not call again
+  final RxBool allDataReceived = false.obs; // if all data is fetched then make it true
+  getAllUserData({String? queryParam, int page = 1}) async {
+    if (allDataReceived.value == false) {
+      var url = ApiStrings.kGetAllUsers;
+      // url += '?page=$page';
+      if (queryParam != null) {
+        url += queryParam;
       }
-      userDataList.addAll(pdfResponses);
+
+      var api = await apiBaseHelper.getData(leadAPI: url);
+      GlobalResponse globalResponse = GlobalResponse.fromJson(api);
+      isLoading.value = false;
+      if (globalResponse.status == 200) {
+        List<dynamic> pdfList = [];
+        if (globalResponse.data != null) {
+          pdfList = globalResponse.data;
+          List<UserDataListModel> userResponse = [];
+          if (pdfList.isNotEmpty) {
+            // List to single from API
+            for (var item in pdfList) {
+              UserDataListModel pdfListingResponse = UserDataListModel.fromJson(item);
+              userResponse.add(pdfListingResponse);
+            }
+            if (queryParam != null) {
+              print('0 $queryParam');
+              userDataList.value = [];
+            }
+            userDataList.addAll(userResponse);
+          } else {
+            print('|||||||||||||||||||||||||||||||||||||||||||');
+            isLoading.value = false;
+            allDataReceived.value = true;
+          }
+        }
+      }
     }
   }
 }

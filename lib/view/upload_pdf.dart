@@ -233,6 +233,8 @@ class UploadPDF extends StatelessWidget {
       if (result != null) {
         uploadPDFController.filePath.value = result.files.single.path ?? '';
       }
-    } catch (e) {}
+    } catch (e) {
+      debugPrint('$e');
+    }
   }
 }

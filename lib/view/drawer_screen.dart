@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ghanshyam_mahotsav/view/user_data_list.dart';
-import 'package:ghanshyam_mahotsav/view/login_page.dart';
-import 'package:ghanshyam_mahotsav/view/upload_pdf.dart';
 
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';

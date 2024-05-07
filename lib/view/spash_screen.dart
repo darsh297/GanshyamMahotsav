@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   final RxString _selectedLanguage = StringUtils.english.obs;
   getIfAdmin() async {
     _selectedLanguage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ?? StringUtils.english;
-    print('|||||||||||||||||||||||||||||||||||||||||||||||||||||||| $_selectedLanguage');
+    debugPrint('|||||||||||||||||||||||||||||||||||||||||||||||||||||||| $_selectedLanguage');
     if (_selectedLanguage.value != StringUtils.english) {
       Get.updateLocale(const Locale('hi', 'IN'));
     }
@@ -28,9 +28,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   checkLogin(context) async {
     String? token = await sharedPreferenceClass.retrieveData(StringUtils.prefUserTokenKey);
-    print('Token Splesh screen $token');
+    debugPrint('Token Splesh screen $token');
     Future.delayed(
-      Duration(seconds: 1),
+      const Duration(seconds: 1),
       () {
         token == null ? Get.offAll(() => LoginPage()) : Get.offAll(() => const HomePage());
       },

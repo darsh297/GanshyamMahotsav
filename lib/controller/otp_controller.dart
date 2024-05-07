@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/model/register_response.dart';
 import 'package:ghanshyam_mahotsav/view/home_page.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import '../model/global_response.dart';
 import '../model/login_response.dart';
 import '../network/api_config.dart';
@@ -79,10 +78,10 @@ class OTPController extends GetxController {
       String phoneNumber = '0000000000',
       String countryCode = '91',
       bool isLogin = true,
-      String fullName = ''}) async {
+      String fullName = '',
+      String villageName = ''}) async {
     try {
       verifyOtpLoader.value = true;
-      // String? token = await FirebaseMessaging.instance.getToken();
       PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: _verificationId, smsCode: otp);
       User? user = (await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential)).user;
       verifyOtpLoader.value = false;
@@ -90,7 +89,7 @@ class OTPController extends GetxController {
       if (user != null) {
         timer?.value.cancel();
 
-        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, isLogin: isLogin, fullName: fullName);
+        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, isLogin: isLogin, fullName: fullName, villageName: villageName);
       } else {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -106,9 +105,8 @@ class OTPController extends GetxController {
       verifyOtpLoader.value = false;
       if (!context.mounted) return;
       if (otp == '123456') {
-        // String? token = "fdjfkgdjfgdhfgjdgdlfgdfgjdfhgjghldjfgffd";
         timer?.value.cancel();
-        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber);
+        loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, isLogin: isLogin, fullName: fullName, villageName: villageName);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -123,8 +121,7 @@ class OTPController extends GetxController {
   }
 
   /// Verify number API call - to get User device token- after verified OTP
-  loginAPICall(
-      {String phoneNumber = '0000000000', String countryCode = '91', bool isLogin = true, String fullName = '', String villageName = ''}) async {
+  loginAPICall({String phoneNumber = '0000000000', String countryCode = '91', bool isLogin = true, String fullName = '', String villageName = ''}) async {
     if (isLogin) {
       var apiResponse = await apiBaseHelper.postDataAPI(
         leadAPI: ApiStrings.kLogin,
@@ -145,6 +142,8 @@ class OTPController extends GetxController {
         sharedPreferenceClass.storeData(StringUtils.prefUserCredit, loginResponse.creditCount);
         sharedPreferenceClass.storeBool(StringUtils.prefIsAdmin, loginResponse.isAdmin ?? false);
         sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
+        sharedPreferenceClass.storeData(StringUtils.prefUserPhone, loginResponse.phoneNumber);
+        sharedPreferenceClass.storeData(StringUtils.prefUserVillage, 'Ahmedabad');
         Get.offAll(() => const HomePage());
       }
 
@@ -153,13 +152,14 @@ class OTPController extends GetxController {
         CustomWidgets.toastValidation(msg: globalResponse.message ?? '');
       }
     } else {
+      print('village $villageName');
       var apiResponse = await apiBaseHelper.postDataAPI(
         leadAPI: ApiStrings.kRegister,
         jsonObjectBody: {
-          "phone_number": phoneNumber,
-          "country_code": countryCode,
+          "phoneNumber": phoneNumber,
+          "countryCode": '+$countryCode',
           "fullName": fullName,
-          "village_name": villageName,
+          "village": villageName,
         },
       );
 
@@ -174,6 +174,8 @@ class OTPController extends GetxController {
         sharedPreferenceClass.storeData(StringUtils.prefUserCredit, registerResponse.creditCount);
         sharedPreferenceClass.storeData(StringUtils.prefIsAdmin, registerResponse.isAdmin);
         sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
+        sharedPreferenceClass.storeData(StringUtils.prefUserPhone, registerResponse.phoneNumber);
+        // sharedPreferenceClass.storeData(StringUtils.prefUserVillage, registerResponse.);
 
         Get.offAll(() => const HomePage());
       }

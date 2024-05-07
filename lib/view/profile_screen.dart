@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/view/login_page.dart';
 
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 import '../utils/shared_preference.dart';
@@ -18,6 +20,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final RxString _selectedLanguage = StringUtils.english.obs;
+  final RxString userVillage = ''.obs;
+  final RxString userMobile = ''.obs;
   final SharedPreferenceClass sharedPreferenceClass = SharedPreferenceClass();
   final AppTextStyle appTextStyle = AppTextStyle();
   final RxInt credits = 0.obs;
@@ -27,7 +31,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     isAdmin.value = await sharedPreferenceClass.retrieveData(StringUtils.prefIsAdmin);
     credits.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserCredit);
     _selectedLanguage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ?? 'English';
-    print('object $_selectedLanguage|| isAdmin.value ${isAdmin.value}');
+    userMobile.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserPhone);
+    userVillage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserVillage);
+    debugPrint('object $_selectedLanguage|| isAdmin.value ${isAdmin.value}');
   }
 
   @override
@@ -50,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Expanded(child: Text('Mobile No'.tr)),
                   const Expanded(child: Text(':')),
-                  const Expanded(child: Text('6356379786')),
+                  Expanded(child: Obx(() => Text(userMobile.value))),
                 ],
               ),
               const SizedBox(height: 4),
@@ -58,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Expanded(child: Text('Village'.tr)),
                   const Expanded(child: Text(':')),
-                  const Expanded(child: Text('Bhavnagar')),
+                  Expanded(child: Obx(() => Text(userVillage.value))),
                 ],
               ),
             ],
@@ -102,9 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        _selectedLanguage.value == 'English'
-                            ? Get.updateLocale(const Locale('en', 'US'))
-                            : Get.updateLocale(const Locale('hi', 'IN'));
+                        _selectedLanguage.value == 'English' ? Get.updateLocale(const Locale('en', 'US')) : Get.updateLocale(const Locale('hi', 'IN'));
                         sharedPreferenceClass.storeData(StringUtils.prefLanguage, _selectedLanguage.value);
                         Get.back(); // Close the dialog
                       },
@@ -140,10 +144,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         DrawerTile(
           title: 'Refer a friend',
-          onTap: () {},
+          onTap: () => Share.share('Check out my website https://example.com'),
           icons: const Icon(Icons.front_hand_outlined),
         ),
-        DrawerTile(title: 'Rate Us', onTap: () {}, icons: const Icon(Icons.star_rate)),
+        DrawerTile(
+            title: 'Rate Us',
+            onTap: () {
+              launchUrl(Uri.parse(''));
+            },
+            icons: const Icon(Icons.star_rate)),
         DrawerTile(
           title: 'Sign Out',
           icons: const Icon(Icons.login_outlined),
