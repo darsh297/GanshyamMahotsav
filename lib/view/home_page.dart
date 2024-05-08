@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ghanshyam_mahotsav/controller/home_controller.dart';
 import 'package:ghanshyam_mahotsav/controller/malajap_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_text_styles.dart';
 import 'package:ghanshyam_mahotsav/utils/shared_preference.dart';
@@ -23,10 +24,11 @@ class _HomePageState extends State<HomePage> {
   final RxInt _value = 0.obs;
   final RxString userName = ''.obs;
   final VanchanScreenController vanchanScreenController = Get.put(VanchanScreenController());
+  final HomeController homeController = Get.put(HomeController());
   final MalaJapController malaJapController = Get.put(MalaJapController());
   final AppTextStyle appTextStyle = AppTextStyle();
   final RxInt _selectedIndex = 0.obs;
-  final RxInt creditScore = 0.obs;
+
   final List language = ['All', 'English', 'Gujarati'];
 
   @override
@@ -37,7 +39,7 @@ class _HomePageState extends State<HomePage> {
 
   getUserName() async {
     userName.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserName);
-    creditScore.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserCredit);
+    homeController.creditScore.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserCredit);
   }
 
   @override
@@ -68,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const SizedBox(height: 24),
                         Text(
-                          '${'Credit Score:'.tr}:${creditScore.value}',
+                          '${'Credit Score:'.tr}:${homeController.creditScore.value}',
                           style: appTextStyle.inter12DarkGrey,
                         ),
                       ],
