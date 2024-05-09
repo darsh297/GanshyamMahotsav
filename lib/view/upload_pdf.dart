@@ -1,27 +1,47 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/controller/upload_pdf_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_text_styles.dart';
 import 'package:path/path.dart' as path;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/app_colors.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/widgets.dart';
 
-class UploadPDF extends StatelessWidget {
+class UploadPDF extends StatefulWidget {
   UploadPDF({super.key});
 
+  @override
+  State<UploadPDF> createState() => _UploadPDFState();
+}
+
+class _UploadPDFState extends State<UploadPDF> {
   final UploadPDFController uploadPDFController = Get.put(UploadPDFController());
+
   final TextEditingController description = TextEditingController();
+
   final AppTextStyle appTextStyle = AppTextStyle();
+
+  @override
+  void dispose() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: AppColors.white),
+          onPressed: () => Get.back(),
+        ),
         title: Text(
           'Upload PDF'.tr,
           style: appTextStyle.montserrat20W500White,
@@ -91,8 +111,18 @@ class UploadPDF extends StatelessWidget {
                       ),
                     ),
                   ),
+
+                  SelectableLinkify(
+                    onOpen: (LinkableElement link) async {
+                      if (!await launchUrl(Uri.parse(link.url))) {
+                        throw Exception('Could not launch ${link.url}');
+                      }
+                    },
+                    text: 'For better user experience upload and get PDF from this website:https://www.instagram.com/',
+                    style: appTextStyle.montserrat12W500,
+                  ),
                   InkWell(
-                    onTap: () => pickPDFFile(),
+                    onTap: () => pickPDFImage(),
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 12),
                       height: Get.height / 4,
@@ -108,10 +138,10 @@ class UploadPDF extends StatelessWidget {
                         strokeWidth: 2,
                         color: AppColors.grey1,
                         child: Obx(
-                          () => uploadPDFController.filePath.value.isNotEmpty
+                          () => uploadPDFController.imagePath.value.isNotEmpty
                               ? Center(
                                   child: Text(
-                                    'Selected PDF: ${path.basenameWithoutExtension(uploadPDFController.filePath.value)}',
+                                    'Selected PDF Photo: ${path.basenameWithoutExtension(uploadPDFController.imagePath.value)}',
                                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                   ),
                                 )
@@ -198,10 +228,15 @@ class UploadPDF extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (uploadPDFController.selectedLanguage.value != 'Select Language' && uploadPDFController.filePath.value != '') {
-                          uploadPDFController.uploadPDF(uploadPDFController.filePath.value);
+                        print(
+                            '|| ${uploadPDFController.selectedLanguage.value} || ${uploadPDFController.filePath.value} || ${description.text} || ${uploadPDFController.imagePath.value}');
+                        if (uploadPDFController.selectedLanguage.value != 'Select Language' &&
+                            uploadPDFController.filePath.value != '' &&
+                            description.text != '' &&
+                            uploadPDFController.imagePath.value != '') {
+                          uploadPDFController.uploadPDF(description: description.text);
                         } else {
-                          CustomWidgets.toastValidation(msg: 'Select PDF and PDF language');
+                          CustomWidgets.toastValidation(msg: 'Select PDF,PDF image and PDF language');
                         }
                       },
                       child: Text('Upload PDF'.tr),
@@ -232,6 +267,20 @@ class UploadPDF extends StatelessWidget {
       );
       if (result != null) {
         uploadPDFController.filePath.value = result.files.single.path ?? '';
+      }
+    } catch (e) {
+      debugPrint('$e');
+    }
+  }
+
+  Future<void> pickPDFImage() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'png', 'jpeg'],
+      );
+      if (result != null) {
+        uploadPDFController.imagePath.value = result.files.single.path ?? '';
       }
     } catch (e) {
       debugPrint('$e');

@@ -3,18 +3,21 @@ class LoginResponse {
   String? phoneNumber;
   String? countryCode;
   String? fullName;
+  String? village;
   String? createdAt;
   bool? isAdmin;
   int? creditCount;
   String? token;
 
-  LoginResponse({this.sId, this.phoneNumber, this.countryCode, this.fullName, this.createdAt, this.isAdmin, this.creditCount, this.token});
+  LoginResponse(
+      {this.sId, this.phoneNumber, this.countryCode, this.fullName, this.createdAt, this.isAdmin, this.creditCount, this.token, this.village});
 
   LoginResponse.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     phoneNumber = json['phoneNumber'];
     countryCode = json['countryCode'];
     fullName = json['fullName'];
+    village = json['village'];
     createdAt = json['createdAt'];
     isAdmin = json['isAdmin'];
     creditCount = json['creditCount'];
@@ -27,6 +30,7 @@ class LoginResponse {
     data['phoneNumber'] = phoneNumber;
     data['countryCode'] = countryCode;
     data['fullName'] = fullName;
+    data['village'] = village;
     data['createdAt'] = createdAt;
     data['isAdmin'] = isAdmin;
     data['creditCount'] = creditCount;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/controller/user_data_list_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
@@ -26,7 +27,14 @@ class _UserDataWidgetState extends State<UserDataWidget> {
     pageNumber = 1;
     userDataListController.getAllUserData();
     scrollController.addListener(() => _scrollListener());
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
+    super.dispose();
   }
 
   Future<void> _scrollListener() async {
@@ -49,6 +57,10 @@ class _UserDataWidgetState extends State<UserDataWidget> {
       backgroundColor: AppColors.scaffoldColor,
       appBar: AppBar(
         title: Text('User Data List'.tr, style: TextStyle(color: AppColors.white)),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: AppColors.white),
+          onPressed: () => Get.back(),
+        ),
         actions: [
           PopupMenuButton<String>(
             icon: Icon(Icons.filter_alt, color: AppColors.white),
@@ -104,7 +116,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text('${'Mobile No'.tr} : ${userData.phoneNumber}'),
-                                          Text('${'Village'.tr} : ${userData.createdAt}'),
+                                          Text('${'Village'.tr} : ${userData.village ?? ''}'),
                                           Text('${'Total Credits'.tr} : ${userData.creditCount}'),
                                         ],
                                       ),

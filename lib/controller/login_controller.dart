@@ -59,8 +59,8 @@ class LoginController extends GetxController {
   verifyNumber({required BuildContext context, required bool isLogin}) async {
     isLoading.value = true;
     try {
-      var apiRes =
-          await apiBaseHelper.postDataAPI(leadAPI: ApiStrings.kCheckPhoneNumber, isLogin: true, jsonObjectBody: {"phoneNumber": mobileTextField.value.text});
+      var apiRes = await apiBaseHelper
+          .postDataAPI(leadAPI: ApiStrings.kCheckPhoneNumber, isLogin: true, jsonObjectBody: {"phoneNumber": mobileTextField.value.text});
       GlobalResponse globalResponse = GlobalResponse.fromJson(apiRes);
 
       if (globalResponse.status == 200) {

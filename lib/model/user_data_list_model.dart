@@ -6,11 +6,12 @@ class UserDataListModel {
   String? countryCode;
   String? phoneNumber;
   int? creditCount;
+  String? village;
   String? createdAt;
   List<CreditList>? creditList;
   RxBool isExpand = false.obs;
 
-  UserDataListModel({this.sId, this.fullName, this.countryCode, this.phoneNumber, this.creditCount, this.createdAt, this.creditList});
+  UserDataListModel({this.sId, this.fullName, this.countryCode, this.phoneNumber, this.creditCount, this.createdAt, this.creditList, this.village});
 
   UserDataListModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -19,6 +20,7 @@ class UserDataListModel {
     phoneNumber = json['phoneNumber'];
     creditCount = json['creditCount'];
     createdAt = json['createdAt'];
+    village = json['village'];
     if (json['creditList'] != null) {
       creditList = <CreditList>[];
       json['creditList'].forEach((v) {
@@ -35,6 +37,7 @@ class UserDataListModel {
     data['phoneNumber'] = phoneNumber;
     data['creditCount'] = creditCount;
     data['createdAt'] = createdAt;
+    data['village'] = village;
     if (creditList != null) {
       data['creditList'] = creditList!.map((v) => v.toJson()).toList();
     }

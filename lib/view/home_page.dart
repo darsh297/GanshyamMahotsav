@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/controller/home_controller.dart';
 import 'package:ghanshyam_mahotsav/controller/malajap_controller.dart';
@@ -29,10 +30,9 @@ class _HomePageState extends State<HomePage> {
   final AppTextStyle appTextStyle = AppTextStyle();
   final RxInt _selectedIndex = 0.obs;
 
-  final List language = ['All', 'English', 'Gujarati'];
-
   @override
   void initState() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
     getUserName();
     super.initState();
   }
@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -106,13 +107,19 @@ class _HomePageState extends State<HomePage> {
                               // set its properties.
                               return ChoiceChip(
                                 padding: const EdgeInsets.all(8),
-                                label: Text('${language[index]}'.tr),
+                                label: Text('${homeController.language[index]}'.tr),
                                 selectedColor: AppColors.primaryColor,
                                 selected: _value.value == index,
                                 onSelected: (bool selected) {
-                                  (index != 0)
-                                      ? vanchanScreenController.getAllPDF(queryParam: '?language=${language[index]}')
-                                      : vanchanScreenController.getAllPDF();
+                                  if (index != 0) {
+                                    homeController.selectedLanguageIndex.value = index;
+                                    vanchanScreenController.getAllPDF(
+                                      queryParamLanguage: '${homeController.language[index]}',
+                                      queryParamSearch: vanchanScreenController.searchText.value.text,
+                                    );
+                                  } else {
+                                    vanchanScreenController.getAllPDF();
+                                  }
 
                                   _value.value = (selected ? index : null)!;
                                 },

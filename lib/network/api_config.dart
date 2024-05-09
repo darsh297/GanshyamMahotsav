@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+
 import '../utils/shared_preference.dart';
 import '../utils/string_utils.dart';
 import '../widgets/widgets.dart';
@@ -64,10 +67,17 @@ class ApiBaseHelper {
     }
   }
 
-  Future<dynamic> uploadFiles({String filePath = '', String language = '', String leadAPI = ''}) async {
+  Future<dynamic> uploadFiles({
+    String filePath = '',
+    String language = '',
+    String leadAPI = '',
+    String description = '',
+    String imagePath = '',
+  }) async {
     if (await CustomWidgets.isNetworkAvailable()) {
       try {
         var headers = {'Authorization': '${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}'};
+        print('${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}');
         // var headers = {
         //   'Authorization':
         //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNWVjOGE4ODU2Mjc0OTQyY2I3MGYiLCJwaG9uZU51bWJlciI6IjEyMzQ1Njc4OTAiLCJjb3VudHJ5Q29kZSI6Iis5MSIsImZ1bGxOYW1lIjoiQWRtaW4gVXNlciIsImlzQWRtaW4iOnRydWUsImNyZWRpdENvdW50Ijo0LCJjcmVhdGVkQXQiOiIyMDI0LTA0LTE5VDEyOjA4OjQwLjczNFoiLCJfX3YiOjAsImlhdCI6MTcxMzcxMjc1MCwiZXhwIjoxNzQ1MjQ4NzUwfQ.kg6nuD65_9qtzT9JWS5WLtJSwCUbY3vbZ8pr78K-txI'
@@ -75,15 +85,17 @@ class ApiBaseHelper {
 
         var request = http.MultipartRequest('POST', Uri.parse(ApiStrings.kBaseAPI + leadAPI));
         request.fields.addAll({'lang': language});
-        request.files.add(await http.MultipartFile.fromPath('file', filePath));
+        request.fields.addAll({'desc': description});
+        request.files.add(await http.MultipartFile.fromPath('file', filePath, contentType: MediaType.parse('application/pdf')));
+        request.files.add(await http.MultipartFile.fromPath('file', imagePath, contentType: MediaType.parse('image/jpeg')));
         request.headers.addAll(headers);
-
         http.StreamedResponse response = await request.send();
 
         String responseBody = await response.stream.bytesToString();
 
         return json.decode(responseBody);
       } catch (e) {
+        print('$e');
         CustomWidgets.toastValidation(msg: 'PDf can not uploaded:$e');
       }
     } else {

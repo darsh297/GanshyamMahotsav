@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:ghanshyam_mahotsav/controller/home_controller.dart';
 import 'package:ghanshyam_mahotsav/controller/malajap_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 
@@ -18,6 +18,12 @@ class MalaJapScreen extends StatefulWidget {
 
 class _MalaJapScreenState extends State<MalaJapScreen> {
   MalaJapController malaJapController = Get.find();
+
+  @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,10 +110,12 @@ class DotPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     for (int i = 0; i < 108; i++) {
-      final double angle = (2 * pi / 108) * i;
+      // Change the loop limit to 109
+      final double angle = (2 * pi / 108) * i; // Adjust for 109 dots
       final double x = radius + radius * cos(angle);
       final double y = radius + radius * sin(angle);
-      if (dots[i]) {
+      if (i < dots.length && dots[i]) {
+        // Check if i is within range of dots list
         paint.color = Colors.red; // Change color for dots representing progress
       } else {
         paint.color = Colors.grey; // Reset color for other dots

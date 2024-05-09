@@ -6,8 +6,9 @@ class PdfListingResponse {
   String? language;
   String? createdAt;
   int? iV;
+  int? lastPage;
 
-  PdfListingResponse({this.sId, this.fileName, this.description, this.image, this.language, this.createdAt, this.iV});
+  PdfListingResponse({this.sId, this.fileName, this.description, this.image, this.language, this.createdAt, this.iV, this.lastPage});
 
   PdfListingResponse.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -17,6 +18,7 @@ class PdfListingResponse {
     language = json['language'];
     createdAt = json['createdAt'];
     iV = json['__v'];
+    lastPage = json['lastPage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +30,7 @@ class PdfListingResponse {
     data['language'] = language;
     data['createdAt'] = createdAt;
     data['__v'] = iV;
+    data['lastPage'] = lastPage;
     return data;
   }
 }

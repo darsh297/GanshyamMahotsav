@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/view/login_page.dart';
 
@@ -39,11 +40,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     getIfAdmin();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
     return Column(
       children: [
         Container(
@@ -129,7 +132,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         icons: const Icon(Icons.picture_as_pdf),
                         onTap: () {
                           Get.back();
-                          Get.to(() => UploadPDF());
+                          Get.to(() => UploadPDF())
+                              ?.then((value) => SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor)));
+                          SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
                         }),
                     DrawerTile(
                         title: 'User Data List',
@@ -144,13 +149,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         DrawerTile(
           title: 'Refer a friend',
-          onTap: () => Share.share('Check out my website https://example.com'),
+          onTap: () => Share.share("Let's do good karma together https://play.google.com/store/apps/details?id=com.whatsapp&pcampaignid=web_share"),
           icons: const Icon(Icons.front_hand_outlined),
         ),
         DrawerTile(
             title: 'Rate Us',
             onTap: () {
-              launchUrl(Uri.parse(''));
+              launchUrl(Uri.parse('https://play.google.com/store/apps/details?id=com.whatsapp&pcampaignid=web_share'));
             },
             icons: const Icon(Icons.star_rate)),
         DrawerTile(

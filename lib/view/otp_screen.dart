@@ -28,6 +28,8 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   void initState() {
     super.initState();
+
+    print('village ${widget.villageName}');
     otpCall();
   }
 

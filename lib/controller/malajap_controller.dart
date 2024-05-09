@@ -18,21 +18,22 @@ class MalaJapController extends GetxController {
   final ApiBaseHelper apiBaseHelper = ApiBaseHelper();
   final RxBool isEnabled = true.obs;
   final RxBool isLogin = false.obs;
+
   final HomeController homeController = Get.find();
 
   Future<void> updateProgress(context) async {
     if (isEnabled.value) {
-      isEnabled.value = false;
-
-      // Enable button after 1 seconds
-      Timer(const Duration(seconds: 1), () {
-        isEnabled.value = true;
-      });
+      // isEnabled.value = false;
+      //
+      // // Enable button after 1 seconds
+      // Timer(const Duration(seconds: 1), () {
+      //   isEnabled.value = true;
+      // });
 
       dots[progress.value] = true; // Update dot color
       progress.value = (progress.value + 1) % 108; // Increment progress
-
-      if (progress.value == 3) {
+      print('||| ${progress.value}');
+      if (progress.value == 0) {
         isLogin.value = true;
         var apiRes = await apiBaseHelper.getData(leadAPI: ApiStrings.kAddCredits);
         GlobalResponse globalResponse = GlobalResponse.fromJson(apiRes);

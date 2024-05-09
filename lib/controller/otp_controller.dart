@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/model/register_response.dart';
 import 'package:ghanshyam_mahotsav/view/home_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import '../model/global_response.dart';
 import '../model/login_response.dart';
 import '../network/api_config.dart';
@@ -121,7 +122,8 @@ class OTPController extends GetxController {
   }
 
   /// Verify number API call - to get User device token- after verified OTP
-  loginAPICall({String phoneNumber = '0000000000', String countryCode = '91', bool isLogin = true, String fullName = '', String villageName = ''}) async {
+  loginAPICall(
+      {String phoneNumber = '0000000000', String countryCode = '91', bool isLogin = true, String fullName = '', String villageName = ''}) async {
     if (isLogin) {
       var apiResponse = await apiBaseHelper.postDataAPI(
         leadAPI: ApiStrings.kLogin,
@@ -143,7 +145,8 @@ class OTPController extends GetxController {
         sharedPreferenceClass.storeBool(StringUtils.prefIsAdmin, loginResponse.isAdmin ?? false);
         sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
         sharedPreferenceClass.storeData(StringUtils.prefUserPhone, loginResponse.phoneNumber);
-        sharedPreferenceClass.storeData(StringUtils.prefUserVillage, 'Ahmedabad');
+        sharedPreferenceClass.storeData(StringUtils.prefUserVillage, loginResponse.village);
+
         Get.offAll(() => const HomePage());
       }
 
@@ -152,7 +155,7 @@ class OTPController extends GetxController {
         CustomWidgets.toastValidation(msg: globalResponse.message ?? '');
       }
     } else {
-      print('village $villageName');
+      print('Village $villageName');
       var apiResponse = await apiBaseHelper.postDataAPI(
         leadAPI: ApiStrings.kRegister,
         jsonObjectBody: {
@@ -175,7 +178,7 @@ class OTPController extends GetxController {
         sharedPreferenceClass.storeData(StringUtils.prefIsAdmin, registerResponse.isAdmin);
         sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
         sharedPreferenceClass.storeData(StringUtils.prefUserPhone, registerResponse.phoneNumber);
-        // sharedPreferenceClass.storeData(StringUtils.prefUserVillage, registerResponse.);
+        sharedPreferenceClass.storeData(StringUtils.prefUserVillage, registerResponse.village);
 
         Get.offAll(() => const HomePage());
       }
