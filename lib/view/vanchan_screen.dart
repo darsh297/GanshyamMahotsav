@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -7,6 +9,7 @@ import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 import 'package:ghanshyam_mahotsav/utils/app_text_styles.dart';
 import 'package:ghanshyam_mahotsav/view/pdf_view_page.dart';
 import 'package:ghanshyam_mahotsav/widgets/custom_textfield.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../widgets/widgets.dart';
 
@@ -25,6 +28,7 @@ class _VanchanScreenState extends State<VanchanScreen> {
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
     vanchanScreenController.getAllPDF();
+    vanchanScreenController.adminData();
     super.initState();
   }
 
@@ -46,7 +50,7 @@ class _VanchanScreenState extends State<VanchanScreen> {
                 icon: const Icon(Icons.cancel),
                 onPressed: () {
                   if (vanchanScreenController.searchText.text != '') {
-                    vanchanScreenController.getAllPDF();
+                    vanchanScreenController.getAllPDF(queryParamLanguage: homeController.language[homeController.selectedLanguageIndex.value]);
                     vanchanScreenController.searchText.text = '';
                   }
                 }),
@@ -56,65 +60,10 @@ class _VanchanScreenState extends State<VanchanScreen> {
             child: Obx(
               () => !vanchanScreenController.isLoading.value
                   ? vanchanScreenController.allPDFListing.isNotEmpty
-                      // ? GridView.builder(
-                      //     shrinkWrap: true,
-                      //     padding: const EdgeInsets.only(top: 18, left: 12, right: 12),
-                      //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      //       crossAxisCount: 3,
-                      //       // childAspectRatio: 1,
-                      //       mainAxisExtent: 200, // fix height of child
-                      //       crossAxisSpacing: 30,
-                      //       mainAxisSpacing: 15, //vertical gap
-                      //     ),
-                      //     itemCount: vanchanScreenController.allPDFListing.length,
-                      //     itemBuilder: (context, index) {
-                      //       var pdfData = vanchanScreenController.allPDFListing;
-                      //       return InkWell(
-                      //         onTap: () {
-                      //           print('(((((((((((   ${pdfData[index].lastPage}');
-                      //           Get.to(() => PDFViewerFromUrl(
-                      //                 url: 'https://gm-files.blr1.cdn.digitaloceanspaces.com/pdfs/${pdfData[index].fileName}',
-                      //                 id: pdfData[index].sId ?? '',
-                      //                 lastPage: pdfData[index].lastPage ?? 0,
-                      //               ));
-                      //         },
-                      //         // color: Colors.red,
-                      //         child: Column(
-                      //           children: [
-                      //             Container(
-                      //               height: 120,
-                      //               width: 100,
-                      //               decoration: BoxDecoration(
-                      //                 color: AppColors.grey3,
-                      //                 borderRadius: BorderRadius.circular(20),
-                      //                 image: DecorationImage(
-                      //                   image: NetworkImage(
-                      //                     'https://gm-files.blr1.cdn.digitaloceanspaces.com/images/${pdfData[index].image}',
-                      //                   ),
-                      //                   fit: BoxFit.fill,
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //             Text(
-                      //               '${pdfData[index].fileName}',
-                      //               style: appTextStyle.montserrat12W500,
-                      //             ),
-                      //             // Text('${pdfData[index].language}'),
-                      //             Text(
-                      //               pdfData[index].description ?? '',
-                      //               maxLines: 2,
-                      //               overflow: TextOverflow.ellipsis,
-                      //               style: appTextStyle.montserrat10W500Grey,
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       );
-                      //     },
-                      //   )
                       ? ListView.builder(
                           physics: const AlwaysScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          padding: EdgeInsets.symmetric(vertical: 8),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
                           itemCount: vanchanScreenController.allPDFListing.length,
                           itemBuilder: (context, index) {
                             var pdfData = vanchanScreenController.allPDFListing;
@@ -122,47 +71,104 @@ class _VanchanScreenState extends State<VanchanScreen> {
                               margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
                               child: ListTile(
                                 onTap: () {
-                                  print('(((((((((((   ${pdfData[index].lastPage}');
                                   Get.to(() => PDFViewerFromUrl(
                                         url: 'https://gm-files.blr1.cdn.digitaloceanspaces.com/pdfs/${pdfData[index].fileName}',
                                         id: pdfData[index].sId ?? '',
                                         lastPage: pdfData[index].lastPage ?? 0,
                                         title: pdfData[index].fileName ?? '',
                                       ));
+                                  // ?.then((value) => vanchanScreenController.getAllPDF());
                                 },
                                 contentPadding: const EdgeInsets.all(8),
-
-                                leading: Container(
-                                  height: 180,
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                    // color: AppColors.grey3,
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        'https://gm-files.blr1.cdn.digitaloceanspaces.com/images/${pdfData[index].image}',
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                title: Text(
-                                  '${pdfData[index].fileName}',
-                                  style: appTextStyle.montserrat16,
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                title: Row(
                                   children: [
-                                    Text('${pdfData[index].language}'),
-                                    Text(
-                                      pdfData[index].description ?? '',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: appTextStyle.montserrat10W500Grey,
+                                    Container(
+                                      height: 100,
+                                      width: 70,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                            'https://gm-files.blr1.cdn.digitaloceanspaces.com/images/${pdfData[index].image}',
+                                          ),
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 20),
+                                    Expanded(
+                                      child: Container(
+                                        // color: Colors.red,
+                                        height: 100,
+                                        // width: 70,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    pdfData[index].fileName ?? '',
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: appTextStyle.montserrat12W500,
+                                                  ),
+                                                  Text(
+                                                    pdfData[index].description ?? '',
+                                                    maxLines: 6,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: appTextStyle.montserrat10W500Grey,
+                                                  ),
+                                                  Text(
+                                                    '${pdfData[index].language}',
+                                                    style: appTextStyle.montserrat8W500,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            vanchanScreenController.isAdmin.value
+                                                ? Align(
+                                                    alignment: Alignment.bottomRight,
+                                                    child: IconButton(
+                                                        onPressed: () {
+                                                          showDialog(
+                                                            barrierDismissible: false,
+                                                            context: context,
+                                                            builder: (BuildContext context) {
+                                                              return AlertDialog(
+                                                                title: Text('Delete Book'.tr),
+                                                                content: Text('Are you sure want to delete book?'.tr),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    onPressed: () => Get.back(),
+                                                                    child: Text('No'.tr),
+                                                                  ),
+                                                                  Obx(
+                                                                    () => TextButton(
+                                                                      onPressed: () {
+                                                                        vanchanScreenController.deleteBook(pdfData[index].sId, index);
+                                                                      },
+                                                                      child: vanchanScreenController.deleteBookLoading.value
+                                                                          ? LoadingAnimationWidget.threeArchedCircle(color: AppColors.primaryColor, size: 20)
+                                                                          : Text('Yes'.tr),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                        icon: Icon(Icons.delete_forever_outlined)))
+                                                : const SizedBox()
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
-                                // isThreeLine: true,
                               ),
                             );
                           },

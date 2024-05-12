@@ -122,8 +122,7 @@ class OTPController extends GetxController {
   }
 
   /// Verify number API call - to get User device token- after verified OTP
-  loginAPICall(
-      {String phoneNumber = '0000000000', String countryCode = '91', bool isLogin = true, String fullName = '', String villageName = ''}) async {
+  loginAPICall({String phoneNumber = '0000000000', String countryCode = '91', bool isLogin = true, String fullName = '', String villageName = ''}) async {
     if (isLogin) {
       var apiResponse = await apiBaseHelper.postDataAPI(
         leadAPI: ApiStrings.kLogin,
@@ -138,16 +137,17 @@ class OTPController extends GetxController {
       ///Success
       if (globalResponse.status == 200) {
         LoginResponse loginResponse = LoginResponse.fromJson(globalResponse.data);
+        print('object ${LoginResponse.fromJson(globalResponse.data)}');
         sharedPreferenceClass.storeData(StringUtils.prefUserTokenKey, loginResponse.token ?? '');
         sharedPreferenceClass.storeData(StringUtils.prefUserName, loginResponse.fullName ?? '');
         sharedPreferenceClass.storeData(StringUtils.prefUserId, loginResponse.sId);
-        sharedPreferenceClass.storeData(StringUtils.prefUserCredit, loginResponse.creditCount);
+        // sharedPreferenceClass.storeData(StringUtils.prefUserCredit, loginResponse.creditCount);
         sharedPreferenceClass.storeBool(StringUtils.prefIsAdmin, loginResponse.isAdmin ?? false);
         sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
         sharedPreferenceClass.storeData(StringUtils.prefUserPhone, loginResponse.phoneNumber);
         sharedPreferenceClass.storeData(StringUtils.prefUserVillage, loginResponse.village);
-
         Get.offAll(() => const HomePage());
+        print('object ${await sharedPreferenceClass.retrieveData(StringUtils.prefUserTokenKey)}');
       }
 
       /// Fail
@@ -174,12 +174,11 @@ class OTPController extends GetxController {
         sharedPreferenceClass.storeData(StringUtils.prefUserTokenKey, registerResponse.token ?? '');
         sharedPreferenceClass.storeData(StringUtils.prefUserName, registerResponse.fullName ?? '');
         sharedPreferenceClass.storeData(StringUtils.prefUserId, registerResponse.sId);
-        sharedPreferenceClass.storeData(StringUtils.prefUserCredit, registerResponse.creditCount);
+        // sharedPreferenceClass.storeData(StringUtils.prefUserCredit, registerResponse.creditCount);
         sharedPreferenceClass.storeData(StringUtils.prefIsAdmin, registerResponse.isAdmin);
         sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
         sharedPreferenceClass.storeData(StringUtils.prefUserPhone, registerResponse.phoneNumber);
         sharedPreferenceClass.storeData(StringUtils.prefUserVillage, registerResponse.village);
-
         Get.offAll(() => const HomePage());
       }
 

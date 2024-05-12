@@ -16,6 +16,7 @@ class CustomWidgets {
 
   static void showCustomDialog(BuildContext context, String title, String message) {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(

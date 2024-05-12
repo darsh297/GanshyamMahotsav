@@ -1,12 +1,14 @@
 // Define the time duration in minutes to read each page
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/network/api_config.dart';
 import 'package:ghanshyam_mahotsav/utils/app_text_styles.dart';
-
+// import 'package:pdf_text/pdf_text.dart';
 import '../utils/app_colors.dart';
 
 const double timeToReadPerPage = 1.0;
@@ -36,23 +38,14 @@ class _PDFViewerFromUrlState extends State<PDFViewerFromUrl> {
 
   @override
   void initState() {
-    // startTimer();
     print('===================================${widget.lastPage}');
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
     super.initState();
   }
 
-  // void startTimer() {
-  //   // Set up a timer for 5 minutes
-  //   _timer = Timer(const Duration(seconds: 5), () {
-  //     pageSwap.value = true;
-  //     print('1111111111${pageSwap.value}');
-  //   });
-  // }
-
   @override
   void dispose() {
-    storeLastPage();
+    // storeLastPage();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
 
     super.dispose();
@@ -136,3 +129,60 @@ class _PDFViewerFromUrlState extends State<PDFViewerFromUrl> {
     );
   }
 }
+// import 'package:flutter/material.dart';
+// import 'package:flutter_pdfview/flutter_pdfview.dart';
+//
+// class PDFViewerPage extends StatefulWidget {
+//   @override
+//   _PDFViewerPageState createState() => _PDFViewerPageState();
+// }
+//
+// class _PDFViewerPageState extends State<PDFViewerPage> {
+//   // PDF link
+//   final String pdfUrl = 'http://www.pdf995.com/samples/pdf.pdf';
+//
+//   // Current page index
+//   int currentPage = 0;
+//
+//   // Total number of pages in the PDF
+//   int totalPageCount = 0;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('PDF Viewer'),
+//       ),
+//       body: Column(
+//         children: [
+//           // PDF viewer
+//           Expanded(
+//             child: PDFView(
+//               filePath: pdfUrl,
+//               onPageChanged: (int? page, int? page2) {
+//                 setState(() {
+//                   currentPage = page!;
+//                 });
+//               },
+//               onError: (error) {
+//                 print('Error loading PDF: $error');
+//               },
+//               onViewCreated: (PDFViewController controller) async {
+//                 totalPageCount = (await controller.getPageCount())!;
+//                 setState(() {});
+//               },
+//             ),
+//           ),
+//           // Progress indicator
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Text(
+//               'Reading Progress: ${((currentPage + 1) / totalPageCount * 100).toStringAsFixed(2)}%',
+//               style: TextStyle(fontSize: 16.0),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

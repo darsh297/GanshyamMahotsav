@@ -45,3 +45,29 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+// import 'package:flutter/material.dart';
+// import 'package:flutter_pdfview/flutter_pdfview.dart';
+//
+// void main() => runApp(MyApp());
+//
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'PDF Viewer',
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: Text('PDF Viewer'),
+//         ),
+//         body: Center(
+//           child: PDFView(
+//             filePath: 'https://gbihr.org/images/docs/test.pdf', // PDF URL
+//             onError: (error) {
+//               print('Error loading PDF: $error');
+//             },
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

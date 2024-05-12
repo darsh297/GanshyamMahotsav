@@ -12,11 +12,13 @@ class CustomTextFields extends StatelessWidget {
     this.trailingIcon,
     this.leadingIcon,
     this.filled = false,
+    this.fromLogin = false,
     this.inputBorder,
     this.validator,
     this.textInputType = TextInputType.text,
     this.onChange,
     this.maxLength,
+    this.minLine,
     this.maxLine,
     required this.textFieldController,
   });
@@ -28,6 +30,8 @@ class CustomTextFields extends StatelessWidget {
   final TextInputType textInputType;
   final AppTextStyle appTextStyle = AppTextStyle();
   final bool filled;
+  final bool fromLogin;
+  final int? minLine;
   final int? maxLine;
   final int? maxLength;
   final TextEditingController textFieldController;
@@ -46,7 +50,7 @@ class CustomTextFields extends StatelessWidget {
           Column(
             children: [
               Text(
-                textFieldName.tr,
+                fromLogin ? textFieldName : textFieldName.tr,
                 style: appTextStyle.montserrat14W600,
               ),
               const SizedBox(height: 6)
@@ -54,6 +58,7 @@ class CustomTextFields extends StatelessWidget {
           ),
         TextFormField(
           maxLines: maxLine,
+          minLines: minLine,
           maxLength: maxLength,
           validator: validator,
           keyboardType: textInputType,

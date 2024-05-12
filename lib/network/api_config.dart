@@ -4,7 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
-
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import '../utils/shared_preference.dart';
 import '../utils/string_utils.dart';
 import '../widgets/widgets.dart';
@@ -32,7 +33,8 @@ class ApiBaseHelper {
         log("response=====> ${response.body}");
         responseJson = _returnResponse(response);
       } catch (e) {
-        CustomWidgets.toastValidation(msg: 'Action can not perform : $e');
+        print(e);
+        CustomWidgets.toastValidation(msg: 'Something is wrong , Please is refresh the tab');
       }
       return responseJson;
     } else {
@@ -58,7 +60,8 @@ class ApiBaseHelper {
         log("response ===> ${response.statusCode} response body ===> ${response.body}");
         responseJson = _returnResponse(response);
       } catch (e) {
-        CustomWidgets.toastValidation(msg: '$e');
+        print(e);
+        CustomWidgets.toastValidation(msg: 'Something is wrong , Please is refresh the tab');
         // throw FetchDataException('No Internet connection');
       }
       return responseJson;
@@ -96,21 +99,80 @@ class ApiBaseHelper {
         return json.decode(responseBody);
       } catch (e) {
         print('$e');
-        CustomWidgets.toastValidation(msg: 'PDf can not uploaded:$e');
+        CustomWidgets.toastValidation(msg: 'Book can not uploaded:$e');
       }
     } else {
       CustomWidgets.toastValidation(msg: 'Please connect to internet');
     }
   }
 
-  //
-  //     responseJson = _returnResponse(response);
-  //   } catch (e) {
-  //     CustomWidgets.toastValidation(msg: '$e');
-  //     // throw FetchDataException('No Internet connection');
-  //   }
-  //   return responseJson;
-  // }
+  Future<dynamic> deleteDataAPI({required String leadAPI, Object? jsonObjectBody}) async {
+    debugPrint('deleteDataAPI ======== URL = $leadAPI');
+    if (await CustomWidgets.isNetworkAvailable()) {
+      try {
+        var headers = {
+          'Content-Type': 'application/json',
+          'Authorization': '${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}',
+        };
+        var body = jsonObjectBody != null ? json.encode(jsonObjectBody) : null;
+        final response = await http.delete(
+          Uri.parse(ApiStrings.kBaseAPI + leadAPI),
+          headers: headers,
+          body: body,
+        );
+        print('====delete book=== ${response.body}');
+        responseJson = _returnResponse(response);
+      } catch (e) {
+        print('$e');
+        CustomWidgets.toastValidation(msg: 'Book can not deleted:$e');
+      }
+      return responseJson;
+    } else {
+      CustomWidgets.toastValidation(msg: 'Please connect to internet');
+    }
+  }
+
+  Future<dynamic> downloadFile() async {
+    print('111111');
+    String url = "${ApiStrings.kBaseAPI}/user/exportAllUsers";
+    String token = '${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}';
+    print('2222222 $url');
+
+    try {
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: {
+          HttpHeaders.authorizationHeader: token,
+        },
+      );
+      print('333333');
+
+      String dirtyFileName = response.headers["content-disposition"] ?? "";
+      print('444444');
+
+      String fileName = "Userfile";
+
+      Directory? downloadsDirectory = (await getExternalStorageDirectories(type: StorageDirectory.downloads))?.first;
+      String filePath = '${downloadsDirectory?.path}/$fileName.xlsx';
+      print('55555 $filePath');
+
+      File file = File(filePath);
+      await file.writeAsBytes(response.bodyBytes);
+      // Check if the file exists
+      File downloadedFile = File('${downloadsDirectory?.path}/$fileName.xlsx');
+      if (await downloadedFile.exists()) {
+        print("File downloaded successfully at:");
+        return true;
+      } else {
+        print("File download failed.");
+
+        return false;
+      }
+    } catch (e) {
+      print("Error: $e");
+      CustomWidgets.toastValidation(msg: 'Something is wrong , Please is refresh the tab');
+    }
+  }
 
   dynamic _returnResponse(http.Response response) async {
     if (response.statusCode == 200 || response.statusCode == 201) {

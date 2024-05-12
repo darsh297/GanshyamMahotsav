@@ -19,6 +19,7 @@ class ApiStrings {
 
   /// Add Credits
   static const String kAddCredits = 'credit/add';
+  static const String kGetCredits = 'credit/get';
 
   /// Add Credits
   static const String kUploadPDF = 'pdf/upload';

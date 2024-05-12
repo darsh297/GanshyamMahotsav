@@ -79,6 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: () {
             Get.back();
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
@@ -163,6 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icons: const Icon(Icons.login_outlined),
           onTap: () {
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(

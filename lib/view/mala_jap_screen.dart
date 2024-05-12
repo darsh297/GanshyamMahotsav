@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:math';
 
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -38,6 +40,13 @@ class _MalaJapScreenState extends State<MalaJapScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              ConfettiWidget(
+                confettiController: malaJapController.controllerCenter,
+                blastDirectionality: BlastDirectionality.explosive,
+                shouldLoop: true,
+                colors: [AppColors.primaryColor, AppColors.scaffoldColor, AppColors.grey3, AppColors.white, AppColors.grey],
+                createParticlePath: drawStar,
+              ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(120),
                 child: Image.asset(
@@ -94,6 +103,29 @@ class _MalaJapScreenState extends State<MalaJapScreen> {
       ),
     );
     // );
+  }
+
+  /// A custom Path to paint stars.
+  Path drawStar(Size size) {
+    // Method to convert degree to radians
+    double degToRad(double deg) => deg * (pi / 180.0);
+
+    const numberOfPoints = 5;
+    final halfWidth = size.width / 2;
+    final externalRadius = halfWidth;
+    final internalRadius = halfWidth / 2.5;
+    final degreesPerStep = degToRad(360 / numberOfPoints);
+    final halfDegreesPerStep = degreesPerStep / 2;
+    final path = Path();
+    final fullAngle = degToRad(360);
+    path.moveTo(size.width, halfWidth);
+
+    for (double step = 0; step < fullAngle; step += degreesPerStep) {
+      path.lineTo(halfWidth + externalRadius * cos(step), halfWidth + externalRadius * sin(step));
+      path.lineTo(halfWidth + internalRadius * cos(step + halfDegreesPerStep), halfWidth + internalRadius * sin(step + halfDegreesPerStep));
+    }
+    path.close();
+    return path;
   }
 }
 

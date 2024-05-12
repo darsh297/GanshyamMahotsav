@@ -18,6 +18,7 @@ class SharedPreferenceClass {
   /// Retrieve a value
   Future<dynamic> retrieveData(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print('frrrrrrrooooommmm  retrivedata ${prefs.get(key)}');
     return prefs.get(key);
   }
 

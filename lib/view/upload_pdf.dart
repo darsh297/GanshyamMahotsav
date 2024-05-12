@@ -64,63 +64,63 @@ class _UploadPDFState extends State<UploadPDF> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  InkWell(
-                    onTap: () => pickPDFFile(),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 12),
-                      height: Get.height / 2.8,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        color: AppColors.lightGrey,
-                      ),
-                      child: DottedBorder(
-                        radius: const Radius.circular(6),
-                        borderType: BorderType.RRect,
-                        dashPattern: const [6, 6],
-                        strokeWidth: 2,
-                        color: AppColors.grey1,
-                        child: Obx(
-                          () => uploadPDFController.filePath.value.isNotEmpty
-                              ? Center(
-                                  child: Text(
-                                    'Selected PDF: ${path.basenameWithoutExtension(uploadPDFController.filePath.value)}',
-                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                  ),
-                                )
-                              : Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.picture_as_pdf_rounded,
-                                        size: 50,
-                                        color: AppColors.grey,
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Text(
-                                        "Click here to upload PDF".tr,
-                                        textAlign: TextAlign.center,
-                                        style: uploadPDFController.appTextStyle.montserrat16W500Grey,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SelectableLinkify(
-                    onOpen: (LinkableElement link) async {
-                      if (!await launchUrl(Uri.parse(link.url))) {
-                        throw Exception('Could not launch ${link.url}');
-                      }
-                    },
-                    text: 'For better user experience upload and get PDF from this website:https://www.instagram.com/',
-                    style: appTextStyle.montserrat12W500,
-                  ),
+                  // InkWell(
+                  //   onTap: () => pickPDFFile(),
+                  //   child: Container(
+                  //     margin: const EdgeInsets.symmetric(vertical: 12),
+                  //     height: Get.height / 2.8,
+                  //     width: double.infinity,
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(6),
+                  //       color: AppColors.lightGrey,
+                  //     ),
+                  //     child: DottedBorder(
+                  //       radius: const Radius.circular(6),
+                  //       borderType: BorderType.RRect,
+                  //       dashPattern: const [6, 6],
+                  //       strokeWidth: 2,
+                  //       color: AppColors.grey1,
+                  //       child: Obx(
+                  //         () => uploadPDFController.filePath.value.isNotEmpty
+                  //             ? Center(
+                  //                 child: Text(
+                  //                   'Selected PDF: ${path.basenameWithoutExtension(uploadPDFController.filePath.value)}',
+                  //                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  //                 ),
+                  //               )
+                  //             : Center(
+                  //                 child: Column(
+                  //                   mainAxisAlignment: MainAxisAlignment.center,
+                  //                   crossAxisAlignment: CrossAxisAlignment.center,
+                  //                   children: [
+                  //                     Icon(
+                  //                       Icons.picture_as_pdf_rounded,
+                  //                       size: 50,
+                  //                       color: AppColors.grey,
+                  //                     ),
+                  //                     const SizedBox(height: 20),
+                  //                     Text(
+                  //                       "Click here to upload PDF".tr,
+                  //                       textAlign: TextAlign.center,
+                  //                       style: uploadPDFController.appTextStyle.montserrat16W500Grey,
+                  //                     )
+                  //                   ],
+                  //                 ),
+                  //               ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  //
+                  // SelectableLinkify(
+                  //   onOpen: (LinkableElement link) async {
+                  //     if (!await launchUrl(Uri.parse(link.url))) {
+                  //       throw Exception('Could not launch ${link.url}');
+                  //     }
+                  //   },
+                  //   text: 'For better user experience upload and get PDF from this website:https://www.instagram.com/',
+                  //   style: appTextStyle.montserrat12W500,
+                  // ),
                   InkWell(
                     onTap: () => pickPDFImage(),
                     child: Container(
@@ -167,6 +167,20 @@ class _UploadPDFState extends State<UploadPDF> {
                         ),
                       ),
                     ),
+                  ),
+                  const SizedBox(height: 14),
+
+                  CustomTextFields(
+                    textFieldController: description,
+                    textFieldName: 'Book Name',
+                    minLine: 1,
+                  ),
+                  const SizedBox(height: 14),
+
+                  CustomTextFields(
+                    textFieldController: description,
+                    textFieldName: 'Book Content',
+                    minLine: 5,
                   ),
                   const SizedBox(height: 10),
 
@@ -239,7 +253,7 @@ class _UploadPDFState extends State<UploadPDF> {
                           CustomWidgets.toastValidation(msg: 'Select PDF,PDF image and PDF language');
                         }
                       },
-                      child: Text('Upload PDF'.tr),
+                      child: Text('Upload Book'.tr),
                     ),
                   )
                 ],

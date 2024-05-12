@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/controller/user_data_list_controller.dart';
+import 'package:ghanshyam_mahotsav/network/api_config.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 import 'package:ghanshyam_mahotsav/utils/app_text_styles.dart';
 
@@ -69,11 +70,14 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                 queryParam = 'lastMonth';
               } else if (value == 'Last Week') {
                 queryParam = 'lastWeek';
+              } else if (value == 'All') {
+                queryParam = 'All';
               }
               userDataListController.allDataReceived.value = false;
               userDataListController.isLoading.value = true;
               pageNumber = 1;
-              (value != 'All') ? userDataListController.getAllUserData(queryParam: '?filter=$queryParam') : userDataListController.getAllUserData();
+              userDataListController.getAllUserData(queryParam: '?filter=$queryParam');
+              // (value != 'All') ? userDataListController.getAllUserData(queryParam: '?filter=$queryParam') : userDataListController.getAllUserData();
             },
             itemBuilder: (BuildContext context) {
               return ['All', 'Last Month', 'Last Week'].map((String language) {
@@ -107,9 +111,9 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                                 child: Column(
                                   children: [
                                     ListTile(
-                                      leading: const CircleAvatar(
+                                      leading: CircleAvatar(
                                         // You can set user profile images here
-                                        child: Icon(Icons.person),
+                                        child: Text('${index + 1}'),
                                       ),
                                       title: Text(userData.fullName ?? ''),
                                       subtitle: Column(
@@ -166,6 +170,15 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           //       )
           //     : const SizedBox())
         ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: ElevatedButton(
+          child: userDataListController.fileDownloadLoader.value ? CustomWidgets.loader : const Text('Download Excel'),
+          onPressed: () {
+            userDataListController.downloadExcel();
+          },
+        ),
       ),
     );
   }

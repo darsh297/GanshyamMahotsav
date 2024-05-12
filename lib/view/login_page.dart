@@ -147,6 +147,7 @@ class LoginPage extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 12),
                                       CustomTextFields(
+                                        fromLogin: true,
                                         textFieldController: loginController.villageTextField.value,
                                         textFieldName: 'Village',
                                         validator: (input) {

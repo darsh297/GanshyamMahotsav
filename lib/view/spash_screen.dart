@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ghanshyam_mahotsav/model/global_response.dart';
+import 'package:ghanshyam_mahotsav/network/api_config.dart';
+import 'package:ghanshyam_mahotsav/network/api_strings.dart';
 import 'package:ghanshyam_mahotsav/utils/shared_preference.dart';
 import 'package:ghanshyam_mahotsav/utils/string_utils.dart';
 import 'package:ghanshyam_mahotsav/view/home_page.dart';
@@ -14,10 +17,9 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final Rx<Locale> initLang = const Locale('en', 'US').obs;
-
   final SharedPreferenceClass sharedPreferenceClass = SharedPreferenceClass();
-
   final RxString _selectedLanguage = StringUtils.english.obs;
+  final ApiBaseHelper apiBaseHelper = ApiBaseHelper();
   getIfAdmin() async {
     _selectedLanguage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ?? StringUtils.english;
     debugPrint('|||||||||||||||||||||||||||||||||||||||||||||||||||||||| $_selectedLanguage');
@@ -31,8 +33,17 @@ class _SplashScreenState extends State<SplashScreen> {
     debugPrint('Token Splesh screen $token');
     Future.delayed(
       const Duration(seconds: 1),
-      () {
-        token == null ? Get.offAll(() => LoginPage()) : Get.offAll(() => const HomePage());
+      () async {
+        if (token == null) {
+          Get.offAll(() => LoginPage());
+        } else {
+          var api = await apiBaseHelper.getData(leadAPI: ApiStrings.kGetCredits);
+          GlobalResponse globalResponse = GlobalResponse.fromJson(api);
+          if (globalResponse.status == 200) {
+            sharedPreferenceClass.storeData(StringUtils.prefUserCredit, globalResponse.data['count']);
+          }
+          Get.offAll(() => const HomePage());
+        }
       },
     );
   }

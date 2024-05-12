@@ -5,19 +5,21 @@ import 'package:ghanshyam_mahotsav/model/global_response.dart';
 import 'package:ghanshyam_mahotsav/model/user_data_list_model.dart';
 import 'package:ghanshyam_mahotsav/network/api_config.dart';
 import 'package:ghanshyam_mahotsav/network/api_strings.dart';
+import 'package:ghanshyam_mahotsav/widgets/widgets.dart';
 
 class UserDataListController extends GetxController {
   final ApiBaseHelper apiBaseHelper = ApiBaseHelper();
   final RxList<UserDataListModel> userDataList = <UserDataListModel>[].obs;
   final RxBool isLoading = true.obs;
   final RxBool isLoadingMore = false.obs;
+  final RxBool fileDownloadLoader = false.obs;
   // For lazy loading () -> If user has scrolled-up and lazy loading (pagination's) next page data API is already called then new API with next page do not call again
   final RxBool allDataReceived = false.obs; // if all data is fetched then make it true
   getAllUserData({String? queryParam, int page = 1}) async {
     if (allDataReceived.value == false) {
       var url = ApiStrings.kGetAllUsers;
       // url += '?page=$page';
-      if (queryParam != null) {
+      if (queryParam != null && queryParam != 'All') {
         url += queryParam;
       }
 
@@ -36,7 +38,6 @@ class UserDataListController extends GetxController {
               userResponse.add(pdfListingResponse);
             }
             if (queryParam != null) {
-              print('0 $queryParam');
               userDataList.value = [];
             }
             userDataList.addAll(userResponse);
@@ -47,6 +48,17 @@ class UserDataListController extends GetxController {
           }
         }
       }
+    }
+  }
+
+  downloadExcel() async {
+    fileDownloadLoader.value = true;
+    bool successful = await apiBaseHelper.downloadFile();
+    fileDownloadLoader.value = false;
+    if (successful) {
+      CustomWidgets.toastValidation(msg: 'File downloaded successfully');
+    } else {
+      CustomWidgets.toastValidation(msg: 'Something went wrong');
     }
   }
 }

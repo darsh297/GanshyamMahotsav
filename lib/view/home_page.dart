@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   getUserName() async {
     userName.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserName);
     homeController.creditScore.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserCredit);
+    print('||||  ${userName.value} --- ${homeController.creditScore.value} ');
   }
 
   @override
@@ -71,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const SizedBox(height: 24),
                         Text(
-                          '${'Credit Score:'.tr}:${homeController.creditScore.value}',
+                          '${'Credit Score'.tr}${homeController.creditScore.value}',
                           style: appTextStyle.inter12DarkGrey,
                         ),
                       ],
@@ -111,16 +112,17 @@ class _HomePageState extends State<HomePage> {
                                 selectedColor: AppColors.primaryColor,
                                 selected: _value.value == index,
                                 onSelected: (bool selected) {
+                                  homeController.selectedLanguageIndex.value = index;
                                   if (index != 0) {
-                                    homeController.selectedLanguageIndex.value = index;
                                     vanchanScreenController.getAllPDF(
                                       queryParamLanguage: '${homeController.language[index]}',
                                       queryParamSearch: vanchanScreenController.searchText.value.text,
                                     );
                                   } else {
-                                    vanchanScreenController.getAllPDF();
+                                    vanchanScreenController.getAllPDF(
+                                      queryParamSearch: vanchanScreenController.searchText.value.text,
+                                    );
                                   }
-
                                   _value.value = (selected ? index : null)!;
                                 },
                               );
