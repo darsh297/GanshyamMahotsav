@@ -35,7 +35,7 @@ class ApiBaseHelper {
         responseJson = _returnResponse(response);
       } catch (e) {
         print(e);
-        CustomWidgets.toastValidation(msg: 'Something is wrong , Please is refresh the tab');
+        CustomWidgets.toastValidation(msg: 'Something went wrong , Please is refresh the tab');
       }
       return responseJson;
     } else {
@@ -62,7 +62,7 @@ class ApiBaseHelper {
         responseJson = _returnResponse(response);
       } catch (e) {
         print(e);
-        CustomWidgets.toastValidation(msg: 'Something is wrong , Please is refresh the tab');
+        CustomWidgets.toastValidation(msg: 'Something went wrong , Please is refresh the tab');
         // throw FetchDataException('No Internet connection');
       }
       return responseJson;
@@ -134,103 +134,37 @@ class ApiBaseHelper {
   }
 
   Future<dynamic> downloadFile() async {
-    // print('111111');
-    // String url = "${ApiStrings.kBaseAPI}/user/exportAllUsers";
-    // String token = '${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}';
-    // print('2222222 $url');
-    //
-    // try {
-    //   http.Response response = await http.get(
-    //     Uri.parse(url),
-    //     headers: {
-    //       HttpHeaders.authorizationHeader: token,
-    //     },
-    //   );
-    //   print('333333');
-    //
-    //   String dirtyFileName = response.headers["content-disposition"] ?? "";
-    //   print('444444');
-    //
-    //   String fileName = "Userfile";
-    //
-    //   Directory? downloadsDirectory = (await getExternalStorageDirectories(type: StorageDirectory.downloads))?.first;
-    //   String filePath = '${downloadsDirectory?.path}/$fileName.xlsx';
-    //   print('55555 $filePath');
-    //
-    //   File file = File(filePath);
-    //   await file.writeAsBytes(response.bodyBytes);
-    //   // Check if the file exists
-    //   File downloadedFile = File('${downloadsDirectory?.path}/$fileName.xlsx');
-    //   if (await downloadedFile.exists()) {
-    //     print("File downloaded successfully at:");
-    //     return true;
-    //   } else {
-    //     print("File download failed.");
-    //
-    //     return false;
-    //   }
-    // } catch (e) {
-    //   print("Error: $e");
-    //   CustomWidgets.toastValidation(msg: 'Something is wrong , Please is refresh the tab');
-    // }
-    // print('111111');
-    // String url1 = "https://sea-lion-app-pnyik.ondigitalocean.app/api/user/exportAllUsers";
-    // String token =
-    //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjNWQ5ZmRjYWExNDNiMTJmODJhOGEiLCJwaG9uZU51bWJlciI6IjEyMzQ1Njc4OTAiLCJjb3VudHJ5Q29kZSI6Iis5MSIsImZ1bGxOYW1lIjoiQWRtaW4gVXNlciIsImlzQWRtaW4iOnRydWUsImNyZWRpdENvdW50Ijo0NCwiY3JlYXRlZEF0IjoiMjAyNC0wNS0wOVQwNToyMjozOS44NDRaIiwiX192IjowLCJpYXQiOjE3MTU2Njk3ODcsImV4cCI6MTc0NzIwNTc4N30.pkl3gDepJTKoy5wsejTE4796GK4YktvlSrrV8LWFwAo';
-    // print('2222222 $url1');
-    //
-    // try {
-    //   var url = Uri.parse(url1);
-    //   var headers = {HttpHeaders.authorizationHeader: 'Bearer $token'};
-    //   var response = await http.get(url, headers: headers);
-    //   print('${response.bodyBytes} ||${response.body}');
-    //   // var fileName = 'UserList.pdf';
-    //   // Directory directory = Directory("");
-    //   // if (Platform.isAndroid) {
-    //   //   // Redirects it to download folder in android
-    //   //   directory = Directory("/storage/emulated/0/Download");
-    //   // } else {
-    //   //   directory = await getApplicationDocumentsDirectory();
-    //   // }
-    //   // print('||| ${directory.path}/$fileName');
-    //   // var file = File('${directory.path}/$fileName');
-    //   // await file.writeAsBytes(response.bodyBytes);
-    //
-    //   // Optionally, you can show a notification or toast indicating the file download.
-    // } catch (e) {
-    //   print("Error: $e");
-    //   CustomWidgets.toastValidation(msg: 'Something is wrong , Please is refresh the tab');
-    // }
-
-    var headers = {
-      'Authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjNWQ5ZmRjYWExNDNiMTJmODJhOGEiLCJwaG9uZU51bWJlciI6IjEyMzQ1Njc4OTAiLCJjb3VudHJ5Q29kZSI6Iis5MSIsImZ1bGxOYW1lIjoiQWRtaW4gVXNlciIsImlzQWRtaW4iOnRydWUsImNyZWRpdENvdW50Ijo0NCwiY3JlYXRlZEF0IjoiMjAyNC0wNS0wOVQwNToyMjozOS44NDRaIiwiX192IjowLCJpYXQiOjE3MTU2Njk3ODcsImV4cCI6MTc0NzIwNTc4N30.pkl3gDepJTKoy5wsejTE4796GK4YktvlSrrV8LWFwAo',
-      // 'Cookie':
-      //     '__cf_bm=_oRNEfwQ8KB0jbGpeQo1A8bz1lGJUArjIbMuii6fj_4-1715670643-1.0.1.1-bAFmQDj1JwL8So3nH1bRHgOhqBC0v.qL64vWNMxWqaYPu8L1GIBIZw5LCepqvM.7rlDIX8FXKrI.uQr7K4SnAg',
-    };
-
-    var request = http.Request(
-      'GET',
-      Uri.parse('https://sea-lion-app-pnyik.ondigitalocean.app/api/user/exportAllUsers'),
-    );
-
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      Directory directory = Directory("");
-      if (Platform.isAndroid) {
-        directory = Directory("/storage/emulated/0/Download");
-      } else {
-        directory = await getApplicationDocumentsDirectory();
+    if (await CustomWidgets.isNetworkAvailable()) {
+      try {
+        var headers = {'Authorization': '${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}'};
+        var request = http.Request(
+          'GET',
+          Uri.parse('${ApiStrings.kBaseAPI}/user/exportAllUsers'),
+        );
+        request.headers.addAll(headers);
+        http.StreamedResponse response = await request.send();
+        if (response.statusCode == 200) {
+          Directory directory = Directory("");
+          if (Platform.isAndroid) {
+            directory = Directory("/storage/emulated/0/Download");
+          } else {
+            directory = await getApplicationDocumentsDirectory();
+          }
+          var filePath = '${directory.path}/User Data.xlsx'; // Replace with your desired file path
+          var file = File(filePath);
+          await file.writeAsBytes(await response.stream.toBytes());
+          print('File saved successfully: $filePath');
+          return true;
+        } else {
+          print('Failed to download file: ${response.reasonPhrase}');
+          return false;
+        }
+      } catch (e) {
+        print("Error: $e");
+        CustomWidgets.toastValidation(msg: 'Something went wrong , Please is refresh the tab');
       }
-      var filePath = '${directory.path}/User Data.xlsx'; // Replace with your desired file path
-      var file = File(filePath);
-      await file.writeAsBytes(await response.stream.toBytes());
-      print('File saved successfully: $filePath');
     } else {
-      print('Failed to download file: ${response.reasonPhrase}');
+      CustomWidgets.toastValidation(msg: 'Please connect to internet');
     }
   }
 
