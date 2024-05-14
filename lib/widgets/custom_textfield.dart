@@ -16,9 +16,11 @@ class CustomTextFields extends StatelessWidget {
     this.inputBorder,
     this.validator,
     this.textInputType = TextInputType.text,
+    this.textInputAction,
     this.onChange,
     this.maxLength,
     this.minLine,
+    this.onSubmitted,
     this.maxLine,
     required this.textFieldController,
   });
@@ -28,12 +30,14 @@ class CustomTextFields extends StatelessWidget {
   final String textFieldName;
   final String hintText;
   final TextInputType textInputType;
+  final TextInputAction? textInputAction;
   final AppTextStyle appTextStyle = AppTextStyle();
   final bool filled;
   final bool fromLogin;
   final int? minLine;
   final int? maxLine;
   final int? maxLength;
+  final Function(String)? onSubmitted;
   final TextEditingController textFieldController;
   final Function(String)? onChange;
 
@@ -57,12 +61,14 @@ class CustomTextFields extends StatelessWidget {
             ],
           ),
         TextFormField(
+          textInputAction: textInputAction,
           maxLines: maxLine,
           minLines: minLine,
           maxLength: maxLength,
           validator: validator,
           keyboardType: textInputType,
           controller: textFieldController,
+          onFieldSubmitted: onSubmitted,
           decoration: InputDecoration(
             border: inputBorder,
             filled: filled,

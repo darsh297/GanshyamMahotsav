@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -43,8 +41,18 @@ class _VanchanScreenState extends State<VanchanScreen> {
             textFieldController: vanchanScreenController.searchText,
             hintText: 'Search PDF by Name',
             leadingIcon: const Icon(Icons.search_sharp),
-            onChange: (value) => vanchanScreenController.getAllPDF(
-                queryParamSearch: value, queryParamLanguage: homeController.language[homeController.selectedLanguageIndex.value]),
+            textInputAction: TextInputAction.search,
+            onSubmitted: (value) {
+              if (!vanchanScreenController.isLoading.value) {
+                vanchanScreenController.getAllPDF(
+                    queryParamSearch: value, queryParamLanguage: homeController.language[homeController.selectedLanguageIndex.value]);
+                // pageNumber = 1;
+                // myAgentController.allDataReceived.value = false;
+                // myAgentController.myAgentList.value = <MyAgentModel>[].obs;
+                // myAgentController.isLoading.value = true;
+                // myAgentController.agentListing(searchText: value.trim(), pageNumber: pageNumber);
+              }
+            },
             inputBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.white)),
             trailingIcon: IconButton(
                 icon: const Icon(Icons.cancel),
@@ -97,7 +105,7 @@ class _VanchanScreenState extends State<VanchanScreen> {
                                     ),
                                     const SizedBox(width: 20),
                                     Expanded(
-                                      child: Container(
+                                      child: SizedBox(
                                         // color: Colors.red,
                                         height: 100,
                                         // width: 70,
@@ -152,7 +160,8 @@ class _VanchanScreenState extends State<VanchanScreen> {
                                                                         vanchanScreenController.deleteBook(pdfData[index].sId, index);
                                                                       },
                                                                       child: vanchanScreenController.deleteBookLoading.value
-                                                                          ? LoadingAnimationWidget.threeArchedCircle(color: AppColors.primaryColor, size: 20)
+                                                                          ? LoadingAnimationWidget.threeArchedCircle(
+                                                                              color: AppColors.primaryColor, size: 20)
                                                                           : Text('Yes'.tr),
                                                                     ),
                                                                   ),
@@ -161,7 +170,7 @@ class _VanchanScreenState extends State<VanchanScreen> {
                                                             },
                                                           );
                                                         },
-                                                        icon: Icon(Icons.delete_forever_outlined)))
+                                                        icon: const Icon(Icons.delete_forever_outlined)))
                                                 : const SizedBox()
                                           ],
                                         ),

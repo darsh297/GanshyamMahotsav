@@ -1,13 +1,12 @@
 // Define the time duration in minutes to read each page
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/network/api_config.dart';
 import 'package:ghanshyam_mahotsav/utils/app_text_styles.dart';
+
 // import 'package:pdf_text/pdf_text.dart';
 import '../utils/app_colors.dart';
 

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/view/login_page.dart';
-
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 import '../utils/shared_preference.dart';
@@ -112,7 +112,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        _selectedLanguage.value == 'English' ? Get.updateLocale(const Locale('en', 'US')) : Get.updateLocale(const Locale('hi', 'IN'));
+                        _selectedLanguage.value == 'English'
+                            ? Get.updateLocale(const Locale('en', 'US'))
+                            : Get.updateLocale(const Locale('hi', 'IN'));
                         sharedPreferenceClass.storeData(StringUtils.prefLanguage, _selectedLanguage.value);
                         Get.back(); // Close the dialog
                       },
@@ -133,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         icons: const Icon(Icons.picture_as_pdf),
                         onTap: () {
                           Get.back();
-                          Get.to(() => UploadPDF())
+                          Get.to(() => const UploadPDF())
                               ?.then((value) => SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor)));
                           SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
                         }),
