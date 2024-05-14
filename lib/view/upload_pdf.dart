@@ -20,11 +20,11 @@ class UploadPDF extends StatefulWidget {
 
 class _UploadPDFState extends State<UploadPDF> {
   final UploadPDFController uploadPDFController = Get.put(UploadPDFController());
-
-  final TextEditingController description = TextEditingController();
-
   final AppTextStyle appTextStyle = AppTextStyle();
 
+  final TextEditingController description = TextEditingController();
+  final TextEditingController bookContent = TextEditingController();
+  final TextEditingController bookName = TextEditingController();
   @override
   void dispose() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
@@ -169,14 +169,14 @@ class _UploadPDFState extends State<UploadPDF> {
                   const SizedBox(height: 14),
 
                   CustomTextFields(
-                    textFieldController: description,
+                    textFieldController: bookName,
                     textFieldName: 'Book Name',
                     minLine: 1,
                   ),
                   const SizedBox(height: 14),
 
                   CustomTextFields(
-                    textFieldController: description,
+                    textFieldController: bookContent,
                     textFieldName: 'Book Content',
                     minLine: 5,
                   ),
@@ -186,7 +186,7 @@ class _UploadPDFState extends State<UploadPDF> {
                     textFieldController: description,
                     textFieldName: 'PDF Description',
                     maxLine: 2,
-                    maxLength: 40,
+                    maxLength: 80,
                   ),
 
                   /// Language Dropdown
@@ -243,10 +243,16 @@ class _UploadPDFState extends State<UploadPDF> {
                         print(
                             '|| ${uploadPDFController.selectedLanguage.value} || ${uploadPDFController.filePath.value} || ${description.text} || ${uploadPDFController.imagePath.value}');
                         if (uploadPDFController.selectedLanguage.value != 'Select Language' &&
-                            uploadPDFController.filePath.value != '' &&
-                            description.text != '' &&
-                            uploadPDFController.imagePath.value != '') {
-                          uploadPDFController.uploadPDF(description: description.text);
+                                uploadPDFController.filePath.value != '' &&
+                                description.text != '' &&
+                                uploadPDFController.imagePath.value != '' ||
+                            bookName.text != '' ||
+                            bookContent.text != '') {
+                          uploadPDFController.uploadPDF(
+                            description: description.text,
+                            fileName: bookName.text,
+                            content: bookContent.text,
+                          );
                         } else {
                           CustomWidgets.toastValidation(msg: 'Select PDF,PDF image and PDF language');
                         }

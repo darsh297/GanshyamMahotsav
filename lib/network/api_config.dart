@@ -72,10 +72,12 @@ class ApiBaseHelper {
   }
 
   Future<dynamic> uploadFiles({
-    String filePath = '',
+    // String filePath = '',
     String language = '',
     String leadAPI = '',
     String description = '',
+    String content = '',
+    String fileName = '',
     String imagePath = '',
   }) async {
     if (await CustomWidgets.isNetworkAvailable()) {
@@ -88,15 +90,17 @@ class ApiBaseHelper {
         // };
 
         var request = http.MultipartRequest('POST', Uri.parse(ApiStrings.kBaseAPI + leadAPI));
+        request.fields.addAll({'fileName': fileName});
+        request.fields.addAll({'contents': content});
         request.fields.addAll({'lang': language});
         request.fields.addAll({'desc': description});
-        request.files.add(await http.MultipartFile.fromPath('file', filePath, contentType: MediaType.parse('application/pdf')));
+        // request.files.add(await http.MultipartFile.fromPath('file', filePath, contentType: MediaType.parse('application/pdf')));
         request.files.add(await http.MultipartFile.fromPath('file', imagePath, contentType: MediaType.parse('image/jpeg')));
         request.headers.addAll(headers);
         http.StreamedResponse response = await request.send();
-
+        print('11111');
         String responseBody = await response.stream.bytesToString();
-
+        print('2222 $responseBody');
         return json.decode(responseBody);
       } catch (e) {
         print('$e');
@@ -139,10 +143,11 @@ class ApiBaseHelper {
         var headers = {'Authorization': '${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}'};
         var request = http.Request(
           'GET',
-          Uri.parse('${ApiStrings.kBaseAPI}/user/exportAllUsers'),
+          Uri.parse('${ApiStrings.kBaseAPI}user/exportAllUsers'),
         );
         request.headers.addAll(headers);
         http.StreamedResponse response = await request.send();
+        print('wwwwwww ${response.statusCode}');
         if (response.statusCode == 200) {
           Directory directory = Directory("");
           if (Platform.isAndroid) {
@@ -179,6 +184,7 @@ class ApiBaseHelper {
         debugPrint('403 error ===> $responseJson');
         return responseJson;
       }
+      print(']]]] ${response.body.toString()}');
       CustomWidgets.toastValidation(msg: '${json.decode(response.body.toString())['message']}');
       // print(FetchDataException(
       //     'Error occurred while Communication with Server with StatusCode : ${response.statusCode} ${json.decode(response.body.toString())['message']} '));

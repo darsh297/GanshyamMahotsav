@@ -35,6 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 1),
       () async {
         if (token == null) {
+          sharedPreferenceClass.storeData(StringUtils.prefUserCredit, 0);
           Get.offAll(() => LoginPage());
         } else {
           var api = await apiBaseHelper.getData(leadAPI: ApiStrings.kGetCredits);
