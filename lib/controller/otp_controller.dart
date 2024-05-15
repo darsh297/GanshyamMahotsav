@@ -147,7 +147,7 @@ class OTPController extends GetxController {
         sharedPreferenceClass.storeData(StringUtils.prefUserPhone, loginResponse.phoneNumber);
         sharedPreferenceClass.storeData(StringUtils.prefUserVillage, loginResponse.village);
         Get.offAll(() => const HomePage());
-        print('object ${await sharedPreferenceClass.retrieveData(StringUtils.prefUserTokenKey)}');
+        print('object ${await sharedPreferenceClass.retrieveData(StringUtils.prefUserPhone)}');
       }
 
       /// Fail
@@ -180,6 +180,7 @@ class OTPController extends GetxController {
         sharedPreferenceClass.storeData(StringUtils.prefUserPhone, registerResponse.phoneNumber);
         sharedPreferenceClass.storeData(StringUtils.prefUserVillage, registerResponse.village);
         Get.offAll(() => const HomePage());
+        print('object ${await sharedPreferenceClass.retrieveData(StringUtils.prefUserPhone)}');
       }
 
       /// Fail

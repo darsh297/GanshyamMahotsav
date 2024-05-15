@@ -28,9 +28,9 @@ class MalaJapController extends GetxController {
   Future<void> updateProgress(context) async {
     if (isEnabled.value) {
       Vibration.vibrate(amplitude: 100, duration: 100);
-      // isEnabled.value = false;
+      isEnabled.value = false;
 
-      Clipboard.setData(const ClipboardData(text: ''));
+      // Clipboard.setData(const ClipboardData(text: ''));
       HapticFeedback.vibrate();
       // Enable button after 1 seconds
       Timer(const Duration(seconds: 1), () {

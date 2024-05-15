@@ -25,12 +25,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final RxString userMobile = ''.obs;
   final SharedPreferenceClass sharedPreferenceClass = SharedPreferenceClass();
   final AppTextStyle appTextStyle = AppTextStyle();
-  final RxInt credits = 0.obs;
+  final RxInt? credits = 0.obs;
   final RxBool isAdmin = false.obs;
 
   getIfAdmin() async {
     isAdmin.value = await sharedPreferenceClass.retrieveData(StringUtils.prefIsAdmin);
-    credits.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserCredit);
+    credits?.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserCredit);
     _selectedLanguage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ?? 'English';
     userMobile.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserPhone);
     userVillage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserVillage);
@@ -112,9 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        _selectedLanguage.value == 'English'
-                            ? Get.updateLocale(const Locale('en', 'US'))
-                            : Get.updateLocale(const Locale('hi', 'IN'));
+                        _selectedLanguage.value == 'English' ? Get.updateLocale(const Locale('en', 'US')) : Get.updateLocale(const Locale('hi', 'IN'));
                         sharedPreferenceClass.storeData(StringUtils.prefLanguage, _selectedLanguage.value);
                         Get.back(); // Close the dialog
                       },

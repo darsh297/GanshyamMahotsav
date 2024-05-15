@@ -14,13 +14,15 @@ class UploadPDFController extends GetxController {
   final RxString imagePath = ''.obs;
   // final RxString description = ''.obs;
   final RxString selectedLanguage = 'Select Language'.obs;
-  uploadPDF({String description = ''}) async {
+  uploadPDF({String description = '', String content = '', String fileName = ''}) async {
     isLoading.value = true;
     var apiRes = await apiBaseHelper.uploadFiles(
-      filePath: filePath.value,
+      // filePath: filePath.value,
       imagePath: imagePath.value,
       language: selectedLanguage.value,
       description: description,
+      content: content,
+      fileName: fileName,
       leadAPI: ApiStrings.kUploadPDF,
     );
     GlobalResponse globalResponse = GlobalResponse.fromJson(apiRes);
