@@ -59,6 +59,10 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Image.asset(
+                    StringUtils.logo,
+                    height: 90,
+                  ),
                   Text(
                     'Welcome'.tr,
                     style: appTextStyle.inter20Grey,
@@ -70,11 +74,7 @@ class _HomePageState extends State<HomePage> {
                           '$userName',
                           style: appTextStyle.inter20DarkGrey,
                         ),
-                        const SizedBox(height: 24),
-                        Text(
-                          '${'Credit Score'.tr}${homeController.creditScore.value}',
-                          style: appTextStyle.inter12DarkGrey,
-                        ),
+                        // const SizedBox(height: 24),
                       ],
                     ),
                   ),

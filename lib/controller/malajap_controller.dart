@@ -54,6 +54,7 @@ class MalaJapController extends GetxController {
         if (globalResponse.status == 200) {
           SharedPreferenceClass sharedPreferenceClass = SharedPreferenceClass();
           await sharedPreferenceClass.incrementCredit(StringUtils.prefUserCredit);
+          await sharedPreferenceClass.incrementCredit(StringUtils.prefUserTotalCredit);
           homeController.creditScore.value += 1;
           controllerCenter.play();
           showDialog(

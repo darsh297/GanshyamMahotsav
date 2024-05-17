@@ -4,8 +4,10 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:ghanshyam_mahotsav/controller/home_controller.dart';
 import 'package:ghanshyam_mahotsav/controller/malajap_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
+import 'package:ghanshyam_mahotsav/utils/app_text_styles.dart';
 
 import '../utils/string_utils.dart';
 import '../widgets/widgets.dart';
@@ -19,6 +21,8 @@ class MalaJapScreen extends StatefulWidget {
 
 class _MalaJapScreenState extends State<MalaJapScreen> {
   MalaJapController malaJapController = Get.find();
+  HomeController homeController = Get.find();
+  AppTextStyle appTextStyle = AppTextStyle();
 
   @override
   void initState() {
@@ -39,6 +43,13 @@ class _MalaJapScreenState extends State<MalaJapScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Obx(
+                () => Text(
+                  '${'Credit Score'.tr}${homeController.creditScore.value}',
+                  style: appTextStyle.inter12DarkGrey,
+                ),
+              ),
+              const SizedBox(height: 6),
               ConfettiWidget(
                 confettiController: malaJapController.controllerCenter,
                 blastDirectionality: BlastDirectionality.explosive,
@@ -141,8 +152,8 @@ class DotPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     for (int i = 0; i < 108; i++) {
-      // Change the loop limit to 109
-      final double angle = (2 * pi / 108) * i; // Adjust for 109 dots
+      // Adjust the angle calculation to start from 12 o'clock
+      final double angle = (2 * pi / 108) * i - (pi / 2); // Subtract pi/2 to start from 12 o'clock
       final double x = radius + radius * cos(angle);
       final double y = radius + radius * sin(angle);
       if (i < dots.length && dots[i]) {

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../utils/shared_preference.dart';
@@ -155,8 +156,14 @@ class ApiBaseHelper {
           } else {
             directory = await getApplicationDocumentsDirectory();
           }
-          var filePath = '${directory.path}/User Data.xlsx'; // Replace with your desired file path
+          print('directory $directory');
+
+          var filePath = '${directory.path}/members_${DateFormat('dd-MM-yy').format(DateTime.now())}.xlsx'; // Replace with your desired file path
+          print('filePath $filePath');
+
           var file = File(filePath);
+          print('file $file');
+
           await file.writeAsBytes(await response.stream.toBytes());
           print('File saved successfully: $filePath');
           return true;

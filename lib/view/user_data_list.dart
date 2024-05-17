@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/controller/user_data_list_controller.dart';
 import 'package:ghanshyam_mahotsav/utils/app_colors.dart';
 import 'package:ghanshyam_mahotsav/utils/app_text_styles.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../widgets/widgets.dart';
 
@@ -172,11 +173,23 @@ class _UserDataWidgetState extends State<UserDataWidget> {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: ElevatedButton(
-          child: userDataListController.fileDownloadLoader.value ? CustomWidgets.loader : const Text('Download Excel'),
-          onPressed: () {
-            userDataListController.downloadExcel();
-          },
+        child: Obx(
+          () => !userDataListController.fileDownloadLoader.value
+              ? ElevatedButton(
+                  child: Text('Download Excel'.tr),
+                  onPressed: () {
+                    userDataListController.downloadExcel();
+                  },
+                )
+              : Container(
+                  height: 40,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(color: AppColors.primaryColor, borderRadius: BorderRadius.circular(5)),
+                  child: Center(
+                    child: LoadingAnimationWidget.threeArchedCircle(color: AppColors.scaffoldColor, size: 40),
+                  ),
+                ),
         ),
       ),
     );

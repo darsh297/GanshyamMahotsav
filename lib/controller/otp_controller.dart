@@ -85,14 +85,12 @@ class OTPController extends GetxController {
       verifyOtpLoader.value = true;
       PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: _verificationId, smsCode: otp);
       User? user = (await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential)).user;
-      verifyOtpLoader.value = false;
-
       if (user != null) {
         timer?.value.cancel();
-
         loginAPICall(countryCode: countryCode, phoneNumber: phoneNumber, isLogin: isLogin, fullName: fullName, villageName: villageName);
       } else {
         if (!context.mounted) return;
+        verifyOtpLoader.value = false;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text("The code was entered incorrectly"),
@@ -103,7 +101,6 @@ class OTPController extends GetxController {
         );
       }
     } catch (e) {
-      verifyOtpLoader.value = false;
       if (!context.mounted) return;
       if (otp == '123456') {
         timer?.value.cancel();
@@ -137,21 +134,23 @@ class OTPController extends GetxController {
       ///Success
       if (globalResponse.status == 200) {
         LoginResponse loginResponse = LoginResponse.fromJson(globalResponse.data);
-        print('object ${LoginResponse.fromJson(globalResponse.data)}');
+        print('||||||object ${LoginResponse.fromJson(globalResponse.data)}');
         sharedPreferenceClass.storeData(StringUtils.prefUserTokenKey, loginResponse.token ?? '');
         sharedPreferenceClass.storeData(StringUtils.prefUserName, loginResponse.fullName ?? '');
         sharedPreferenceClass.storeData(StringUtils.prefUserId, loginResponse.sId);
-        // sharedPreferenceClass.storeData(StringUtils.prefUserCredit, loginResponse.creditCount);
+        sharedPreferenceClass.storeData(StringUtils.prefUserTotalCredit, loginResponse.creditCount);
         sharedPreferenceClass.storeBool(StringUtils.prefIsAdmin, loginResponse.isAdmin ?? false);
         sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
         sharedPreferenceClass.storeData(StringUtils.prefUserPhone, loginResponse.phoneNumber);
         sharedPreferenceClass.storeData(StringUtils.prefUserVillage, loginResponse.village);
+        verifyOtpLoader.value = false;
         Get.offAll(() => const HomePage());
         print('object ${await sharedPreferenceClass.retrieveData(StringUtils.prefUserPhone)}');
       }
 
       /// Fail
       else {
+        verifyOtpLoader.value = false;
         CustomWidgets.toastValidation(msg: globalResponse.message ?? '');
       }
     } else {
@@ -174,17 +173,19 @@ class OTPController extends GetxController {
         sharedPreferenceClass.storeData(StringUtils.prefUserTokenKey, registerResponse.token ?? '');
         sharedPreferenceClass.storeData(StringUtils.prefUserName, registerResponse.fullName ?? '');
         sharedPreferenceClass.storeData(StringUtils.prefUserId, registerResponse.sId);
-        // sharedPreferenceClass.storeData(StringUtils.prefUserCredit, registerResponse.creditCount);
+        sharedPreferenceClass.storeData(StringUtils.prefUserTotalCredit, registerResponse.creditCount);
         sharedPreferenceClass.storeData(StringUtils.prefIsAdmin, registerResponse.isAdmin);
         sharedPreferenceClass.storeData(StringUtils.prefLanguage, StringUtils.english);
         sharedPreferenceClass.storeData(StringUtils.prefUserPhone, registerResponse.phoneNumber);
         sharedPreferenceClass.storeData(StringUtils.prefUserVillage, registerResponse.village);
         Get.offAll(() => const HomePage());
+        verifyOtpLoader.value = false;
         print('object ${await sharedPreferenceClass.retrieveData(StringUtils.prefUserPhone)}');
       }
 
       /// Fail
       else {
+        verifyOtpLoader.value = false;
         CustomWidgets.toastValidation(msg: globalResponse.message ?? '');
       }
     }

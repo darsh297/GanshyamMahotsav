@@ -7,7 +7,7 @@
 
 
     <application
-        android:label="ghanshyam_mahotsav"
+        android:label="Ghanshyam Mahotsav"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"

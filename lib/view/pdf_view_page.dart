@@ -82,39 +82,19 @@ class _PDFViewerFromUrlState extends State<PDFViewerFromUrl> {
         width: Get.width,
         // color: Colors.red,
         alignment: Alignment.center,
-        padding: EdgeInsets.all(30),
-        margin: EdgeInsets.all(20),
-        child: Scrollbar(
-          child: SingleChildScrollView(child: Text(widget.contents, style: appTextStyle.montserrat14W600White)),
-          // child: PDF(
-          //     fitEachPage: false,
-          //     defaultPage: widget.lastPage ?? 0,
-          //     onPageChanged: (int? page, int? totalPages) {
-          //       _currentPage = page ?? 0 + 1;
-          //       print('||| $_currentPage ${widget.id}');
-          //     }
-          //     //   print('=================================${pageSwap.value}');
-          //     //   if (pageSwap.value) {
-          //     //     pageSwap.value = false;
-          //     //     startTimer();
-          //     //     debugPrint('PDF view $_isScrollComplete $_currentPage $_totalPages ');
-          //     //     setState(() {
-          //     //       _currentPage = page ?? 0 + 1; // Adding 1 because page numbering starts from 0
-          //     //       _totalPages = (totalPages ?? 1) - 1;
-          //     //       if (!_isScrollComplete) {
-          //     //         _progress = (_currentPage / _totalPages) * 100; // Calculate progress based on current page and total pages
-          //     //         // Ensure progress is 100% when scrolled to the last page
-          //     //         if (_currentPage == _totalPages) {
-          //     //           _progress = 100.0;
-          //     //           _isScrollComplete = true; // Mark scroll as complete
-          //     //         }
-          //     //       }
-          //     //     });
-          //     //   }
-          //
-          //     ).fromUrl(
-          //   widget.url,
-          // ),
+        padding: EdgeInsets.symmetric(vertical: 30),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Scrollbar(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                widget.contents,
+                style: appTextStyle.montserrat14W600White,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
         ),
       ),
 

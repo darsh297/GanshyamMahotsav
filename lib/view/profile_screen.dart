@@ -30,11 +30,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   getIfAdmin() async {
     isAdmin.value = await sharedPreferenceClass.retrieveData(StringUtils.prefIsAdmin);
-    credits?.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserCredit);
+    credits?.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserTotalCredit);
     _selectedLanguage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ?? 'English';
     userMobile.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserPhone);
     userVillage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserVillage);
-    debugPrint('object $_selectedLanguage|| isAdmin.value ${isAdmin.value}');
+    debugPrint('object $_selectedLanguage|| isAdmin.value ${isAdmin.value} || ${credits?.value}|| ${userMobile.value}');
   }
 
   @override
@@ -68,6 +68,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Expanded(child: Text('Village'.tr)),
                   const Expanded(child: Text(':')),
                   Expanded(child: Obx(() => Text(userVillage.value))),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Expanded(child: Text('Total Credits'.tr)),
+                  const Expanded(child: Text(':')),
+                  Expanded(child: Obx(() => Text(credits?.value.toString() ?? ''))),
                 ],
               ),
             ],
