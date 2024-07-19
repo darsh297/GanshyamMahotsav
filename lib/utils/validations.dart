@@ -26,13 +26,17 @@ class ValidationsFunction {
   static (String?, bool) phoneValidation(String userInput) {
     if (userInput == '') {
       return ('Field can not be empty', false);
-    } else if (userInput.length != 10) {
-      return ("Enter 10 digit number", false);
-    } else if (RegExp(r'(^(?:[+0]9)?[0-9]{10}$)').hasMatch(userInput)) {
-      return (null, true);
-    } else {
-      return (userInput != '' ? "Please Enter valid phone number" : "Field can not be empty", false);
     }
+    return (null, true);
+    // else if (userInput.length != 9) {
+    //   return ("Enter 10 digit number", false);
+    // }
+    // else if (RegExp(r'(^(?:[+0]9)?[0-9]{9}$)').hasMatch(userInput)) {
+    //   return (null, true);
+    // }
+    // else {
+    //   return (userInput != '' ? "Please Enter valid phone number" : "Field can not be empty", false);
+    // }
   }
 
   static (String?, bool) textValidation(String userInput) {

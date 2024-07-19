@@ -91,7 +91,7 @@ class _PDFViewerFromUrlState extends State<PDFViewerFromUrl> {
               child: Text(
                 widget.contents,
                 style: appTextStyle.montserrat14W600White,
-                textAlign: TextAlign.center,
+                // textAlign: TextAlign.justify,
               ),
             ),
           ),

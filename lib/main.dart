@@ -40,6 +40,7 @@ class _MyAppState extends State<MyApp> {
       theme: appTheme.themeData,
       title: 'Ghanshyam Mahotsav',
       translations: LocalStrings(),
+      debugShowCheckedModeBanner: false,
       locale: const Locale('en', 'US'),
       home: const SplashScreen(),
     );

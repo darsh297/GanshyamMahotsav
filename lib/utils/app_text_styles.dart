@@ -52,7 +52,7 @@ class AppTextStyle {
   TextStyle montserrat10W500Grey = GoogleFonts.montserrat(fontSize: 10, fontWeight: FontWeight.w500, color: AppColors.hintTextColor);
 
   ///
-  TextStyle inter20Grey = GoogleFonts.inter(fontSize: 20, color: AppColors.grey3, fontWeight: FontWeight.w400, letterSpacing: 4);
-  TextStyle inter20DarkGrey = GoogleFonts.inter(fontSize: 20, color: AppColors.grey4, fontWeight: FontWeight.w400, letterSpacing: 2);
+  TextStyle inter20Grey = GoogleFonts.inter(fontSize: 16, color: AppColors.grey3, fontWeight: FontWeight.w400, letterSpacing: 4);
+  TextStyle inter20DarkGrey = GoogleFonts.inter(fontSize: 16, color: AppColors.grey4, fontWeight: FontWeight.w400, letterSpacing: 2);
   TextStyle inter12DarkGrey = GoogleFonts.inter(fontSize: 12, color: AppColors.grey4, fontWeight: FontWeight.w400, letterSpacing: 2);
 }
