@@ -26,4 +26,7 @@ class ApiStrings {
 
   /// Add Credits
   static const String kGetAllUsers = 'user/getAllUsers';
+
+  /// Add Credits
+  static const String get50Data = 'user/get50Data';
 }

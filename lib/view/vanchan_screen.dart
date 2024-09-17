@@ -47,11 +47,6 @@ class _VanchanScreenState extends State<VanchanScreen> {
                 if (!vanchanScreenController.isLoading.value) {
                   vanchanScreenController.getAllPDF(
                       queryParamSearch: value, queryParamLanguage: homeController.language[homeController.selectedLanguageIndex.value]);
-                  // pageNumber = 1;
-                  // myAgentController.allDataReceived.value = false;
-                  // myAgentController.myAgentList.value = <MyAgentModel>[].obs;
-                  // myAgentController.isLoading.value = true;
-                  // myAgentController.agentListing(searchText: value.trim(), pageNumber: pageNumber);
                 }
               },
               inputBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.white)),
@@ -65,7 +60,7 @@ class _VanchanScreenState extends State<VanchanScreen> {
                   }),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.52,
+              height: MediaQuery.of(context).size.height * 0.50,
               child: Obx(
                 () => !vanchanScreenController.isLoading.value
                     ? vanchanScreenController.allPDFListing.isNotEmpty

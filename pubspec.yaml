@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: 'none'
 
-version: 1.0.3+6
+version: 1.1.0+9
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -37,7 +37,7 @@ dependencies:
   share_plus: ^7.2.2           # Share this app with others (Drawer-Refer a friend)
   audioplayers: ^5.2.1
   path_provider: ^2.1.3
-  intl: ^0.18.1
+#  intl: ^0.18.1
 #  flutter_linkify: ^6.0.0
 #  intl_phone_field: ^3.2.0
 #  pinput: ^4.0.0

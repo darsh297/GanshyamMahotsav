@@ -1,10 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ghanshyam_mahotsav/view/login_page.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../controller/top_user_controller.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 import '../utils/shared_preference.dart';
@@ -27,32 +29,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final AppTextStyle appTextStyle = AppTextStyle();
   final RxInt? credits = 0.obs;
   final RxBool isAdmin = false.obs;
+  final TopUserController deleteUser = Get.put(TopUserController());
+
 
   getIfAdmin() async {
-    isAdmin.value = await sharedPreferenceClass.retrieveData(StringUtils.prefIsAdmin);
-    credits?.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserTotalCredit);
-    _selectedLanguage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ?? 'English';
-    userMobile.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserPhone);
-    userVillage.value = await sharedPreferenceClass.retrieveData(StringUtils.prefUserVillage);
-    debugPrint('object $_selectedLanguage|| isAdmin.value ${isAdmin.value} || ${credits?.value}|| ${userMobile.value}');
+    isAdmin.value =
+        await sharedPreferenceClass.retrieveData(StringUtils.prefIsAdmin);
+    credits?.value = await sharedPreferenceClass
+        .retrieveData(StringUtils.prefUserTotalCredit);
+    _selectedLanguage.value =
+        await sharedPreferenceClass.retrieveData(StringUtils.prefLanguage) ??
+            'English';
+    userMobile.value =
+        await sharedPreferenceClass.retrieveData(StringUtils.prefUserPhone);
+    userVillage.value =
+        await sharedPreferenceClass.retrieveData(StringUtils.prefUserVillage);
+    debugPrint(
+        'object $_selectedLanguage|| isAdmin.value ${isAdmin.value} || ${credits?.value}|| ${userMobile.value}');
   }
 
   @override
   void initState() {
     getIfAdmin();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
     return Column(
       children: [
         Container(
           padding: const EdgeInsets.all(12),
           margin: const EdgeInsets.all(12),
-          decoration: BoxDecoration(border: Border.all(color: AppColors.primaryColor)),
+          decoration:
+              BoxDecoration(border: Border.all(color: AppColors.primaryColor)),
           child: Column(
             children: [
               Row(
@@ -75,128 +89,199 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Expanded(child: Text('Total Credits'.tr)),
                   const Expanded(child: Text(':')),
-                  Expanded(child: Obx(() => Text(credits?.value.toString() ?? ''))),
+                  Expanded(
+                      child: Obx(() => Text(credits?.value.toString() ?? ''))),
                 ],
               ),
             ],
           ),
         ),
-        DrawerTile(
-          title: 'Language',
-          icons: const Icon(Icons.language),
-          onTap: () {
-            Get.back();
-            showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Select Language'),
-                  content: Obx(
-                    () => Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        RadioListTile<String>(
-                          title: const Text('English'),
-                          value: StringUtils.english,
-                          activeColor: AppColors.scaffoldColor,
-                          groupValue: _selectedLanguage.value,
-                          onChanged: (value) => _selectedLanguage.value = value!,
-                        ),
-                        RadioListTile<String>(
-                          title: const Text('ગુજરાતી'),
-                          value: 'Gujarati',
-                          groupValue: _selectedLanguage.value,
-                          activeColor: AppColors.scaffoldColor,
-                          onChanged: (value) => _selectedLanguage.value = value!,
-                        ),
-                      ],
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Get.back(),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        _selectedLanguage.value == 'English' ? Get.updateLocale(const Locale('en', 'US')) : Get.updateLocale(const Locale('hi', 'IN'));
-                        sharedPreferenceClass.storeData(StringUtils.prefLanguage, _selectedLanguage.value);
-                        Get.back(); // Close the dialog
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.31,
+          child: SingleChildScrollView(
+             scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                DrawerTile(
+                  title: 'Language',
+                  icons: const Icon(Icons.language),
+                  onTap: () {
+                    Get.back();
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Select Language'),
+                          content: Obx(
+                            () => Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                RadioListTile<String>(
+                                  title: const Text('English'),
+                                  value: StringUtils.english,
+                                  activeColor: AppColors.scaffoldColor,
+                                  groupValue: _selectedLanguage.value,
+                                  onChanged: (value) =>
+                                      _selectedLanguage.value = value!,
+                                ),
+                                RadioListTile<String>(
+                                  title: const Text('ગુજરાતી'),
+                                  value: 'Gujarati',
+                                  groupValue: _selectedLanguage.value,
+                                  activeColor: AppColors.scaffoldColor,
+                                  onChanged: (value) =>
+                                      _selectedLanguage.value = value!,
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Get.back(),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                _selectedLanguage.value == 'English'
+                                    ? Get.updateLocale(const Locale('en', 'US'))
+                                    : Get.updateLocale(const Locale('hi', 'IN'));
+                                sharedPreferenceClass.storeData(
+                                    StringUtils.prefLanguage,
+                                    _selectedLanguage.value);
+                                Get.back(); // Close the dialog
+                              },
+                              child: const Text('Done'),
+                            ),
+                          ],
+                        );
                       },
-                      child: const Text('Done'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
-        Obx(
-          () => isAdmin.value
-              ? Column(
-                  children: [
-                    DrawerTile(
-                        title: 'Upload PDF',
-                        icons: const Icon(Icons.picture_as_pdf),
-                        onTap: () {
-                          Get.back();
-                          Get.to(() => const UploadPDF())
-                              ?.then((value) => SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor)));
-                          SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColors.scaffoldColor));
-                        }),
-                    DrawerTile(
-                        title: 'User Data List',
-                        icons: const Icon(Icons.person),
-                        onTap: () {
-                          Get.back();
-                          Get.to(() => const UserDataWidget());
-                        }),
-                  ],
-                )
-              : const SizedBox(),
-        ),
-        DrawerTile(
-          title: 'Refer a friend',
-          onTap: () => Share.share("Let's do good karma together https://play.google.com/store/apps/details?id=com.whatsapp&pcampaignid=web_share"),
-          icons: const Icon(Icons.front_hand_outlined),
-        ),
-        DrawerTile(
-            title: 'Rate Us',
-            onTap: () {
-              launchUrl(Uri.parse('https://play.google.com/store/apps/details?id=com.whatsapp&pcampaignid=web_share'));
-            },
-            icons: const Icon(Icons.star_rate)),
-        DrawerTile(
-          title: 'Sign Out',
-          icons: const Icon(Icons.login_outlined),
-          onTap: () {
-            showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Sign Out'.tr),
-                  content: Text('Are you sure you want to sign out?'.tr),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Get.back(),
-                      child: Text('No'.tr),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        SharedPreferenceClass().removeAllData();
-                        Get.offAll(() => LoginPage());
+                    );
+                  },
+                ),
+                Obx(
+                  () => isAdmin.value
+                      ? Column(
+                          children: [
+                            DrawerTile(
+                                title: 'Upload PDF',
+                                icons: const Icon(Icons.picture_as_pdf),
+                                onTap: () {
+                                  Get.back();
+                                  Get.to(() => const UploadPDF())?.then((value) =>
+                                      SystemChrome.setSystemUIOverlayStyle(
+                                          SystemUiOverlayStyle(
+                                              statusBarColor:
+                                                  AppColors.scaffoldColor)));
+                                  SystemChrome.setSystemUIOverlayStyle(
+                                      SystemUiOverlayStyle(
+                                          statusBarColor:
+                                              AppColors.scaffoldColor));
+                                }),
+                            DrawerTile(
+                                title: 'User Data List',
+                                icons: const Icon(Icons.person),
+                                onTap: () {
+                                  Get.back();
+                                  Get.to(() => const UserDataWidget());
+                                }),
+                          ],
+                        )
+                      : const SizedBox(),
+                ),
+                DrawerTile(
+                    title: 'privacy policy',
+                    onTap: () {
+                      launchUrl(Uri.parse(
+                          'https://policies.easstemple.com/privacy/'));
+                    },
+                    icons: const Icon(Icons.privacy_tip)),
+                DrawerTile(
+                  title: 'Delete Account',
+                  icons: const Icon(Icons.delete), // Using delete icon
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false, // Prevent dismissing the dialog by tapping outside
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Confirmation'), // Dialog title
+                          content: const Text('Are you sure you want to delete your account?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Get.back(), // Close the dialog
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                var checkAdmin = await sharedPreferenceClass.retrieveData(StringUtils.prefIsAdmin);
+                                log("admin............................$checkAdmin");
+                                if(checkAdmin == true){
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text("Admin Access"),
+                                        content: Text("You are an admin and cannot be deleted."),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(); // Close the dialog
+                                            },
+                                            child: Text("OK"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }else{
+                                  await deleteUser.deleteUserData();
+                                }
+                              },
+                              child: const Text('Delete'),
+                            ),
+                          ],
+                        );
                       },
-                      child: Text('Yes'.tr),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          isLast: true,
-        ),
+                    );
+                  },
+                  isLast: true, // Mark as the last option
+                ),
+
+                DrawerTile(
+                  title: 'Sign Out',
+                  icons: const Icon(Icons.login_outlined),
+                  onTap: () {
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Sign Out'.tr),
+                          content: Text('Are you sure you want to sign out?'.tr),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Get.back(),
+                              child: Text('No'.tr),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                SharedPreferenceClass().removeAllData();
+                                Get.offAll(() => LoginPage());
+                              },
+                              child: Text('Yes'.tr),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  isLast: true,
+                ),
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
@@ -207,7 +292,13 @@ class DrawerTile extends StatelessWidget {
   final Function() onTap;
   final bool isLast;
   final Widget icons;
-  const DrawerTile({super.key, required this.title, required this.onTap, this.isLast = false, required this.icons});
+
+  const DrawerTile(
+      {super.key,
+      required this.title,
+      required this.onTap,
+      this.isLast = false,
+      required this.icons});
 
   @override
   Widget build(BuildContext context) {

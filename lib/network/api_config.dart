@@ -3,11 +3,14 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:ghanshyam_mahotsav/model/getTopUserDataResponseModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../model/deleteUserModel.dart';
+import '../model/getTotalJapDataResponseModel.dart';
 import '../utils/shared_preference.dart';
 import '../utils/string_utils.dart';
 import '../widgets/widgets.dart';
@@ -199,4 +202,100 @@ class ApiBaseHelper {
       return responseJson;
     }
   }
+
+
+  static Future<GetTopUserDataResponseModel?> get50Data({required String leadAPI}) async {
+    if (await CustomWidgets.isNetworkAvailable()) {
+      log('Token is a :---> ${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}');
+
+      try {
+        http.Response response = await http.get(
+          Uri.parse('${ApiStrings.kBaseAPI}user/getTop50'),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': '${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}'
+          },
+        );
+
+        if (response.statusCode == 200) {
+          // print("in if case......................");
+          var jsonString = response.body;
+          return getTopUserDataResponseModelFromJson(jsonString);
+        } else {
+          // print("in else case......................");
+          return null;
+        }
+      }
+      catch (e) {
+        print(e);
+        CustomWidgets.toastValidation(msg: 'Something went wrong , Please is refresh the tab');
+      }
+    } else {
+      CustomWidgets.toastValidation(msg: 'Please connect to internet');
+    }
+    return null;
+  }
+
+  Future<dynamic> getTotalJap({required String id}) async {
+    if (await CustomWidgets.isNetworkAvailable()) {
+      log('Token is a :---> ${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}');
+
+      try {
+        http.Response response = await http.get(
+          Uri.parse('${ApiStrings.kBaseAPI}user/getTotalJap?id=${id}'),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': '${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}'
+          },
+        );
+
+        if (response.statusCode == 200) {
+          print("in if case......................");
+          var jsonString = response.body;
+          return getTotalJapDataResponseModelFromJson(jsonString);
+        } else {
+          print("in else case......................");
+          return null;
+        }
+      }
+      catch (e) {
+        print(e);
+        CustomWidgets.toastValidation(msg: 'Something went wrong , Please is refresh the tab');
+      }
+      return responseJson;
+    } else {
+      CustomWidgets.toastValidation(msg: 'Please connect to internet');
+    }
+  }
+
+  static Future<DeleteUserModel?> deleteUser({required String id}) async {
+    if (await CustomWidgets.isNetworkAvailable()) {
+      log('Token is a :---> ${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}');
+
+      try {
+        http.Response response = await http.delete(
+          Uri.parse('${ApiStrings.kBaseAPI}user?id=$id'),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': '${await SharedPreferenceClass().retrieveData(StringUtils.prefUserTokenKey)}'
+          },
+        );
+
+        if (response.statusCode == 200) {
+          var jsonString = response.body;
+          return deleteUserModelFromJson(jsonString);
+        } else {
+          return null;
+        }
+      }
+      catch (e) {
+        print(e);
+        CustomWidgets.toastValidation(msg: 'Something went wrong , Please is refresh the tab');
+      }
+    } else {
+      CustomWidgets.toastValidation(msg: 'Please connect to internet');
+    }
+    return null;
+  }
+
 }

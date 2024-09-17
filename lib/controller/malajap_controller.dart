@@ -21,27 +21,38 @@ class MalaJapController extends GetxController {
   final AppTextStyle appTextStyle = AppTextStyle();
   final ApiBaseHelper apiBaseHelper = ApiBaseHelper();
   final RxBool isEnabled = true.obs;
+  final RxBool isVibrationOn = true.obs;
+  final RxBool isSoundOn = true.obs;
   final RxBool isLogin = false.obs;
   final ConfettiController controllerCenter = ConfettiController(duration: const Duration(seconds: 10));
   final HomeController homeController = Get.find();
 
   Future<void> updateProgress(context) async {
     if (isEnabled.value) {
-      Vibration.vibrate(amplitude: 100, duration: 100);
-      isEnabled.value = false;
+        if(isVibrationOn.value){
+          Vibration.vibrate(amplitude: 100, duration: 100);
 
-      // Clipboard.setData(const ClipboardData(text: ''));
-      HapticFeedback.vibrate();
-      // Enable button after 1 seconds
-      Timer(const Duration(seconds: 1), () {
-        isEnabled.value = true;
-      });
-      AudioPlayer player = AudioPlayer();
-      await player.setSource(AssetSource('audio.mp3'));
-      player.resume();
-      Timer(const Duration(seconds: 1), () {
-        player.stop();
-      });
+
+          // Clipboard.setData(const ClipboardData(text: ''));
+          HapticFeedback.vibrate();
+          // Enable button after 1 seconds
+
+        }
+        isEnabled.value = false;
+        Timer(const Duration(seconds: 1), () {
+          isEnabled.value = true;
+        });
+        if(isSoundOn.value){
+          AudioPlayer player = AudioPlayer();
+          await player.setSource(AssetSource('audio.mp3'));
+          player.resume();
+          Timer(const Duration(seconds: 1), () {
+            player.stop();
+          });
+        }
+
+
+
       dots[progress.value] = true; // Update dot color
       progress.value = (progress.value + 1) % 108; // Increment progress
       print('||| ${progress.value}');

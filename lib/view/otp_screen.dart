@@ -14,7 +14,13 @@ class OTPScreen extends StatefulWidget {
   final String? villageName;
   final bool isExist;
 
-  const OTPScreen({super.key, required this.phoneNumber, required this.countryCode, required this.isExist, this.fullName, this.villageName});
+  const OTPScreen(
+      {super.key,
+      required this.phoneNumber,
+      required this.countryCode,
+      required this.isExist,
+      this.fullName,
+      this.villageName});
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -83,7 +89,8 @@ class _OTPScreenState extends State<OTPScreen> {
                             text: 'Verify phone number ',
                             children: <InlineSpan>[
                               TextSpan(
-                                text: '+${widget.countryCode}-${widget.phoneNumber}',
+                                text:
+                                    '+${widget.countryCode}-${widget.phoneNumber}',
                                 style: appTextStyle.montserrat12W600green,
                               ),
                               TextSpan(
@@ -132,21 +139,25 @@ class _OTPScreenState extends State<OTPScreen> {
                             () => otpController.verifyOtpLoader.value
                                 ? Container(
                                     padding: const EdgeInsets.all(2),
-                                    decoration: BoxDecoration(color: AppColors.scaffoldColor, borderRadius: BorderRadius.circular(5)),
+                                    decoration: BoxDecoration(
+                                        color: AppColors.scaffoldColor,
+                                        borderRadius: BorderRadius.circular(5)),
                                     child: CustomWidgets.loader,
                                   )
                                 : ElevatedButton(
-                                    onPressed: () => otpEditingController.text != ''
-                                        ? otpController.verifyOTP(
-                                            context: context,
-                                            isLogin: widget.isExist,
-                                            otp: otpEditingController.text,
-                                            phoneNumber: widget.phoneNumber,
-                                            countryCode: widget.countryCode,
-                                            fullName: widget.fullName ?? '',
-                                            villageName: widget.villageName ?? '',
-                                          )
-                                        : null,
+                                    onPressed: () =>
+                                        otpEditingController.text != ''
+                                            ? otpController.verifyOTP(
+                                                context: context,
+                                                isLogin: widget.isExist,
+                                                otp: otpEditingController.text,
+                                                phoneNumber: widget.phoneNumber,
+                                                countryCode: widget.countryCode,
+                                                fullName: widget.fullName ?? '',
+                                                villageName:
+                                                    widget.villageName ?? '',
+                                              )
+                                            : null,
                                     child: const Text('Verify Now'),
                                   ),
                           ),
@@ -157,13 +168,22 @@ class _OTPScreenState extends State<OTPScreen> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                otpController.resendOTP.value ? otpController.resetTimer('+${widget.countryCode}${widget.phoneNumber}') : null;
+                                otpController.resendOTP.value
+                                    ? otpController.resetTimer(
+                                        '+${widget.countryCode}${widget.phoneNumber}')
+                                    : null;
                               },
                               child: Obx(
-                                () => Text('Resend OTP',
-                                    style: otpController.resendOTP.value
-                                        ? appTextStyle.montserrat14W500
-                                        : appTextStyle.montserrat14W500.copyWith(color: AppColors.grey)),
+                                () => otpController.resendOTP.value
+                                    ? Text(
+                                        "Resend OTP",
+                                        style: TextStyle(
+                                            color: AppColors.primaryColor,
+                                            fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    : Text('Resend OTP',
+                                        style: appTextStyle.montserrat14W500),
                               ),
                             ),
                             Obx(

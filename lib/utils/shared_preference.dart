@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreferenceClass {
+class   SharedPreferenceClass {
   void storeData(String key, dynamic value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 

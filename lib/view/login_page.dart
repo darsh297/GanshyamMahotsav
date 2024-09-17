@@ -86,7 +86,7 @@ class LoginPage extends StatelessWidget {
                                           return result.$1;
                                         },
                                         leadingIcon: SizedBox(
-                                          width: 90,
+                                          width: 103,
                                           child: InkWell(
                                               onTap: () => loginController.openCountryPickerDialog(context),
                                               child: Obx(
@@ -166,7 +166,7 @@ class LoginPage extends StatelessWidget {
                                           return result.$1;
                                         },
                                         leadingIcon: SizedBox(
-                                          width: 90,
+                                          width: 103,
                                           child: InkWell(
                                             onTap: () => loginController.openCountryPickerDialog(context),
                                             child: Obx(

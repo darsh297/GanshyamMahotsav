@@ -7,12 +7,16 @@ import 'package:ghanshyam_mahotsav/network/api_config.dart';
 import 'package:ghanshyam_mahotsav/network/api_strings.dart';
 import 'package:ghanshyam_mahotsav/widgets/widgets.dart';
 
+import '../utils/string_utils.dart';
+
 class UserDataListController extends GetxController {
   final ApiBaseHelper apiBaseHelper = ApiBaseHelper();
   final RxList<UserDataListModel> userDataList = <UserDataListModel>[].obs;
   final RxBool isLoading = true.obs;
   final RxBool isLoadingMore = false.obs;
   final RxBool fileDownloadLoader = false.obs;
+
+  String id = "";
   // For lazy loading () -> If user has scrolled-up and lazy loading (pagination's) next page data API is already called then new API with next page do not call again
   final RxBool allDataReceived = false.obs; // if all data is fetched then make it true
   getAllUserData({String? queryParam, int page = 1}) async {
